@@ -135,9 +135,7 @@ EndRepeat:
     }
 
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
-        .maxstack 1
-        ldarg.0
-        call instance void class [OptimizedEnum]OptimizedEnum.NumCalc`1<!T>::.ctor()
+        .maxstack 0
         ret
     }
 }
@@ -279,9 +277,7 @@ EndRepeat:
     }
 
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
-        .maxstack 1
-        ldarg.0
-        call instance void class [OptimizedEnum]OptimizedEnum.NumCalc`1<!T>::.ctor()
+        .maxstack 0
         ret
     }
 }
@@ -432,9 +428,7 @@ EndRepeat:
     }
 
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
-        .maxstack 1
-        ldarg.0
-        call instance void class [OptimizedEnum]OptimizedEnum.NumCalc`1<!T>::.ctor()
+        .maxstack 0
         ret
     }
 }
@@ -584,9 +578,7 @@ EndRepeat:
     }
 
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
-        .maxstack 1
-        ldarg.0
-        call instance void class [OptimizedEnum]OptimizedEnum.NumCalc`1<!T>::.ctor()
+        .maxstack 0
         ret
     }
 }
@@ -729,9 +721,7 @@ EndRepeat:
     }
 
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
-        .maxstack 1
-        ldarg.0
-        call instance void class [OptimizedEnum]OptimizedEnum.NumCalc`1<!T>::.ctor()
+        .maxstack 0
         ret
     }
 }
