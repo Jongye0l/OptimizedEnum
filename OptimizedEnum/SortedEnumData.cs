@@ -18,11 +18,11 @@ class SortedEnumData<T> : EnumData<T> where T : struct, Enum {
 
     public override string GetString(T eEnum) {
         NumCalc<T> numCalc = NumCalc<T>.Instance;
-        return numCalc.IsPositive(eEnum) && numCalc.LessThan(eEnum, Names.Length) ? Names[eEnum.AsInteger()] : numCalc.GetString(eEnum);
+        return numCalc.LessThan(eEnum, Names.Length) ? Names[eEnum.AsInteger()] : numCalc.GetString(eEnum);
     }
 
     public override string GetName(T eEnum) {
         NumCalc<T> numCalc = NumCalc<T>.Instance;
-        return numCalc.IsPositive(eEnum) && numCalc.LessThan(eEnum, Names.Length) ? Names[eEnum.AsInteger()] : null;
+        return numCalc.LessThan(eEnum, Names.Length) ? Names[eEnum.AsInteger()] : null;
     }
 }

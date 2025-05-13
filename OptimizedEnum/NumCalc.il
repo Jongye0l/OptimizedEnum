@@ -58,7 +58,7 @@
         .maxstack 2
         ldarg.1
         ldarg.2
-        clt
+        clt.un
         ret
     }
     
@@ -221,7 +221,7 @@ EndRepeat:
         .maxstack 2
         ldarg.1
         ldarg.2
-        clt
+        clt.un
         ret
     }
     
@@ -229,7 +229,7 @@ EndRepeat:
         .maxstack 2
         ldarg.1
         ldarg.2
-        clt
+        clt.un
         ret
     }
     
@@ -237,7 +237,7 @@ EndRepeat:
         .maxstack 2
         ldarg.2
         ldarg.1
-        clt
+        clt.un
         ret
     }
 
@@ -401,7 +401,7 @@ EndRepeat:
         ldarg.1
         ldarg.2
         conv.i8
-        clt
+        clt.un
         ret
     }
     
@@ -569,7 +569,7 @@ EndRepeat:
         .maxstack 2
         ldarg.1
         ldarg.2
-        clt
+        clt.un
         ret
     }
     
@@ -578,7 +578,7 @@ EndRepeat:
         ldarg.1
         ldarg.2
         conv.u8
-        clt
+        clt.un
         ret
     }
     
@@ -586,7 +586,7 @@ EndRepeat:
         .maxstack 2
         ldarg.2
         ldarg.1
-        clt
+        clt.un
         ret
     }
 
@@ -747,7 +747,7 @@ EndRepeat:
         .maxstack 2
         ldarg.1
         ldarg.2
-        clt
+        clt.un
         ret
     }
     
