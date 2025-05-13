@@ -78,7 +78,7 @@
 StartRepeat:
         brfalse EndRepeat
 
-        ldloc.2
+        ldarg.1
         ldc.i4.1
         and
         brfalse SkipSetValue
