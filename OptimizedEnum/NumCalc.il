@@ -12,6 +12,14 @@
         ret
     }
 
+    .method public hidebysig virtual instance bool Equal(!T eEnum, !T 'value') cil managed {
+        .maxstack 2
+        ldarg.1
+        ldarg.2
+        ceq
+        ret
+    }
+
     .method public hidebysig virtual instance bool Equal(!T eEnum, int32 'value') cil managed {
         .maxstack 2
         ldarg.1
@@ -166,6 +174,14 @@ SkipGetValue:
     .method public hidebysig virtual instance bool GetBool(!T eEnum) cil managed {
         .maxstack 1
         ldarg.1
+        ret
+    }
+
+    .method public hidebysig virtual instance bool Equal(!T eEnum, !T 'value') cil managed {
+        .maxstack 2
+        ldarg.1
+        ldarg.2
+        ceq
         ret
     }
 
@@ -327,6 +343,14 @@ SkipGetValue:
         conv.i8
         ceq
         not
+        ret
+    }
+
+    .method public hidebysig virtual instance bool Equal(!T eEnum, !T 'value') cil managed {
+        .maxstack 2
+        ldarg.1
+        ldarg.2
+        ceq
         ret
     }
 
@@ -497,6 +521,14 @@ SkipGetValue:
         ret
     }
 
+    .method public hidebysig virtual instance bool Equal(!T eEnum, !T 'value') cil managed {
+        .maxstack 2
+        ldarg.1
+        ldarg.2
+        ceq
+        ret
+    }
+
     .method public hidebysig virtual instance bool Equal(!T eEnum, int32 'value') cil managed {
         .maxstack 2
         ldarg.1
@@ -659,6 +691,14 @@ SkipGetValue:
     .method public hidebysig virtual instance bool GetBool(!T eEnum) cil managed {
         .maxstack 1
         ldarg.1
+        ret
+    }
+
+    .method public hidebysig virtual instance bool Equal(!T eEnum, !T 'value') cil managed {
+        .maxstack 2
+        ldarg.1
+        ldarg.2
+        ceq
         ret
     }
 

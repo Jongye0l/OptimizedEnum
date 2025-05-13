@@ -18,7 +18,7 @@ class SortedIndexedDictionary<T>(int count) : IEnumerable<KeyValuePair<T, string
                 if(numCalc.LessThan(key, _array[mid].Key)) left = mid + 1;
                 else right = mid - 1;
             }
-            return left == right ? _array[left].Value : null;
+            return numCalc.Equal(_array[left].Key, key) ? _array[left].Value : null;
         }
     }
 
