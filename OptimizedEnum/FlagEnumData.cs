@@ -15,7 +15,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         if(!numCalc.GetBool(AllFlags)) FlagEnums = [];
         else if(numCalc.Equal(AllFlags, 1)) FlagEnums = new string[1];
         else FlagEnums = new string[numCalc.BitCount(AllFlags)];
-        SetupDict(fields.Length - FlagEnums.Length);
+        SetupDict(fields.Length - FlagEnums.Length - (HasZero ? 1 : 0));
         foreach(FieldInfo field in fields) {
             T value = (T) field.GetValue(null);
             string name = field.Name;
