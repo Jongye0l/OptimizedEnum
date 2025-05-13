@@ -14,7 +14,7 @@ class SortedIndexedDictionary<T>(int count) where T : struct, Enum {
             int right = count - 1;
             while(left < right) {
                 int mid = (left + right) / 2;
-                if(numCalc.LessThan(key, array[mid].Key)) left = mid + 1;
+                if(numCalc.LessThan(array[mid].Key, key)) left = mid + 1;
                 else right = mid - 1;
             }
             return numCalc.Equal(array[left].Key, key) ? array[left].Value : null;
