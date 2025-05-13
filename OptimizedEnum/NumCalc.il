@@ -71,8 +71,8 @@
         newarr [mscorlib]System.Int32
         stloc.0
         ldc.i4.0
+        dup
         stloc.1
-        ldc.i4.1
         stloc.2
         ldarg.1
 StartRepeat:
