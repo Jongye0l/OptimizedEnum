@@ -2,9 +2,7 @@
     .method public hidebysig virtual instance string GetString(!T eEnum) cil managed {
         .maxstack 3
         ldarg.1
-        ldnull
-        call class [mscorlib]System.Globalization.NumberFormatInfo [mscorlib]System.Globalization.NumberFormatInfo::get_CurrentInfo()
-        call string [mscorlib]System.Number::FormatInt32(int32, string, class [mscorlib]System.Globalization.NumberFormatInfo)
+        call instance string [mscorlib]System.Int32::ToString()
         ret
     }
 
@@ -175,9 +173,7 @@ EndRepeat:
     .method public hidebysig virtual instance string GetString(!T eEnum) cil managed {
         .maxstack 3
         ldarg.1
-        ldnull
-        call class [mscorlib]System.Globalization.NumberFormatInfo [mscorlib]System.Globalization.NumberFormatInfo::get_CurrentInfo()
-        call string [mscorlib]System.Number::FormatUInt32(uint32, string, class [mscorlib]System.Globalization.NumberFormatInfo)
+        call instance string [mscorlib]System.UInt32::ToString()
         ret
     }
 
@@ -344,9 +340,7 @@ EndRepeat:
     .method public hidebysig virtual instance string GetString(!T eEnum) cil managed {
         .maxstack 3
         ldarg.1
-        ldnull
-        call class [mscorlib]System.Globalization.NumberFormatInfo [mscorlib]System.Globalization.NumberFormatInfo::get_CurrentInfo()
-        call string [mscorlib]System.Number::FormatInt64(int64, string, class [mscorlib]System.Globalization.NumberFormatInfo)
+        call instance string [mscorlib]System.Int64::ToString()
         ret
     }
 
@@ -524,9 +518,7 @@ EndRepeat:
     .method public hidebysig virtual instance string GetString(!T eEnum) cil managed {
         .maxstack 3
         ldarg.1
-        ldnull
-        call class [mscorlib]System.Globalization.NumberFormatInfo [mscorlib]System.Globalization.NumberFormatInfo::get_CurrentInfo()
-        call string [mscorlib]System.Number::FormatUInt64(uint64, string, class [mscorlib]System.Globalization.NumberFormatInfo)
+        call instance string [mscorlib]System.UInt64::ToString()
         ret
     }
 
@@ -696,9 +688,10 @@ EndRepeat:
 
 .class private auto ansi beforefieldinit OptimizedEnum.NumCalcChar`1<valuetype .ctor (class [mscorlib]System.Enum) T> extends class [OptimizedEnum]OptimizedEnum.NumCalc`1<!T> {
     .method public hidebysig virtual instance string GetString(!T eEnum) cil managed {
-        .maxstack 1
+        .maxstack 2
         ldarg.1
-        call string [mscorlib]System.Char::ToString(char)
+        ldc.i4.1
+        newobj instance void System.String::.ctor(char, int32)
         ret
     }
 
