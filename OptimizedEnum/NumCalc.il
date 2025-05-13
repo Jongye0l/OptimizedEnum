@@ -140,12 +140,12 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig virtual instance void SetValue<T2>(!!T2[] 'array', !T eEnum, !!T2 'value') cil managed {
+    .method public hidebysig virtual instance void SetValue(string[] 'array', !T eEnum, string 'value') cil managed {
         .maxstack 3
         ldarg.1
         ldarg.2
         ldarg.3
-        stelem !!T2
+        stelem string
         ret
     }
 
@@ -297,12 +297,12 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig virtual instance void SetValue<T2>(!!T2[] 'array', !T eEnum, !!T2 'value') cil managed {
+    .method public hidebysig virtual instance void SetValue(string[] 'array', !T eEnum, string 'value') cil managed {
         .maxstack 3
         ldarg.1
         ldarg.2
         ldarg.3
-        stelem !!T2
+        stelem string
         ret
     }
 
@@ -464,13 +464,13 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig virtual instance void SetValue<T2>(!!T2[] 'array', !T eEnum, !!T2 'value') cil managed {
+    .method public hidebysig virtual instance void SetValue(string[] 'array', !T eEnum, string 'value') cil managed {
         .maxstack 3
         ldarg.1
         ldarg.2
         conv.i4
         ldarg.3
-        stelem !!T2
+        stelem string
         ret
     }
 
@@ -631,13 +631,13 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig virtual instance void SetValue<T2>(!!T2[] 'array', !T eEnum, !!T2 'value') cil managed {
+    .method public hidebysig virtual instance void SetValue(string[] 'array', !T eEnum, string 'value') cil managed {
         .maxstack 3
         ldarg.1
         ldarg.2
         conv.i4
         ldarg.3
-        stelem !!T2
+        stelem string
         ret
     }
 
@@ -790,12 +790,12 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig virtual instance void SetValue<T2>(!!T2[] 'array', !T eEnum, !!T2 'value') cil managed {
+    .method public hidebysig virtual instance void SetValue(string[] 'array', !T eEnum, string 'value') cil managed {
         .maxstack 3
         ldarg.1
         ldarg.2
         ldarg.3
-        stelem !!T2
+        stelem string
         ret
     }
 

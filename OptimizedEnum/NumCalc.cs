@@ -12,5 +12,5 @@ abstract class NumCalc<T> where T : struct, Enum {
     public abstract int[] GetBitLocations(T eEnum);
     public abstract string GetOrDefault(string[] array, T eEnum, int length);
     public abstract string GetOrNull(string[] array, T eEnum, int length);
-    public abstract void SetValue<T2>(T2[] array, T eEnum, T2 value);
+    public abstract void SetValue(string[] array, T eEnum, string value);
 }
