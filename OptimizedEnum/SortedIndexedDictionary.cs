@@ -42,9 +42,7 @@ class SortedIndexedDictionary<T>(int count) : IEnumerable<KeyValuePair<T, string
         count++;
     }
 
-    public KeyValuePair<T, string> GetOfIndex(int index) {
-        return _array[index];
-    }
+    public KeyValuePair<T, string> GetOfIndex(int index) => _array[index];
 
     private struct Enumerator(SortedIndexedDictionary<T> dictionary) : IEnumerator<KeyValuePair<T, string>> {
         private readonly SortedIndexedDictionary<T> dictionary = dictionary;

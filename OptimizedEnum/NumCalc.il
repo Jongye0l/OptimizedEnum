@@ -117,6 +117,23 @@ EndRepeat:
         ret
     }
 
+    .method public hidebysig virtual instance !!T2[] GetValue<T2>(!!T2 'array', !T eEnum) cil managed {
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        ldelem !!T2
+        ret
+    }
+
+    .method public hidebysig virtual instance !!T2[] SetValue<T2>(!!T2 'array', !T eEnum, !!T2 'value') cil managed {
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        ldarg.2
+        stelem !!T2
+        ret
+    }
+
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 1
         ldarg.0
@@ -241,6 +258,23 @@ SkipSetValue:
         br StartRepeat
 EndRepeat:
         ldloc.0
+        ret
+    }
+
+    .method public hidebysig virtual instance !!T2[] GetValue<T2>(!!T2 'array', !T eEnum) cil managed {
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        ldelem !!T2
+        ret
+    }
+
+    .method public hidebysig virtual instance !!T2[] SetValue<T2>(!!T2 'array', !T eEnum, !!T2 'value') cil managed {
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        ldarg.2
+        stelem !!T2
         ret
     }
 
@@ -378,6 +412,25 @@ EndRepeat:
         ret
     }
 
+    .method public hidebysig virtual instance !!T2[] GetValue<T2>(!!T2 'array', !T eEnum) cil managed {
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        conv.i4
+        ldelem !!T2
+        ret
+    }
+
+    .method public hidebysig virtual instance !!T2[] SetValue<T2>(!!T2 'array', !T eEnum, !!T2 'value') cil managed {
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        conv.i4
+        ldarg.2
+        stelem !!T2
+        ret
+    }
+
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 1
         ldarg.0
@@ -511,6 +564,25 @@ EndRepeat:
         ret
     }
 
+    .method public hidebysig virtual instance !!T2[] GetValue<T2>(!!T2 'array', !T eEnum) cil managed {
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        conv.i4
+        ldelem !!T2
+        ret
+    }
+
+    .method public hidebysig virtual instance !!T2[] SetValue<T2>(!!T2 'array', !T eEnum, !!T2 'value') cil managed {
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        conv.i4
+        ldarg.2
+        stelem !!T2
+        ret
+    }
+
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 1
         ldarg.0
@@ -636,6 +708,23 @@ SkipSetValue:
         br StartRepeat
 EndRepeat:
         ldloc.0
+        ret
+    }
+
+    .method public hidebysig virtual instance !!T2[] GetValue<T2>(!!T2 'array', !T eEnum) cil managed {
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        ldelem !!T2
+        ret
+    }
+
+    .method public hidebysig virtual instance !!T2[] SetValue<T2>(!!T2 'array', !T eEnum, !!T2 'value') cil managed {
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        ldarg.2
+        stelem !!T2
         ret
     }
 

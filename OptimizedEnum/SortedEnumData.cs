@@ -11,18 +11,20 @@ class SortedEnumData<T> : EnumData<T> where T : struct, Enum {
         if(isSorted) {
             int length = fields.Length;
             for(int i = 0; i < length; i++) Names[i] = fields[i].Name;
-        } else
+        } else {
+            NumCalc<T> numCalc = NumCalc<T>.Instance;
             foreach(FieldInfo field in fields)
-                Names[((T) field.GetValue(null)).AsUnsignedInteger()] = field.Name;
+                numCalc.SetValue(Names, (T) field.GetValue(null), field.Name);
+        }
     }
 
     public override string GetString(T eEnum) {
         NumCalc<T> numCalc = NumCalc<T>.Instance;
-        return numCalc.LessThan(eEnum, Names.Length) ? Names[eEnum.AsInteger()] : numCalc.GetString(eEnum);
+        return numCalc.LessThan(eEnum, Names.Length) ? numCalc.GetValue(Names, eEnum) : numCalc.GetString(eEnum);
     }
 
     public override string GetName(T eEnum) {
         NumCalc<T> numCalc = NumCalc<T>.Instance;
-        return numCalc.LessThan(eEnum, Names.Length) ? Names[eEnum.AsInteger()] : null;
+        return numCalc.LessThan(eEnum, Names.Length) ? numCalc.GetValue(Names, eEnum) : null;
     }
 }
