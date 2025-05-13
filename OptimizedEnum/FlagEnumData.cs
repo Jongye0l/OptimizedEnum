@@ -12,18 +12,20 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 
     public FlagEnumData(FieldInfo[] fields) : base(fields) {
         NumCalc<T> numCalc = NumCalc;
-        if(!numCalc.GetBool(AllFlags)) FlagEnums = [];
-        else if(numCalc.Equal(AllFlags, 1)) FlagEnums = new string[1];
-        else FlagEnums = new string[numCalc.BitCount(AllFlags)];
-        SetupDict(fields.Length - FlagEnums.Length - (HasZero ? 1 : 0));
+        string[] flagEnums;
+        if(!numCalc.GetBool(AllFlags)) flagEnums = [];
+        else if(numCalc.Equal(AllFlags, 1)) flagEnums = new string[1];
+        else flagEnums = new string[numCalc.BitCount(AllFlags)];
+        FlagEnums = flagEnums;
+        SetupDict(fields.Length - flagEnums.Length - (HasZero ? 1 : 0));
         foreach(FieldInfo field in fields) {
             T value = (T) field.GetValue(null);
             string name = field.Name;
             if(!numCalc.GetBool(value)) zeroString = name;
-            else if(numCalc.Equal(value, 1)) FlagEnums[0] = name;
+            else if(numCalc.Equal(value, 1)) flagEnums[0] = name;
             else {
                 double logValue = Utils.Log2(value.AsDouble());
-                if(logValue % 1 == 0) FlagEnums[(int) logValue] = name;
+                if(logValue % 1 == 0) flagEnums[(int) logValue] = name;
                 else dictionary.Add(value, name);
             }
         }
@@ -50,9 +52,11 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
             eEnum = eEnum.RemoveFlags(valuePair.Key);
         }
         if(!AllFlags.HasAllFlags(eEnum)) return numCalc.GetString(eEnum);
-        if(numCalc.GetBool(eEnum))
+        if(numCalc.GetBool(eEnum)) {
+            Console.WriteLine(eEnum + "Is not Zero");
             foreach(int i in numCalc.GetBitLocations(eEnum))
                 sb.Append(FlagEnums[i]).Append(", ");
+        } else Console.WriteLine(eEnum + "Is Zero");
         sb.Length -= 2;
         return sb.ToString();
     }
