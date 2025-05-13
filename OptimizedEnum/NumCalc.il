@@ -19,32 +19,6 @@
         ceq
         ret
     }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, unsigned int32 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        ceq
-        ret
-    }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, int64 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        conv.i8
-        ldarg.2
-        ceq
-        ret
-    }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, unsigned int64 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        conv.u8
-        ldarg.2
-        ceq
-        ret
-    }
     
     .method public hidebysig virtual instance bool LessThan(!T eEnum, !T 'value') cil managed {
         .maxstack 2
@@ -59,14 +33,6 @@
         ldarg.1
         ldarg.2
         clt.un
-        ret
-    }
-    
-    .method public hidebysig virtual instance bool GreaterThan(!T eEnum, !T 'value') cil managed {
-        .maxstack 2
-        ldarg.2
-        ldarg.1
-        clt
         ret
     }
 
@@ -148,16 +114,6 @@ SkipSetValue:
         br StartRepeat
 EndRepeat:
         ldloc.0
-        ret
-    }
-
-    .method public hidebysig virtual instance bool IsPositive(!T eEnum) cil managed {
-        .maxstack 2
-        ldarg.1
-        ldc.i4.0
-        clt
-        ldc.i4.0
-        ceq
         ret
     }
 
@@ -190,32 +146,6 @@ EndRepeat:
         ceq
         ret
     }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, unsigned int32 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        ceq
-        ret
-    }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, int64 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        conv.i8
-        ldarg.2
-        ceq
-        ret
-    }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, unsigned int64 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        conv.u8
-        ldarg.2
-        ceq
-        ret
-    }
     
     .method public hidebysig virtual instance bool LessThan(!T eEnum, !T 'value') cil managed {
         .maxstack 2
@@ -229,14 +159,6 @@ EndRepeat:
         .maxstack 2
         ldarg.1
         ldarg.2
-        clt.un
-        ret
-    }
-    
-    .method public hidebysig virtual instance bool GreaterThan(!T eEnum, !T 'value') cil managed {
-        .maxstack 2
-        ldarg.2
-        ldarg.1
         clt.un
         ret
     }
@@ -319,12 +241,6 @@ SkipSetValue:
         br StartRepeat
 EndRepeat:
         ldloc.0
-        ret
-    }
-
-    .method public hidebysig virtual instance bool IsPositive(!T eEnum) cil managed {
-        .maxstack 1
-        ldc.i4.1
         ret
     }
 
@@ -362,31 +278,6 @@ EndRepeat:
         ceq
         ret
     }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, unsigned int32 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        conv.i8
-        ceq
-        ret
-    }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, int64 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        ceq
-        ret
-    }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, unsigned int64 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        ceq
-        ret
-    }
     
     .method public hidebysig virtual instance bool LessThan(!T eEnum, !T 'value') cil managed {
         .maxstack 2
@@ -402,14 +293,6 @@ EndRepeat:
         ldarg.2
         conv.i8
         clt.un
-        ret
-    }
-    
-    .method public hidebysig virtual instance bool GreaterThan(!T eEnum, !T 'value') cil managed {
-        .maxstack 2
-        ldarg.2
-        ldarg.1
-        clt
         ret
     }
 
@@ -492,17 +375,6 @@ SkipSetValue:
         br StartRepeat
 EndRepeat:
         ldloc.0
-        ret
-    }
-
-    .method public hidebysig virtual instance bool IsPositive(!T eEnum) cil managed {
-        .maxstack 2
-        ldarg.1
-        ldc.i4.0
-        conv.i8
-        clt
-        ldc.i4.0
-        ceq
         ret
     }
 
@@ -539,31 +411,6 @@ EndRepeat:
         ceq
         ret
     }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, unsigned int32 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        conv.i8
-        ceq
-        ret
-    }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, int64 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        ceq
-        ret
-    }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, unsigned int64 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        ceq
-        ret
-    }
     
     .method public hidebysig virtual instance bool LessThan(!T eEnum, !T 'value') cil managed {
         .maxstack 2
@@ -578,14 +425,6 @@ EndRepeat:
         ldarg.1
         ldarg.2
         conv.u8
-        clt.un
-        ret
-    }
-    
-    .method public hidebysig virtual instance bool GreaterThan(!T eEnum, !T 'value') cil managed {
-        .maxstack 2
-        ldarg.2
-        ldarg.1
         clt.un
         ret
     }
@@ -672,12 +511,6 @@ EndRepeat:
         ret
     }
 
-    .method public hidebysig virtual instance bool IsPositive(!T eEnum) cil managed {
-        .maxstack 1
-        ldc.i4.1
-        ret
-    }
-
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 1
         ldarg.0
@@ -708,32 +541,6 @@ EndRepeat:
         ceq
         ret
     }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, unsigned int32 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        ceq
-        ret
-    }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, int64 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        conv.i8
-        ldarg.2
-        ceq
-        ret
-    }
-
-    .method public hidebysig virtual instance bool Equal(!T eEnum, unsigned int64 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        conv.u8
-        ldarg.2
-        ceq
-        ret
-    }
     
     .method public hidebysig virtual instance bool LessThan(!T eEnum, !T 'value') cil managed {
         .maxstack 2
@@ -748,14 +555,6 @@ EndRepeat:
         ldarg.1
         ldarg.2
         clt.un
-        ret
-    }
-    
-    .method public hidebysig virtual instance bool GreaterThan(!T eEnum, !T 'value') cil managed {
-        .maxstack 2
-        ldarg.2
-        ldarg.1
-        clt
         ret
     }
 
@@ -837,16 +636,6 @@ SkipSetValue:
         br StartRepeat
 EndRepeat:
         ldloc.0
-        ret
-    }
-
-    .method public hidebysig virtual instance bool IsPositive(!T eEnum) cil managed {
-        .maxstack 2
-        ldarg.1
-        ldc.i4.0
-        clt
-        ldc.i4.0
-        ceq
         ret
     }
 
