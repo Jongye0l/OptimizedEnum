@@ -1,7 +1,7 @@
 ﻿.class private auto ansi beforefieldinit OptimizedEnum.NumCalcI4`1<valuetype .ctor (class [mscorlib]System.Enum) T> extends class [OptimizedEnum]OptimizedEnum.NumCalc`1<!T> {
     .method public hidebysig virtual instance string GetString(!T eEnum) cil managed {
-        .maxstack 3
-        ldarg.1
+        .maxstack 1
+        ldarga.s eEnum
         call instance string [mscorlib]System.Int32::ToString()
         ret
     }
@@ -171,8 +171,8 @@ EndRepeat:
 
 .class private auto ansi beforefieldinit OptimizedEnum.NumCalcU4`1<valuetype .ctor (class [mscorlib]System.Enum) T> extends class [OptimizedEnum]OptimizedEnum.NumCalc`1<!T> {
     .method public hidebysig virtual instance string GetString(!T eEnum) cil managed {
-        .maxstack 3
-        ldarg.1
+        .maxstack 1
+        ldarga.s eEnum
         call instance string [mscorlib]System.UInt32::ToString()
         ret
     }
@@ -338,8 +338,8 @@ EndRepeat:
 
 .class private auto ansi beforefieldinit OptimizedEnum.NumCalcI8`1<valuetype .ctor (class [mscorlib]System.Enum) T> extends class [OptimizedEnum]OptimizedEnum.NumCalc`1<!T> {
     .method public hidebysig virtual instance string GetString(!T eEnum) cil managed {
-        .maxstack 3
-        ldarg.1
+        .maxstack 1
+        ldarga.s eEnum
         call instance string [mscorlib]System.Int64::ToString()
         ret
     }
@@ -516,8 +516,8 @@ EndRepeat:
 
 .class private auto ansi beforefieldinit OptimizedEnum.NumCalcU8`1<valuetype .ctor (class [mscorlib]System.Enum) T> extends class [OptimizedEnum]OptimizedEnum.NumCalc`1<!T> {
     .method public hidebysig virtual instance string GetString(!T eEnum) cil managed {
-        .maxstack 3
-        ldarg.1
+        .maxstack 1
+        ldarga.s eEnum
         call instance string [mscorlib]System.UInt64::ToString()
         ret
     }
