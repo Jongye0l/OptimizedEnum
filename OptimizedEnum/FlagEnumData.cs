@@ -52,11 +52,9 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
             eEnum = eEnum.RemoveFlags(valuePair.Key);
         }
         if(!AllFlags.HasAllFlags(eEnum)) return numCalc.GetString(eEnum);
-        if(numCalc.GetBool(eEnum)) {
-            Console.WriteLine(eEnum + "Is not Zero");
+        if(numCalc.GetBool(eEnum)) 
             foreach(int i in numCalc.GetBitLocations(eEnum))
                 sb.Append(FlagEnums[i]).Append(", ");
-        } else Console.WriteLine(eEnum + "Is Zero");
         sb.Length -= 2;
         return sb.ToString();
     }
