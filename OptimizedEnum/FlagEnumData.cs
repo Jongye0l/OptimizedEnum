@@ -42,19 +42,26 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 
     public string GetStringDict(T eEnum) {
         NumCalc<T> numCalc = NumCalc;
-        if(numCalc.BitCount(eEnum) <= 1) return GetStringNormal(eEnum);
+        int bitCount = numCalc.BitCount(eEnum);
+        if(bitCount <= 1) return GetStringNormal(eEnum);
         string str = dictionary[eEnum];
         if(str != null) return str;
         StringBuilder sb = new();
-        foreach(KeyValuePair<T, string> valuePair in dictionary) {
+        SortedDoubleDictionary sortedList = new(bitCount);
+        foreach(KeyValuePair<T, string> valuePair in dictionary.array) {
             if(!eEnum.HasAllFlags(valuePair.Key)) continue;
-            sb.Append(valuePair.Value).Append(", ");
+            sortedList.Add(Utils.Log2(valuePair.Key.AsDouble()), valuePair.Value);
             eEnum = eEnum.RemoveFlags(valuePair.Key);
         }
         if(!AllFlags.HasAllFlags(eEnum)) return numCalc.GetString(eEnum);
-        if(numCalc.GetBool(eEnum)) 
-            foreach(int i in numCalc.GetBitLocations(eEnum))
+        int index = 0;
+        if(numCalc.GetBool(eEnum)) {
+            foreach(int i in numCalc.GetBitLocations(eEnum)) {
+                while(sortedList.count > index && sortedList.array[index].Key < i) sb.Append(sortedList.array[index++].Value).Append(", ");
                 sb.Append(FlagEnums[i]).Append(", ");
+            }
+        }
+        while(sortedList.count > index) sb.Append(sortedList.array[index++].Value).Append(", ");
         sb.Length -= 2;
         return sb.ToString();
     }
