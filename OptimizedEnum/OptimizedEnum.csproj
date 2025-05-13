@@ -71,7 +71,7 @@
 
     <Target Name="CompileIL" BeforeTargets="CoreCompile">
         <MakeDir Directories="lib" />
-        <Exec Command="C:\Windows\Microsoft.NET\Framework\v4.0.30319\ilasm Properties\AssemblyInfo.il ILUtils.il NumCalc.il /dll /optimize /output:lib\OptimizedEnum-IL.dll" />
+        <Exec Command="C:\Windows\Microsoft.NET\Framework\v4.0.30319\ilasm Properties\AssemblyInfo.il ILUtils.il NumCalc.il /dll /pdb /optimize /output:lib\OptimizedEnum-IL.dll" />
     </Target>
 
     <Target Name="ILMerge" BeforeTargets="AfterBuild">

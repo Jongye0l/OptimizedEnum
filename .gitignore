@@ -4,6 +4,7 @@
 
 # Compile File
 *.dll
+*.pdb
 bin/
 obj/
 
