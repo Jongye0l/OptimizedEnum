@@ -9,11 +9,13 @@ abstract class EnumData<T> where T : struct, Enum {
     public readonly T AllFlags;
     public readonly T NotExistFlags;
     public readonly T[] Values;
+    public NumCalc<T> NumCalc;
 
     public EnumData(FieldInfo[] fields) {
         Values = ILUtils.GetSystemEnumValues<T>();
         AllFlags = ILUtils.GetSystemMinValue<T>();
         NotExistFlags = ILUtils.GetSystemMaxValue<T>();
+        NumCalc = NumCalc<T>.Instance;
         foreach(T value in Values) {
             AllFlags.CombineFlags(value);
             NotExistFlags.RemoveFlags(value);

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace OptimizedEnum;
 
 class SortedIndexedDictionary<T>(int count) : IEnumerable<KeyValuePair<T, string>> where T : struct, Enum {
+    private static NumCalc<T> numCalc = NumCalc<T>.Instance;
     private readonly KeyValuePair<T, string>[] _array = new KeyValuePair<T, string>[count];
     private int count;
 
@@ -14,7 +15,7 @@ class SortedIndexedDictionary<T>(int count) : IEnumerable<KeyValuePair<T, string
             int right = count - 1;
             while(left < right) {
                 int mid = (left + right) / 2;
-                if(NumCalc<T>.Instance.LessThan(key, _array[mid].Key)) left = mid + 1;
+                if(numCalc.LessThan(key, _array[mid].Key)) left = mid + 1;
                 else right = mid - 1;
             }
             return left == right ? _array[(left + right) / 2].Value : null;
@@ -34,7 +35,7 @@ class SortedIndexedDictionary<T>(int count) : IEnumerable<KeyValuePair<T, string
         int right = count - 1;
         while(left <= right) {
             int mid = (left + right) / 2;
-            if(NumCalc<T>.Instance.LessThan(key, _array[mid].Key)) left = mid + 1;
+            if(numCalc.LessThan(key, _array[mid].Key)) left = mid + 1;
             else right = mid - 1;
         }
         for(int i = count; i > left; i--) _array[i] = _array[i - 1];
@@ -45,7 +46,6 @@ class SortedIndexedDictionary<T>(int count) : IEnumerable<KeyValuePair<T, string
     public KeyValuePair<T, string> GetOfIndex(int index) => _array[index];
 
     private struct Enumerator(SortedIndexedDictionary<T> dictionary) : IEnumerator<KeyValuePair<T, string>> {
-        private readonly SortedIndexedDictionary<T> dictionary = dictionary;
         private int current = dictionary.count - 1;
 
         public bool MoveNext() {

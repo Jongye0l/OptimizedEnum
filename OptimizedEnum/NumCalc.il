@@ -27,14 +27,6 @@
         clt
         ret
     }
-    
-    .method public hidebysig virtual instance bool LessThan(!T eEnum, int32 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        clt.un
-        ret
-    }
 
     .method public hidebysig virtual instance int32 BitCount(!T eEnum) cil managed {
         .maxstack 3
@@ -117,11 +109,34 @@ EndRepeat:
         ret
     }
 
-    .method public hidebysig virtual instance !!T2 GetValue<T2>(!!T2[] 'array', !T eEnum) cil managed {
+    .method public hidebysig virtual instance string GetOrDefault(string[] 'array', !T eEnum, int32 length) cil managed {
         .maxstack 2
+        ldarg.2
+        ldarg.3
+        clt.un
+        brfalse SkipGetValue
         ldarg.1
         ldarg.2
-        ldelem !!T2
+        ldelem string
+        ret
+SkipGetValue:
+        ldarga.s eEnum
+        call instance string [mscorlib]System.Int32::ToString()
+        ret
+    }
+
+    .method public hidebysig virtual instance string GetOrNull(string[] 'array', !T eEnum, int32 length) cil managed {
+        .maxstack 2
+        ldarg.2
+        ldarg.3
+        clt.un
+        brfalse SkipGetValue
+        ldarg.1
+        ldarg.2
+        ldelem string
+        ret
+SkipGetValue:
+        ldnull
         ret
     }
 
@@ -169,14 +184,6 @@ EndRepeat:
         clt.un
         ret
     }
-    
-    .method public hidebysig virtual instance bool LessThan(!T eEnum, int32 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        clt.un
-        ret
-    }
 
     .method public hidebysig virtual instance int32 BitCount(!T eEnum) cil managed {
         .maxstack 3
@@ -259,11 +266,34 @@ EndRepeat:
         ret
     }
 
-    .method public hidebysig virtual instance !!T2 GetValue<T2>(!!T2[] 'array', !T eEnum) cil managed {
+    .method public hidebysig virtual instance string GetOrDefault(string[] 'array', !T eEnum, int32 length) cil managed {
         .maxstack 2
+        ldarg.2
+        ldarg.3
+        clt.un
+        brfalse SkipGetValue
         ldarg.1
         ldarg.2
-        ldelem !!T2
+        ldelem string
+        ret
+SkipGetValue:
+        ldarga.s eEnum
+        call instance string [mscorlib]System.Int32::ToString()
+        ret
+    }
+
+    .method public hidebysig virtual instance string GetOrNull(string[] 'array', !T eEnum, int32 length) cil managed {
+        .maxstack 2
+        ldarg.2
+        ldarg.3
+        clt.un
+        brfalse SkipGetValue
+        ldarg.1
+        ldarg.2
+        ldelem string
+        ret
+SkipGetValue:
+        ldnull
         ret
     }
 
@@ -316,15 +346,6 @@ EndRepeat:
         clt
         ret
     }
-    
-    .method public hidebysig virtual instance bool LessThan(!T eEnum, int32 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        conv.i8
-        clt.un
-        ret
-    }
 
     .method public hidebysig virtual instance int32 BitCount(!T eEnum) cil managed {
         .maxstack 3
@@ -408,12 +429,38 @@ EndRepeat:
         ret
     }
 
-    .method public hidebysig virtual instance !!T2 GetValue<T2>(!!T2[] 'array', !T eEnum) cil managed {
+    .method public hidebysig virtual instance string GetOrDefault(string[] 'array', !T eEnum, int32 length) cil managed {
         .maxstack 2
+        ldarg.2
+        ldarg.3
+        conv.i8
+        clt.un
+        brfalse SkipGetValue
         ldarg.1
         ldarg.2
         conv.i4
-        ldelem !!T2
+        ldelem string
+        ret
+SkipGetValue:
+        ldarga.s eEnum
+        call instance string [mscorlib]System.Int32::ToString()
+        ret
+    }
+
+    .method public hidebysig virtual instance string GetOrNull(string[] 'array', !T eEnum, int32 length) cil managed {
+        .maxstack 2
+        ldarg.2
+        ldarg.3
+        conv.i8
+        clt.un
+        brfalse SkipGetValue
+        ldarg.1
+        ldarg.2
+        conv.i4
+        ldelem string
+        ret
+SkipGetValue:
+        ldnull
         ret
     }
 
@@ -466,15 +513,6 @@ EndRepeat:
         clt.un
         ret
     }
-    
-    .method public hidebysig virtual instance bool LessThan(!T eEnum, int32 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        conv.u8
-        clt.un
-        ret
-    }
 
     .method public hidebysig virtual instance int32 BitCount(!T eEnum) cil managed {
         .maxstack 3
@@ -558,12 +596,38 @@ EndRepeat:
         ret
     }
 
-    .method public hidebysig virtual instance !!T2 GetValue<T2>(!!T2[] 'array', !T eEnum) cil managed {
+    .method public hidebysig virtual instance string GetOrDefault(string[] 'array', !T eEnum, int32 length) cil managed {
         .maxstack 2
+        ldarg.2
+        ldarg.3
+        conv.u8
+        clt.un
+        brfalse SkipGetValue
         ldarg.1
         ldarg.2
         conv.i4
-        ldelem !!T2
+        ldelem string
+        ret
+SkipGetValue:
+        ldarga.s eEnum
+        call instance string [mscorlib]System.Int32::ToString()
+        ret
+    }
+
+    .method public hidebysig virtual instance string GetOrNull(string[] 'array', !T eEnum, int32 length) cil managed {
+        .maxstack 2
+        ldarg.2
+        ldarg.3
+        conv.u8
+        clt.un
+        brfalse SkipGetValue
+        ldarg.1
+        ldarg.2
+        conv.i4
+        ldelem string
+        ret
+SkipGetValue:
+        ldnull
         ret
     }
 
@@ -611,14 +675,6 @@ EndRepeat:
         ldarg.1
         ldarg.2
         clt
-        ret
-    }
-    
-    .method public hidebysig virtual instance bool LessThan(!T eEnum, int32 'value') cil managed {
-        .maxstack 2
-        ldarg.1
-        ldarg.2
-        clt.un
         ret
     }
 
@@ -703,11 +759,34 @@ EndRepeat:
         ret
     }
 
-    .method public hidebysig virtual instance !!T2 GetValue<T2>(!!T2[] 'array', !T eEnum) cil managed {
+    .method public hidebysig virtual instance string GetOrDefault(string[] 'array', !T eEnum, int32 length) cil managed {
         .maxstack 2
+        ldarg.2
+        ldarg.3
+        clt.un
+        brfalse SkipGetValue
         ldarg.1
         ldarg.2
-        ldelem !!T2
+        ldelem string
+        ret
+SkipGetValue:
+        ldarga.s eEnum
+        call instance string [mscorlib]System.Int32::ToString()
+        ret
+    }
+
+    .method public hidebysig virtual instance string GetOrNull(string[] 'array', !T eEnum, int32 length) cil managed {
+        .maxstack 2
+        ldarg.2
+        ldarg.3
+        clt.un
+        brfalse SkipGetValue
+        ldarg.1
+        ldarg.2
+        ldelem string
+        ret
+SkipGetValue:
+        ldnull
         ret
     }
 

@@ -11,7 +11,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
     public string zeroString;
 
     public FlagEnumData(FieldInfo[] fields) : base(fields) {
-        NumCalc<T> numCalc = NumCalc<T>.Instance;
+        NumCalc<T> numCalc = NumCalc;
         if(!numCalc.GetBool(AllFlags)) FlagEnums = [];
         else if(numCalc.Equal(AllFlags, 1)) FlagEnums = new string[1];
         else FlagEnums = new string[numCalc.BitCount(AllFlags)];
@@ -39,7 +39,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
     }
 
     public string GetStringDict(T eEnum) {
-        NumCalc<T> numCalc = NumCalc<T>.Instance;
+        NumCalc<T> numCalc = NumCalc;
         if(numCalc.BitCount(eEnum) <= 1) return GetStringNormal(eEnum);
         string str = dictionary[eEnum];
         if(str != null) return str;
@@ -58,7 +58,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
     }
 
     public string GetStringNormal(T eEnum) {
-        NumCalc<T> numCalc = NumCalc<T>.Instance;
+        NumCalc<T> numCalc = NumCalc;
         if(!numCalc.GetBool(eEnum)) return zeroString;
         if(!AllFlags.HasAllFlags(eEnum)) return numCalc.GetString(eEnum);
         if(numCalc.Equal(eEnum, 1)) return FlagEnums[0];
@@ -75,11 +75,11 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
     }
 
     public string GetNameDict(T eEnum) {
-        return NumCalc<T>.Instance.BitCount(eEnum) > 1 ? dictionary[eEnum] ?? NumCalc<T>.Instance.GetString(eEnum) : GetNameNormal(eEnum);
+        return NumCalc.BitCount(eEnum) > 1 ? dictionary[eEnum] ?? NumCalc.GetString(eEnum) : GetNameNormal(eEnum);
     }
 
     public string GetNameNormal(T eEnum) {
-        NumCalc<T> numCalc = NumCalc<T>.Instance;
+        NumCalc<T> numCalc = NumCalc;
         return !numCalc.GetBool(eEnum)                                      ? zeroString :
                !AllFlags.HasAllFlags(eEnum) || numCalc.BitCount(eEnum) != 1 ? numCalc.GetString(eEnum) :
                numCalc.Equal(eEnum, 1)                                      ? FlagEnums[0] : FlagEnums[(int) Utils.Log2(eEnum.AsDouble())];
