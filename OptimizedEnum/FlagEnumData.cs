@@ -48,7 +48,8 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         if(str != null) return str;
         StringBuilder sb = new();
         SortedDoubleDictionary sortedList = new(bitCount);
-        foreach(KeyValuePair<T, string> valuePair in dictionary.array) {
+        for(int i = dictionary.array.Length - 1; i >= 0; i--) {
+            KeyValuePair<T, string> valuePair = dictionary.array[i];
             if(!eEnum.HasAllFlags(valuePair.Key)) continue;
             sortedList.Add(Utils.Log2(valuePair.Key.AsDouble()), valuePair.Value);
             eEnum = eEnum.RemoveFlags(valuePair.Key);
