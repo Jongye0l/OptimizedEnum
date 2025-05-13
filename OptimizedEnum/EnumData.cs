@@ -9,17 +9,19 @@ abstract class EnumData<T> where T : struct, Enum {
     public readonly T AllFlags;
     public readonly T NotExistFlags;
     public readonly T[] Values;
-    public NumCalc<T> NumCalc;
+    public readonly NumCalc<T> NumCalc;
 
     public EnumData(FieldInfo[] fields) {
         Values = ILUtils.GetSystemEnumValues<T>();
-        AllFlags = ILUtils.GetSystemMinValue<T>();
-        NotExistFlags = ILUtils.GetSystemMaxValue<T>();
         NumCalc = NumCalc<T>.Instance;
+        T allFlags = ILUtils.GetSystemMinValue<T>();
+        T notExistFlags = ILUtils.GetSystemMaxValue<T>();
         foreach(T value in Values) {
-            AllFlags.CombineFlags(value);
-            NotExistFlags.RemoveFlags(value);
+            allFlags = allFlags.CombineFlags(value);
+            notExistFlags = notExistFlags.RemoveFlags(value);
         }
+        AllFlags = allFlags;
+        NotExistFlags = notExistFlags;
     }
 
     private static EnumData<T> CreateInstance() {
