@@ -55,4 +55,64 @@ static class Utils {
         }
         return new string(buffer, i, 20 - i);
     }
+
+    public static int ParseInt32(this string value) {
+        int result = 0;
+        bool isNegative = false;
+        int i = 0;
+        if(value[i] == '-') {
+            isNegative = true;
+            i++;
+        } else if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') throw new FormatException($"Invalid character '{ch}' in string '{value}'");
+            result = result * 10 + (ch - '0');
+            i++;
+        }
+        return isNegative ? -result : result;
+    }
+
+    public static uint ParseUInt32(this string value) {
+        uint result = 0;
+        int i = 0;
+        if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') throw new FormatException($"Invalid character '{ch}' in string '{value}'");
+            result = result * 10 + (uint) (ch - '0');
+            i++;
+        }
+        return result;
+    }
+
+    public static long ParseInt64(this string value) {
+        long result = 0;
+        bool isNegative = false;
+        int i = 0;
+        if(value[i] == '-') {
+            isNegative = true;
+            i++;
+        } else if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') throw new FormatException($"Invalid character '{ch}' in string '{value}'");
+            result = result * 10 + (ch - '0');
+            i++;
+        }
+        return isNegative ? -result : result;
+    }
+
+    public static ulong ParseUInt64(this string value) {
+        ulong result = 0;
+        int i = 0;
+        if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') throw new FormatException($"Invalid character '{ch}' in string '{value}'");
+            result = result * 10 + (ulong) (ch - '0');
+            i++;
+        }
+        return result;
+    }
 }
