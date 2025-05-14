@@ -7,7 +7,6 @@ namespace OptimizedEnum;
 abstract class EnumData<T> where T : struct, Enum {
     public static readonly EnumData<T> Instance = CreateInstance();
     public readonly T AllFlags;
-    public readonly T NotExistFlags;
     public readonly T[] Values;
     public readonly NumCalc<T> NumCalc;
     public readonly bool HasZero;
@@ -16,15 +15,10 @@ abstract class EnumData<T> where T : struct, Enum {
         Values = ILUtils.GetSystemEnumValues<T>();
         NumCalc<T> numCalc = NumCalc = NumCalc<T>.Instance;
         T allFlags = ILUtils.GetSystemMinValue<T>();
-        T notExistFlags = ILUtils.GetSystemMaxValue<T>();
         foreach(T value in Values) 
             if(!numCalc.GetBool(value)) HasZero = true;
-            else {
-                allFlags = allFlags.CombineFlags(value);
-                notExistFlags = notExistFlags.RemoveFlags(value);
-            }
+            else allFlags = allFlags.CombineFlags(value);
         AllFlags = allFlags;
-        NotExistFlags = notExistFlags;
     }
 
     private static EnumData<T> CreateInstance() {
