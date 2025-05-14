@@ -22,7 +22,7 @@ abstract class EnumData<T> where T : struct, Enum {
             T value = Values[i] = (T) fields[i].GetValue(null);
             string name = fields[i].Name;
             NameDictionary.Add(name, value);
-            if(numCalc.GetBool(value)) HasZero = true;
+            if(numCalc.Equal(value, 0)) HasZero = true;
             else allFlags = allFlags.CombineFlags(value);
         }
         AllFlags = allFlags;

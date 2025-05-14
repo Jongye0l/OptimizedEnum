@@ -6,12 +6,6 @@
         ret
     }
 
-    .method public hidebysig virtual instance bool GetBool(!T eEnum) cil managed {
-        .maxstack 1
-        ldarg.1
-        ret
-    }
-
     .method public hidebysig virtual instance bool Equal(!T eEnum, !T 'value') cil managed {
         .maxstack 2
         ldarg.1
@@ -184,12 +178,6 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig virtual instance bool GetBool(!T eEnum) cil managed {
-        .maxstack 1
-        ldarg.1
-        ret
-    }
-
     .method public hidebysig virtual instance bool Equal(!T eEnum, !T 'value') cil managed {
         .maxstack 2
         ldarg.1
@@ -359,16 +347,6 @@ SkipGetValue:
         .maxstack 1
         ldarg.1
         call string [OptimizedEnum]OptimizedEnum.Utils::Int64ToString(int64)
-        ret
-    }
-
-    .method public hidebysig virtual instance bool GetBool(!T eEnum) cil managed {
-        .maxstack 1
-        ldarg.1
-        ldc.i4.0
-        conv.i8
-        ceq
-        not
         ret
     }
 
@@ -552,15 +530,6 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig virtual instance bool GetBool(!T eEnum) cil managed {
-        .maxstack 1
-        ldarg.1
-        ldc.i4.0
-        conv.u8
-        cgt
-        ret
-    }
-
     .method public hidebysig virtual instance bool Equal(!T eEnum, !T 'value') cil managed {
         .maxstack 2
         ldarg.1
@@ -739,12 +708,6 @@ SkipGetValue:
         ldarg.1
         ldc.i4.1
         newobj instance void System.String::.ctor(char, int32)
-        ret
-    }
-
-    .method public hidebysig virtual instance bool GetBool(!T eEnum) cil managed {
-        .maxstack 1
-        ldarg.1
         ret
     }
 

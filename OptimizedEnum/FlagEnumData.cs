@@ -13,7 +13,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
     public FlagEnumData(FieldInfo[] fields) : base(fields) {
         NumCalc<T> numCalc = NumCalc;
         string[] flagEnums;
-        if(!numCalc.GetBool(AllFlags)) flagEnums = [];
+        if(numCalc.Equal(AllFlags, 0)) flagEnums = [];
         else if(numCalc.Equal(AllFlags, 1)) flagEnums = new string[1];
         else flagEnums = new string[(int) Utils.Log2(AllFlags.AsDouble()) + 1];
         FlagEnums = flagEnums;
@@ -21,7 +21,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         foreach(FieldInfo field in fields) {
             T value = (T) field.GetValue(null);
             string name = field.Name;
-            if(!numCalc.GetBool(value)) zeroString = name;
+            if(numCalc.Equal(value, 0)) zeroString = name;
             else if(numCalc.Equal(value, 1)) flagEnums[0] = name;
             else {
                 double logValue = Utils.Log2(value.AsDouble());
@@ -56,7 +56,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         }
         if(!AllFlags.HasAllFlags(eEnum)) return numCalc.GetString(eEnum);
         int index = 0;
-        if(numCalc.GetBool(eEnum)) {
+        if(!numCalc.Equal(eEnum, 0)) {
             foreach(int i in numCalc.GetBitLocations(eEnum)) {
                 while(sortedList.count > index && sortedList.array[index].Key < i) sb.Append(sortedList.array[index++].Value).Append(", ");
                 sb.Append(FlagEnums[i]).Append(", ");
@@ -69,7 +69,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 
     public string GetStringNormal(T eEnum) {
         NumCalc<T> numCalc = NumCalc;
-        if(!numCalc.GetBool(eEnum)) return zeroString;
+        if(numCalc.Equal(eEnum, 0)) return zeroString;
         if(!AllFlags.HasAllFlags(eEnum)) return numCalc.GetString(eEnum);
         if(numCalc.Equal(eEnum, 1)) return FlagEnums[0];
         double logValue = Utils.Log2(eEnum.AsDouble());
@@ -95,7 +95,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 
     public string GetNameNormal(T eEnum) {
         NumCalc<T> numCalc = NumCalc;
-        return !numCalc.GetBool(eEnum)                                      ? zeroString :
+        return numCalc.Equal(eEnum, 0)                                      ? zeroString :
                !AllFlags.HasAllFlags(eEnum) || numCalc.BitCount(eEnum) != 1 ? numCalc.GetString(eEnum) :
                numCalc.Equal(eEnum, 1)                                      ? FlagEnums[0] : FlagEnums[(int) Utils.Log2(eEnum.AsDouble())];
     }
