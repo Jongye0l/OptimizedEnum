@@ -723,7 +723,7 @@ SkipGetValue:
     .method public hidebysig virtual instance !T ParseAsNum(string str) cil managed {
         .maxstack 1
         ldarg.1
-        call uint32 [OptimizedEnum]OptimizedEnum.Utils::ParseUInt64(string)
+        call uint64 [OptimizedEnum]OptimizedEnum.Utils::ParseUInt64(string)
         ret
     }
 
