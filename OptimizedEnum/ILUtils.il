@@ -71,20 +71,6 @@
         ret
     }
 
-    .method public hidebysig static !!T GetSystemMinValue<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>() cil managed {
-        .maxstack 1
-        ldc.i4.0
-        conv.i8
-        ret
-    }
-
-    .method public hidebysig static !!T GetSystemMaxValue<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>() cil managed {
-        .maxstack 1
-        ldc.i4.m1
-        conv.i8
-        ret
-    }
-
     .method public hidebysig static int32 AsInteger<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags') cil managed {
         .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 1
@@ -139,16 +125,6 @@
         .maxstack 1
         ldarg.0
         conv.r8
-        ret
-    }
-
-    .method public hidebysig static bool IsFlag<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>() cil managed {
-        .maxstack 2
-        ldtoken !!T
-        call class [mscorlib]System.Type [mscorlib]System.Type::GetTypeFromHandle(valuetype [mscorlib]System.RuntimeTypeHandle)
-        ldtoken class [mscorlib]System.FlagsAttribute
-        call class [mscorlib]System.Type [mscorlib]System.Type::GetTypeFromHandle(valuetype [mscorlib]System.RuntimeTypeHandle)
-        call class [mscorlib]System.Attribute [mscorlib]System.Attribute::GetCustomAttribute(class [mscorlib]System.Reflection.MemberInfo, class [mscorlib]System.Type)
         ret
     }
 

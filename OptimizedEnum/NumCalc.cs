@@ -15,4 +15,5 @@ abstract class NumCalc<T> where T : struct, Enum {
     public abstract void SetValue(string[] array, T eEnum, string value);
     public abstract int ToInt(T eEnum);
     public abstract T ParseAsNum(string str);
+    public abstract T GetSystemMinValue();
 }

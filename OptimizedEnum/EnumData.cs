@@ -14,7 +14,7 @@ abstract class EnumData<T> where T : struct, Enum {
 
     public EnumData(FieldInfo[] fields) {
         NumCalc<T> numCalc = NumCalc = NumCalc<T>.Instance;
-        T allFlags = ILUtils.GetSystemMinValue<T>();
+        T allFlags = numCalc.GetSystemMinValue();
         int count = fields.Length;
         Values = new T[count];
         NameDictionary = new SortedNameDictionary<T>(count);
@@ -30,7 +30,7 @@ abstract class EnumData<T> where T : struct, Enum {
 
     private static EnumData<T> CreateInstance() {
         FieldInfo[] fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
-        if(ILUtils.IsFlag<T>()) return new FlagEnumData<T>(fields);
+        if(typeof(T).GetCustomAttribute(typeof(FlagsAttribute)) != null) return new FlagEnumData<T>(fields);
         bool[] checkField = new bool[fields.Length];
         bool outOfRange = false;
         bool isSorted = true;
