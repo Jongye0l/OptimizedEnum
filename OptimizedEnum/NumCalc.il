@@ -2,7 +2,7 @@
     .method public hidebysig virtual instance string GetString(!T eEnum) cil managed {
         .maxstack 1
         ldarg.1
-        call instance string OptimizedEnum.Utils::Int32ToString()
+        call string [OptimizedEnum]OptimizedEnum.Utils::Int32ToString(int32)
         ret
     }
 
@@ -128,8 +128,8 @@ EndRepeat:
         ldelem string
         ret
 SkipGetValue:
-        ldarga.s eEnum
-        call instance string [mscorlib]System.Int32::ToString()
+        ldarg.2
+        call string [OptimizedEnum]OptimizedEnum.Utils::Int32ToString(int32)
         ret
     }
 
@@ -163,6 +163,13 @@ SkipGetValue:
         ret
     }
 
+    .method public hidebysig virtual instance !T ParseAsNum(string str) cil managed {
+        .maxstack 1
+        ldarg.1
+        call int32 [OptimizedEnum]OptimizedEnum.Utils::ParseInt32(string)
+        ret
+    }
+
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 0
         ret
@@ -173,7 +180,7 @@ SkipGetValue:
     .method public hidebysig virtual instance string GetString(!T eEnum) cil managed {
         .maxstack 1
         ldarg.1
-        call instance string OptimizedEnum.Utils::UInt32ToString()
+        call string [OptimizedEnum]OptimizedEnum.Utils::UInt32ToString(uint32)
         ret
     }
 
@@ -299,8 +306,8 @@ EndRepeat:
         ldelem string
         ret
 SkipGetValue:
-        ldarga.s eEnum
-        call instance string [mscorlib]System.Int32::ToString()
+        ldarg.2
+        call string [OptimizedEnum]OptimizedEnum.Utils::UInt32ToString(uint32)
         ret
     }
 
@@ -334,6 +341,13 @@ SkipGetValue:
         ret
     }
 
+    .method public hidebysig virtual instance !T ParseAsNum(string str) cil managed {
+        .maxstack 1
+        ldarg.1
+        call uint32 [OptimizedEnum]OptimizedEnum.Utils::ParseUInt32(string)
+        ret
+    }
+
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 0
         ret
@@ -344,7 +358,7 @@ SkipGetValue:
     .method public hidebysig virtual instance string GetString(!T eEnum) cil managed {
         .maxstack 1
         ldarg.1
-        call instance string OptimizedEnum.Utils::Int64ToString()
+        call string [OptimizedEnum]OptimizedEnum.Utils::Int64ToString(int64)
         ret
     }
 
@@ -478,8 +492,8 @@ EndRepeat:
         ldelem string
         ret
 SkipGetValue:
-        ldarga.s eEnum
-        call instance string [mscorlib]System.Int32::ToString()
+        ldarg.2
+        call string [OptimizedEnum]OptimizedEnum.Utils::Int64ToString(int64)
         ret
     }
 
@@ -517,6 +531,13 @@ SkipGetValue:
         ret
     }
 
+    .method public hidebysig virtual instance !T ParseAsNum(string str) cil managed {
+        .maxstack 1
+        ldarg.1
+        call uint32 [OptimizedEnum]OptimizedEnum.Utils::ParseInt64(string)
+        ret
+    }
+
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 0
         ret
@@ -527,7 +548,7 @@ SkipGetValue:
     .method public hidebysig virtual instance string GetString(!T eEnum) cil managed {
         .maxstack 1
         ldarg.1
-        call instance string OptimizedEnum.Utils::UInt64ToString()
+        call string [OptimizedEnum]OptimizedEnum.Utils::UInt64ToString(uint64)
         ret
     }
 
@@ -660,8 +681,8 @@ EndRepeat:
         ldelem string
         ret
 SkipGetValue:
-        ldarga.s eEnum
-        call instance string [mscorlib]System.Int32::ToString()
+        ldarg.2
+        call string [OptimizedEnum]OptimizedEnum.Utils::UInt64ToString(uint64)
         ret
     }
 
@@ -696,6 +717,13 @@ SkipGetValue:
         .maxstack 1
         ldarg.1
         conv.i4
+        ret
+    }
+
+    .method public hidebysig virtual instance !T ParseAsNum(string str) cil managed {
+        .maxstack 1
+        ldarg.1
+        call uint32 [OptimizedEnum]OptimizedEnum.Utils::ParseUInt64(string)
         ret
     }
 
@@ -836,8 +864,9 @@ EndRepeat:
         ldelem string
         ret
 SkipGetValue:
-        ldarga.s eEnum
-        call instance string [mscorlib]System.Int32::ToString()
+        ldarg.2
+        ldc.i4.1
+        newobj instance void System.String::.ctor(char, int32)
         ret
     }
 
@@ -869,6 +898,29 @@ SkipGetValue:
         .maxstack 1
         ldarg.1
         ret
+    }
+
+    .method public hidebysig virtual instance !T ParseAsNum(string str) cil managed {
+        .maxstack 3
+        ldarg.1
+        callvirt instance int32 [mscorlib]System.String::get_Length()
+        ldc.i4.1
+        bne.un Throw
+
+        ldarg.1
+        ldc.i4.0
+        callvirt instance char [mscorlib]System.String::get_Chars(int32)
+        ret
+Throw:
+        ldstr "Invalid character '{0}' in string '{1}'"
+        ldarg.1
+        ldc.i4.0
+        callvirt instance char [mscorlib]System.String::get_Chars(int32)
+        box [mscorlib]System.Char
+        ldarg.1
+        call string [mscorlib]System.String::Format(string, object, object)
+        newobj instance void [mscorlib]System.FormatException::.ctor(string)
+        throw
     }
 
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
