@@ -6,18 +6,25 @@ namespace OptimizedEnum;
 
 abstract class EnumData<T> where T : struct, Enum {
     public static readonly EnumData<T> Instance = CreateInstance();
+    public SortedNameDictionary<T> NameDictionary;
     public readonly T AllFlags;
     public readonly T[] Values;
     public readonly NumCalc<T> NumCalc;
     public readonly bool HasZero;
 
     public EnumData(FieldInfo[] fields) {
-        Values = ILUtils.GetSystemEnumValues<T>();
         NumCalc<T> numCalc = NumCalc = NumCalc<T>.Instance;
         T allFlags = ILUtils.GetSystemMinValue<T>();
-        foreach(T value in Values) 
-            if(!numCalc.GetBool(value)) HasZero = true;
+        int count = fields.Length;
+        Values = new T[count];
+        NameDictionary = new SortedNameDictionary<T>(count);
+        for(int i = 0; i < count; i++) {
+            T value = Values[i] = (T) fields[i].GetValue(null);
+            string name = fields[i].Name;
+            NameDictionary.Add(name, value);
+            if(numCalc.GetBool(value)) HasZero = true;
             else allFlags = allFlags.CombineFlags(value);
+        }
         AllFlags = allFlags;
     }
 
@@ -57,4 +64,12 @@ abstract class EnumData<T> where T : struct, Enum {
     public abstract string GetString(T eEnum);
 
     public abstract string GetName(T eEnum);
+
+    public T Parse(string str) => NameDictionary.GetValue(str);
+
+    public T Parse(string str, bool ignoreCase) => NameDictionary.GetValue(str, ignoreCase);
+
+    public bool TryParse(string str, out T eEnum) => NameDictionary.TryGetValue(str, out eEnum);
+    
+    public bool TryParse(string str, bool ignoreCase, out T eEnum) => NameDictionary.TryGetValue(str, out eEnum, ignoreCase);
 }

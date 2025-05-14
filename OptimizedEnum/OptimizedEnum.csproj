@@ -13,6 +13,7 @@
         <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
         <LangVersion>latest</LangVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -50,6 +51,7 @@
         <Compile Include="SortedDoubleDictionary.cs" />
         <Compile Include="SortedEnumData.cs" />
         <Compile Include="SortedIndexedDictionary.cs" />
+        <Compile Include="SortedNameDictionary.cs" />
         <Compile Include="UnsortedEnumData.cs" />
         <Compile Include="Utils.cs" />
     </ItemGroup>
