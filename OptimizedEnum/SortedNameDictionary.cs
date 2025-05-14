@@ -12,8 +12,17 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
         int right = count - 1;
         while(left < right) {
             int mid = (left + right) / 2;
-            if(LessThan(array[mid].Key, key)) left = mid + 1;
-            else right = mid - 1;
+            int result = Compare(array[mid].Key, key);
+            switch(result) {
+                case 0:
+                    return array[mid].Value;
+                case < 0:
+                    left = mid + 1;
+                    break;
+                default:
+                    right = mid - 1;
+                    break;
+            }
         }
         return array[left].Key == key ? array[left].Value : throw new ArgumentException($"Invalid enum value: {key}");
     }
@@ -23,8 +32,17 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
         int right = count - 1;
         while(left < right) {
             int mid = (left + right) / 2;
-            if(LessThan(array[mid].Key, key, ignoreCase)) left = mid + 1;
-            else right = mid - 1;
+            int result = Compare(array[mid].Key, key, ignoreCase);
+            switch(result) {
+                case 0:
+                    return array[mid].Value;
+                case < 0:
+                    left = mid + 1;
+                    break;
+                default:
+                    right = mid - 1;
+                    break;
+            }
         }
         return array[left].Key == key ? array[left].Value : throw new ArgumentException($"Invalid enum value: {key}");
     }
@@ -34,8 +52,18 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
         int right = count - 1;
         while(left < right) {
             int mid = (left + right) / 2;
-            if(LessThan(array[mid].Key, key, ignoreCase)) left = mid + 1;
-            else right = mid - 1;
+            int result = Compare(array[mid].Key, key, ignoreCase);
+            switch(result) {
+                case 0:
+                    value = array[mid].Value;
+                    return true;
+                case < 0:
+                    left = mid + 1;
+                    break;
+                default:
+                    right = mid - 1;
+                    break;
+            }
         }
         if(array[left].Key == key) {
             value = array[left].Value;
@@ -50,8 +78,18 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
         int right = count - 1;
         while(left < right) {
             int mid = (left + right) / 2;
-            if(LessThan(array[mid].Key, key)) left = mid + 1;
-            else right = mid - 1;
+            int result = Compare(array[mid].Key, key);
+            switch(result) {
+                case 0:
+                    value = array[mid].Value;
+                    return true;
+                case < 0:
+                    left = mid + 1;
+                    break;
+                default:
+                    right = mid - 1;
+                    break;
+            }
         }
         if(array[left].Key == key) {
             value = array[left].Value;
@@ -66,7 +104,7 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
         int right = count - 1;
         while(left <= right) {
             int mid = (left + right) / 2;
-            if(LessThan(array[mid].Key, key)) left = mid + 1;
+            if(Compare(array[mid].Key, key) < 0) left = mid + 1;
             else right = mid - 1;
         }
         for(int i = count; i > left; i--) array[i] = array[i - 1];
@@ -74,19 +112,21 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
         count++;
     }
     
-    private static bool LessThan(string a, string b) => a.Length == b.Length ? string.CompareOrdinal(a, b) < 0 : a.Length < b.Length;
+    private static int Compare(string a, string b) {
+        return a.Length == b.Length ? string.CompareOrdinal(a, b) : a.Length - b.Length;
+    }
     
-    private static unsafe bool LessThan(string a, string b, bool ignoreCase) {
-        if(a.Length != b.Length) return a.Length < b.Length;
-        if(!ignoreCase) return string.CompareOrdinal(a, b) < 0;
+    private static unsafe int Compare(string a, string b, bool ignoreCase) {
+        if(a.Length != b.Length) return a.Length - b.Length;
+        if(!ignoreCase) return string.CompareOrdinal(a, b);
         fixed(char* aPtr = a) fixed(char* bPtr = b) {
             for(int i = 0; i < a.Length; i++) {
                 char c1 = ToLower(aPtr[i]);
                 char c2 = ToLower(bPtr[i]);
-                if(c1 != c2) return c1 < c2;
+                if(c1 != c2) return c1 - c2;
             }
         }
-        return false;
+        return 0;
     }
     
     private static char ToLower(char c) {
