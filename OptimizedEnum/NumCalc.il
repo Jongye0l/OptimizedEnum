@@ -157,6 +157,12 @@ SkipGetValue:
         ret
     }
 
+    .method public hidebysig virtual instance int32 ToInt(!T eEnum) cil managed {
+        .maxstack 1
+        ldarg.1
+        ret
+    }
+
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 0
         ret
@@ -319,6 +325,12 @@ SkipGetValue:
         ldarg.2
         ldarg.3
         stelem string
+        ret
+    }
+
+    .method public hidebysig virtual instance int32 ToInt(!T eEnum) cil managed {
+        .maxstack 1
+        ldarg.1
         ret
     }
 
@@ -498,6 +510,13 @@ SkipGetValue:
         ret
     }
 
+    .method public hidebysig virtual instance int32 ToInt(!T eEnum) cil managed {
+        .maxstack 1
+        ldarg.1
+        conv.i4
+        ret
+    }
+
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 0
         ret
@@ -673,6 +692,13 @@ SkipGetValue:
         ret
     }
 
+    .method public hidebysig virtual instance int32 ToInt(!T eEnum) cil managed {
+        .maxstack 1
+        ldarg.1
+        conv.i4
+        ret
+    }
+
     .method public hidebysig specialname rtspecialname instance void .ctor() cil managed {
         .maxstack 0
         ret
@@ -836,6 +862,12 @@ SkipGetValue:
         ldarg.2
         ldarg.3
         stelem string
+        ret
+    }
+
+    .method public hidebysig virtual instance int32 ToInt(!T eEnum) cil managed {
+        .maxstack 1
+        ldarg.1
         ret
     }
 

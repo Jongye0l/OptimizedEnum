@@ -14,4 +14,5 @@ abstract class NumCalc<T> where T : struct, Enum {
     public abstract string GetOrDefault(string[] array, T eEnum, int length);
     public abstract string GetOrNull(string[] array, T eEnum, int length);
     public abstract void SetValue(string[] array, T eEnum, string value);
+    public abstract int ToInt(T eEnum);
 }

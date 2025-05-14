@@ -12,12 +12,13 @@ class SortedIndexedDictionary<T>(int count) where T : struct, Enum {
         get {
             int left = 0;
             int right = count - 1;
-            while(left < right) {
+            while(left <= right) {
                 int mid = (left + right) / 2;
+                if(numCalc.Equal(array[left].Key, key)) return array[mid].Value;
                 if(numCalc.LessThan(array[mid].Key, key)) left = mid + 1;
                 else right = mid - 1;
             }
-            return numCalc.Equal(array[left].Key, key) ? array[left].Value : null;
+            return null;
         }
     }
 

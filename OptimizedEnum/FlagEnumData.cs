@@ -15,7 +15,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         string[] flagEnums;
         if(!numCalc.GetBool(AllFlags)) flagEnums = [];
         else if(numCalc.Equal(AllFlags, 1)) flagEnums = new string[1];
-        else flagEnums = new string[numCalc.BitCount(AllFlags)];
+        else flagEnums = new string[(int) Utils.Log2(AllFlags.AsDouble()) + 1];
         FlagEnums = flagEnums;
         SetupDict(fields.Length - flagEnums.Length - (HasZero ? 1 : 0));
         foreach(FieldInfo field in fields) {
@@ -82,6 +82,11 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 
     public override string GetName(T eEnum) {
         return dictionary == null ? GetNameNormal(eEnum) : GetNameDict(eEnum);
+    }
+
+    public override bool IsDefined(T eEnum) {
+        double logValue = Utils.Log2(eEnum.AsDouble());
+        return logValue % 1 == 0 ? FlagEnums[(int) logValue] != null : dictionary?[eEnum] != null;
     }
 
     public string GetNameDict(T eEnum) {

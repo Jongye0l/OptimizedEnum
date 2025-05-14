@@ -64,6 +64,8 @@ abstract class EnumData<T> where T : struct, Enum {
     public abstract string GetString(T eEnum);
 
     public abstract string GetName(T eEnum);
+    
+    public abstract bool IsDefined(T eEnum);
 
     public T Parse(string str) => NameDictionary.GetValue(str);
 
