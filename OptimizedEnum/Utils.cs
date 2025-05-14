@@ -11,13 +11,13 @@ static class Utils {
         bool isNegative = value < 0;
         if(isNegative) value = -value;
         int i;
-        char[] buffer = new char[i = 11];
+        char[] buffer = new char[i = isNegative ? 11 : 10];
         while(value > 0) {
             buffer[--i] = (char)('0' + value % 10);
             value /= 10;
         }
         if(isNegative) buffer[--i] = '-';
-        return new string(buffer, i, 11 - i);
+        return new string(buffer, i, buffer.Length - i);
     }
     
     public static string UInt32ToString(this uint value) {
@@ -36,13 +36,13 @@ static class Utils {
         bool isNegative = value < 0;
         if(isNegative) value = -value;
         int i;
-        char[] buffer = new char[i = 21];
+        char[] buffer = new char[i = isNegative ? 21 : 20];
         while(value > 0) {
             buffer[--i] = (char)('0' + value % 10);
             value /= 10;
         }
         if(isNegative) buffer[--i] = '-';
-        return new string(buffer, i, 21 - i);
+        return new string(buffer, i, buffer.Length - i);
     }
     
     public static string UInt64ToString(this ulong value) {
