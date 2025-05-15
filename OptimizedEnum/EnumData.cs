@@ -4,20 +4,24 @@ using System.Reflection;
 
 namespace OptimizedEnum;
 
-abstract class EnumData<T> where T : struct, Enum {
-    public static readonly EnumData<T> Instance = CreateInstance();
-    public static readonly DataType dataType = GetDataType();
+static class EnumData<T> where T : struct, Enum {
+    public static readonly DataType dataType;
     public static readonly EnumType enumType;
     public static SortedNameDictionary<T> NameDictionary;
-    public readonly T AllFlags;
-    public readonly T[] Values;
-    public readonly bool HasZero;
+    public static readonly T AllFlags;
+    public static readonly T[] Values;
+    public static readonly bool HasZero;
 
     static EnumData() {
-        
-    }
-
-    public EnumData(FieldInfo[] fields) {
+        dataType = Type.GetTypeCode(typeof(T)) switch {
+            TypeCode.Char => DataType.Char,
+            TypeCode.SByte or TypeCode.Int16 or TypeCode.Int32 => DataType.Int,
+            TypeCode.Int64 => DataType.Long,
+            TypeCode.Byte or TypeCode.UInt16 or TypeCode.UInt32 => DataType.Unsigned,
+            TypeCode.UInt64 => DataType.UnsignedLong,
+            _ => throw new NotSupportedException($"Enum type {typeof(T)} is not supported.")
+        };
+        FieldInfo[] fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
         T allFlags = 0.As<int, T>();
         int count = fields.Length;
         Values = new T[count];
@@ -30,20 +34,11 @@ abstract class EnumData<T> where T : struct, Enum {
             else allFlags = allFlags.CombineFlags(value);
         }
         AllFlags = allFlags;
-    }
-
-    private static DataType GetDataType() => Type.GetTypeCode(typeof(T)) switch {
-        TypeCode.Char => DataType.Char,
-        TypeCode.SByte or TypeCode.Int16 or TypeCode.Int32 => DataType.Int,
-        TypeCode.Int64 => DataType.Long,
-        TypeCode.Byte or TypeCode.UInt16 or TypeCode.UInt32 => DataType.Unsigned,
-        TypeCode.UInt64 => DataType.UnsignedLong,
-        _ => throw new NotSupportedException($"Enum type {typeof(T)} is not supported.")
-    };
-
-    private static EnumData<T> CreateInstance() {
-        FieldInfo[] fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
-        if(typeof(T).GetCustomAttribute(typeof(FlagsAttribute)) != null) return new FlagEnumData<T>(fields);
+        if(typeof(T).GetCustomAttribute(typeof(FlagsAttribute)) != null) {
+            FlagEnumData<T>.Setup(fields);
+            enumType = EnumType.Flag;
+            return;
+        }
         bool[] checkField = new bool[fields.Length];
         bool outOfRange = false;
         bool isSorted = true;
@@ -70,20 +65,45 @@ abstract class EnumData<T> where T : struct, Enum {
                 if(i != v) isSorted = false;
             }
         }
-        return !outOfRange && checkField.All(t => t) ? new SortedEnumData<T>(fields, isSorted) : new UnsortedEnumData<T>(fields);
+        if(!outOfRange && checkField.All(t => t)) SortedEnumData<T>.Setup(fields, isSorted);
+        else UnsortedEnumData<T>.Setup(fields);
     }
 
-    public abstract string GetString(T eEnum);
+    public static string GetString(T eEnum) {
+        return enumType switch {
+            EnumType.Sorted => ILUtils.GetOrDefault(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
+            EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum] ?? ILUtils.GetString(eEnum),
+            EnumType.Flag => FlagEnumData<T>.dictionary == null ? FlagEnumData<T>.GetStringNormal(eEnum) : FlagEnumData<T>.GetStringDict(eEnum),
+            _ => throw new NotSupportedException()
+        };
+    }
 
-    public abstract string GetName(T eEnum);
+    public static string GetName(T eEnum) {
+        return enumType switch {
+            EnumType.Sorted => ILUtils.GetOrNull(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
+            EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum],
+            EnumType.Flag => FlagEnumData<T>.dictionary != null && ILUtils.BitCount(eEnum) > 1 ? FlagEnumData<T>.dictionary[eEnum] ?? ILUtils.GetString(eEnum) :
+                             eEnum.AsLong() == 0                                               ? FlagEnumData<T>.zeroString :
+                             !AllFlags.HasAllFlags(eEnum) || ILUtils.BitCount(eEnum) != 1      ? ILUtils.GetString(eEnum) :
+                             eEnum.AsLong() == 1                                               ? FlagEnumData<T>.FlagEnums[0] : FlagEnumData<T>.FlagEnums[(int) Utils.Log2(eEnum.AsDouble())],
+            _ => throw new NotSupportedException()
+        };
+    }
+
+    public static bool IsDefined(T eEnum) {
+        return enumType switch {
+            EnumType.Sorted => (uint) eEnum.AsInteger() < SortedEnumData<T>.Length,
+            EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum] != null,
+            EnumType.Flag => FlagEnumData<T>.IsDefined(eEnum),
+            _ => throw new NotSupportedException()
+        };
+    }
+
+    public static T Parse(string str) => NameDictionary.GetValue(str);
+
+    public static T Parse(string str, bool ignoreCase) => NameDictionary.GetValue(str, ignoreCase);
+
+    public static bool TryParse(string str, out T eEnum) => NameDictionary.TryGetValue(str, out eEnum);
     
-    public abstract bool IsDefined(T eEnum);
-
-    public T Parse(string str) => NameDictionary.GetValue(str);
-
-    public T Parse(string str, bool ignoreCase) => NameDictionary.GetValue(str, ignoreCase);
-
-    public bool TryParse(string str, out T eEnum) => NameDictionary.TryGetValue(str, out eEnum);
-    
-    public bool TryParse(string str, bool ignoreCase, out T eEnum) => NameDictionary.TryGetValue(str, out eEnum, ignoreCase);
+    public static bool TryParse(string str, bool ignoreCase, out T eEnum) => NameDictionary.TryGetValue(str, out eEnum, ignoreCase);
 }

@@ -272,7 +272,7 @@ EndRepeat:
         ret
     }
 
-    .method public hidebysig static string GetOrDefault<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length, valuetype [OptimizedEnum]OptimizedEnum.DataType dataType) cil managed {
+    .method public hidebysig static string GetOrDefault<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
         .maxstack 4
         ldarg.1
         ldarg.2
@@ -299,8 +299,7 @@ Bit8:
         ret
 SkipGetValue:
         ldarg.1
-        ldarg.3
-        call string OptimizedEnum.ILUtils::GetString<!!T>(!!T, valuetype [OptimizedEnum]OptimizedEnum.DataType)
+        call string OptimizedEnum.ILUtils::GetString<!!T>(!!T)
         ret
     }
 
@@ -342,10 +341,10 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig static string GetString<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum, valuetype [OptimizedEnum]OptimizedEnum.DataType 'type') cil managed {
+    .method public hidebysig static string GetString<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
         .maxstack 2
         ldarg.0
-        ldarg.1
+        ldsfld valuetype [OptimizedEnum]OptimizedEnum.DataType class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::dataType
         switch (IsInt, IsUInt, IsLong, IsULong)
         ldc.i4.1
         newobj instance void System.String::.ctor(char, int32)

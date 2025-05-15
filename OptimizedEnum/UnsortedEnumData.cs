@@ -3,16 +3,12 @@ using System.Reflection;
 
 namespace OptimizedEnum;
 
-class UnsortedEnumData<T> : EnumData<T> where T : struct, Enum {
-    public SortedIndexedDictionary<T> dictionary;
-
-    public UnsortedEnumData(FieldInfo[] fields) : base(fields) {
+static class UnsortedEnumData<T> where T : struct, Enum {
+    public static SortedIndexedDictionary<T> dictionary;
+    public static void Setup(FieldInfo[] fields)  {
         dictionary = new SortedIndexedDictionary<T>(fields.Length);
         foreach(FieldInfo field in fields) dictionary.Add((T) field.GetValue(null), field.Name);
     }
 
-    public override bool IsDefined(T eEnum) => dictionary[eEnum] != null;
-    public override string GetString(T eEnum) => dictionary[eEnum] ?? ILUtils.GetString(eEnum, dataType);
-
-    public override string GetName(T eEnum) => dictionary[eEnum];
+    public static bool IsDefined(T eEnum) => dictionary[eEnum] != null;
 }
