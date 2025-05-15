@@ -340,38 +340,6 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig static class [OptimizedEnum]OptimizedEnum.NumCalc`1<!!T> GetNumCalc<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>() cil managed {
-        .maxstack 2
-        ldtoken !!T
-        call class [mscorlib]System.Type [mscorlib]System.Type::GetTypeFromHandle(valuetype [mscorlib]System.RuntimeTypeHandle)
-        call valuetype [mscorlib]System.TypeCode [mscorlib]System.Type::GetTypeCode(class [mscorlib]System.Type)
-        ldc.i4.4
-        sub
-        switch (IsChar, IsInt, IsUInt, IsInt, IsUInt, IsInt, IsUInt, IsLong, IsULong)
-        ldstr "Unsupported enum type: "
-        ldtoken !!T
-        call class [mscorlib]System.Type [mscorlib]System.Type::GetTypeFromHandle(valuetype [mscorlib]System.RuntimeTypeHandle)
-        callvirt instance string [mscorlib]System.Type::get_FullName()
-        call string [mscorlib]System.String::Concat(string, string)
-        newobj instance void [mscorlib]System.NotSupportedException::.ctor(string)
-        throw
-IsInt:
-        newobj instance void class OptimizedEnum.NumCalcI4`1<!!T>::.ctor()
-        ret
-IsUInt:
-        newobj instance void class OptimizedEnum.NumCalcU4`1<!!T>::.ctor()
-        ret
-IsLong:
-        newobj instance void class OptimizedEnum.NumCalcI8`1<!!T>::.ctor()
-        ret
-IsULong:
-        newobj instance void class OptimizedEnum.NumCalcU8`1<!!T>::.ctor()
-        ret
-IsChar:
-        newobj instance void class OptimizedEnum.NumCalcChar`1<!!T>::.ctor()
-        ret
-    }
-
     .method public hidebysig static string GetString<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum, valuetype [OptimizedEnum]OptimizedEnum.DataType 'type') cil managed {
         .maxstack 2
         ldarg.0
