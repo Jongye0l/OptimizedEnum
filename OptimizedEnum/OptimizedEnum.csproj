@@ -44,9 +44,10 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="DataType.cs" />
         <Compile Include="EnumData.cs" />
+        <Compile Include="EnumType.cs" />
         <Compile Include="FlagEnumData.cs" />
-        <Compile Include="NumCalc.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="SortedDoubleDictionary.cs" />
         <Compile Include="SortedEnumData.cs" />
@@ -57,7 +58,6 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include="ILUtils.il" />
-      <Content Include="NumCalc.il" />
       <Content Include="Properties\AssemblyInfo.il" />
     </ItemGroup>
     <ItemGroup>

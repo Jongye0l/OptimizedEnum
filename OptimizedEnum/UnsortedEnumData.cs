@@ -12,7 +12,7 @@ class UnsortedEnumData<T> : EnumData<T> where T : struct, Enum {
     }
 
     public override bool IsDefined(T eEnum) => dictionary[eEnum] != null;
-    public override string GetString(T eEnum) => dictionary[eEnum] ?? NumCalc.GetString(eEnum);
+    public override string GetString(T eEnum) => dictionary[eEnum] ?? ILUtils.GetString(eEnum, dataType);
 
     public override string GetName(T eEnum) => dictionary[eEnum];
 }

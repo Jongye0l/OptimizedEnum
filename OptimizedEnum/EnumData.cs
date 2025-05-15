@@ -6,15 +6,19 @@ namespace OptimizedEnum;
 
 abstract class EnumData<T> where T : struct, Enum {
     public static readonly EnumData<T> Instance = CreateInstance();
-    public SortedNameDictionary<T> NameDictionary;
+    public static readonly DataType dataType = GetDataType();
+    public static readonly EnumType enumType;
+    public static SortedNameDictionary<T> NameDictionary;
     public readonly T AllFlags;
     public readonly T[] Values;
-    public readonly NumCalc<T> NumCalc;
     public readonly bool HasZero;
 
+    static EnumData() {
+        
+    }
+
     public EnumData(FieldInfo[] fields) {
-        NumCalc<T> numCalc = NumCalc = NumCalc<T>.Instance;
-        T allFlags = numCalc.GetSystemMinValue();
+        T allFlags = 0.As<int, T>();
         int count = fields.Length;
         Values = new T[count];
         NameDictionary = new SortedNameDictionary<T>(count);
@@ -22,11 +26,20 @@ abstract class EnumData<T> where T : struct, Enum {
             T value = Values[i] = (T) fields[i].GetValue(null);
             string name = fields[i].Name;
             NameDictionary.Add(name, value);
-            if(numCalc.Equal(value, 0)) HasZero = true;
+            if(value.AsLong() == 0) HasZero = true;
             else allFlags = allFlags.CombineFlags(value);
         }
         AllFlags = allFlags;
     }
+
+    private static DataType GetDataType() => Type.GetTypeCode(typeof(T)) switch {
+        TypeCode.Char => DataType.Char,
+        TypeCode.SByte or TypeCode.Int16 or TypeCode.Int32 => DataType.Int,
+        TypeCode.Int64 => DataType.Long,
+        TypeCode.Byte or TypeCode.UInt16 or TypeCode.UInt32 => DataType.Unsigned,
+        TypeCode.UInt64 => DataType.UnsignedLong,
+        _ => throw new NotSupportedException($"Enum type {typeof(T)} is not supported.")
+    };
 
     private static EnumData<T> CreateInstance() {
         FieldInfo[] fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
@@ -36,20 +49,19 @@ abstract class EnumData<T> where T : struct, Enum {
         bool isSorted = true;
         int length = fields.Length;
         if(ILUtils.GetSize<T>() == 8) {
-            for(int i = 0; i < length; i++) {
-                T value = (T) fields[i].GetValue(null);
-                ulong v = value.AsUnsignedLong();
-                if((ulong) length <= v) {
+            ulong lengthLong = (ulong) length;
+            for(uint i = 0; i < length; i++) {
+                ulong v = ((T) fields[i].GetValue(null)).As<T, ulong>();
+                if(lengthLong <= v) {
                     outOfRange = true;
                     break;
                 }
                 checkField[v] = true;
-                if((ulong) i != v) isSorted = false;
+                if(i != v) isSorted = false;
             }
         } else {
-            for(int i = 0; i < length; i++) {
-                T value = (T) fields[i].GetValue(null);
-                uint v = value.AsUnsignedInteger();
+            for(uint i = 0; i < length; i++) {
+                uint v = ((T) fields[i].GetValue(null)).As<T, uint>();
                 if(length <= v) {
                     outOfRange = true;
                     break;

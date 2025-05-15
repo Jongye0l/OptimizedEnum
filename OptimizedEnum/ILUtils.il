@@ -128,9 +128,207 @@
         ret
     }
 
+    .method public hidebysig static !!T2 As<valuetype .ctor (class [mscorlib]System.ValueType) T, valuetype .ctor (class [mscorlib]System.ValueType) T2>(!!T 'flags') cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 1
+        ldarg.0
+        ret
+    }
+
+    .method public hidebysig static bool Equal<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags', !!T otherFlags) cil managed {
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        ceq
+        ret
+    }
+
+    .method public hidebysig static bool LessThan<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags', !!T otherFlags) cil managed {
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        clt
+        ret
+    }
+
+    .method public hidebysig static int32 BitCount<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
+        .maxstack 3
+        ldarg.0
+        dup
+        ldc.i4.1
+        shr
+
+        sizeof !!T
+        ldc.i4.8
+        ceq
+        brtrue Bit8
+
+        ldc.i4 0x55555555
+        and
+        sub
+        starg.s eEnum
+
+        ldarg.0
+        ldc.i4 0x33333333
+        and
+        ldarg.0
+        ldc.i4.2
+        shr
+        ldc.i4 0x33333333
+        and
+        add
+
+        dup
+        ldc.i4.4
+        shr
+        add
+        ldc.i4 0x0F0F0F0F
+        and
+        ldc.i4 0x01010101
+        mul
+        ldc.i4.s 24
+        shr
+        ret
+Bit8:
+        ldc.i8 0x5555555555555555
+        and
+        sub
+        starg.s eEnum
+
+        ldarg.0
+        ldc.i8 0x3333333333333333
+        and
+        ldarg.0
+        ldc.i4.2
+        shr
+        ldc.i8 0x3333333333333333
+        and
+        add
+
+        dup
+        ldc.i4.4
+        shr
+        add
+        ldc.i8 0xF0F0F0F0F0F0F0F
+        and
+        ldc.i8 0x101010101010101
+        mul
+        ldc.i4.s 56
+        shr
+        conv.i4
+        ret
+    }
+
+    .method public hidebysig static int32[] GetBitLocations<valuetype .ctor (class [mscorlib]System.Enum) T>(!!T eEnum) cil managed {
+        .maxstack 4
+        .locals init (int32[] bits, int32 count, int32 subValue)
+        ldarg.0
+        call int32 OptimizedEnum.ILUtils::BitCount<!!T>(!!T)
+        newarr [mscorlib]System.Int32
+        stloc.0
+        ldc.i4.0
+        stloc.1
+        ldc.i4.1
+        stloc.2
+        ldarg.0
+StartRepeat:
+        brfalse EndRepeat
+
+        ldloc.2
+        ldc.i4.1
+        and
+        brfalse SkipSetValue
+
+        ldloc.0
+        ldloc.1
+        dup
+        ldc.i4.1
+        add
+        stloc.1
+        ldloc.2
+        stelem.i4
+SkipSetValue:
+        ldarg.0
+        ldc.i4.1
+        shr
+        dup
+        starg.s eEnum
+
+        ldloc.2
+        ldc.i4.1
+        add
+        stloc.2
+
+        br StartRepeat
+EndRepeat:
+        ldloc.0
+        ret
+    }
+
     .method public hidebysig static int32 GetSize<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>() cil managed {
         .maxstack 1
         sizeof !!T
+        ret
+    }
+
+    .method public hidebysig static string GetOrDefault<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+        .maxstack 4
+        ldarg.2
+        ldarg.3
+
+        sizeof !!T
+        ldc.i4.8
+        ceq
+        brtrue Bit8
+
+        clt.un
+        brfalse SkipGetValue
+        ldarg.1
+        ldarg.2
+        ldelem string
+        ret
+Bit8:
+        conv.i8
+        clt.un
+        brfalse SkipGetValue
+        ldarg.1
+        ldarg.2
+        conv.i4
+        ldelem string
+        ret
+SkipGetValue:
+        ldarg.2
+        call string OptimizedEnum.ILUtils::GetString<!!T>(!!T)
+        ret
+    }
+
+    .method public hidebysig static string GetOrNull<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+        .maxstack 2
+        ldarg.2
+        ldarg.3
+
+        sizeof !!T
+        ldc.i4.8
+        ceq
+        brtrue Bit8
+
+        clt.un
+        brfalse SkipGetValue
+        ldarg.1
+        ldarg.2
+        ldelem string
+        ret
+Bit8:
+        conv.i8
+        clt.un
+        brfalse SkipGetValue
+        ldarg.1
+        ldarg.2
+        conv.i4
+        ldelem string
+        ret
+SkipGetValue:
+        ldnull
         ret
     }
 
@@ -171,6 +369,27 @@ IsULong:
         ret
 IsChar:
         newobj instance void class OptimizedEnum.NumCalcChar`1<!!T>::.ctor()
+        ret
+    }
+
+    .method public hidebysig static string GetString<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum, valuetype [OptimizedEnum]OptimizedEnum.DataType 'type') cil managed {
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        switch (IsInt, IsUInt, IsLong, IsULong)
+        ldc.i4.1
+        newobj instance void System.String::.ctor(char, int32)
+IsInt:
+        call string [OptimizedEnum]OptimizedEnum.Utils::Int32ToString(int32)
+        ret
+IsUInt:
+        call string [OptimizedEnum]OptimizedEnum.Utils::UInt32ToString(uint32)
+        ret
+IsLong:
+        call string [OptimizedEnum]OptimizedEnum.Utils::Int64ToString(int64)
+        ret
+IsULong:
+        call string [OptimizedEnum]OptimizedEnum.Utils::UInt64ToString(uint64)
         ret
     }
 }

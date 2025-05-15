@@ -4,7 +4,6 @@ using System.Collections.Generic;
 namespace OptimizedEnum;
 
 class SortedIndexedDictionary<T>(int count) where T : struct, Enum {
-    private static NumCalc<T> numCalc = NumCalc<T>.Instance;
     public readonly KeyValuePair<T, string>[] array = new KeyValuePair<T, string>[count];
     private int count;
 
@@ -14,8 +13,8 @@ class SortedIndexedDictionary<T>(int count) where T : struct, Enum {
             int right = count - 1;
             while(left <= right) {
                 int mid = (left + right) / 2;
-                if(numCalc.Equal(array[left].Key, key)) return array[mid].Value;
-                if(numCalc.LessThan(array[mid].Key, key)) left = mid + 1;
+                if(ILUtils.Equal(array[left].Key, key)) return array[mid].Value;
+                if(ILUtils.LessThan(array[mid].Key, key)) left = mid + 1;
                 else right = mid - 1;
             }
             return null;
@@ -27,7 +26,7 @@ class SortedIndexedDictionary<T>(int count) where T : struct, Enum {
         int right = count - 1;
         while(left <= right) {
             int mid = (left + right) / 2;
-            if(numCalc.LessThan(array[mid].Key, key)) left = mid + 1;
+            if(ILUtils.LessThan(array[mid].Key, key)) left = mid + 1;
             else right = mid - 1;
         }
         for(int i = count; i > left; i--) array[i] = array[i - 1];
