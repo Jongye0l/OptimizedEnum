@@ -273,8 +273,8 @@ EndRepeat:
 
     .method public hidebysig static string GetOrDefault<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
         .maxstack 4
+        ldarg.1
         ldarg.2
-        ldarg.3
 
         sizeof !!T
         ldc.i4.8
@@ -283,16 +283,16 @@ EndRepeat:
 
         clt.un
         brfalse SkipGetValue
+        ldarg.0
         ldarg.1
-        ldarg.2
         ldelem string
         ret
 Bit8:
         conv.i8
         clt.un
         brfalse SkipGetValue
+        ldarg.0
         ldarg.1
-        ldarg.2
         conv.i4
         ldelem string
         ret
@@ -303,9 +303,9 @@ SkipGetValue:
     }
 
     .method public hidebysig static string GetOrNull<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
-        .maxstack 2
+        .maxstack 4
+        ldarg.1
         ldarg.2
-        ldarg.3
 
         sizeof !!T
         ldc.i4.8
@@ -314,16 +314,16 @@ SkipGetValue:
 
         clt.un
         brfalse SkipGetValue
+        ldarg.0
         ldarg.1
-        ldarg.2
         ldelem string
         ret
 Bit8:
         conv.i8
         clt.un
         brfalse SkipGetValue
+        ldarg.0
         ldarg.1
-        ldarg.2
         conv.i4
         ldelem string
         ret
