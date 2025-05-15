@@ -271,7 +271,7 @@ EndRepeat:
         ret
     }
 
-    .method public hidebysig static string GetOrDefault<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+    .method public hidebysig static string GetOrDefault<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length, valuetype [OptimizedEnum]OptimizedEnum.DataType dataType) cil managed {
         .maxstack 4
         ldarg.1
         ldarg.2
@@ -297,8 +297,9 @@ Bit8:
         ldelem string
         ret
 SkipGetValue:
-        ldarg.2
-        call string OptimizedEnum.ILUtils::GetString<!!T>(!!T)
+        ldarg.1
+        ldarg.3
+        call string OptimizedEnum.ILUtils::GetString<!!T>(!!T, valuetype [OptimizedEnum]OptimizedEnum.DataType)
         ret
     }
 

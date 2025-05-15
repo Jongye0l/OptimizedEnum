@@ -16,6 +16,6 @@ class SortedEnumData<T> : EnumData<T> where T : struct, Enum {
 
 
     public override bool IsDefined(T eEnum) => (uint) eEnum.AsInteger() < Length;
-    public override string GetString(T eEnum) => ILUtils.GetOrDefault(Names, eEnum, Length);
+    public override string GetString(T eEnum) => ILUtils.GetOrDefault(Names, eEnum, Length, dataType);
     public override string GetName(T eEnum) => ILUtils.GetOrNull(Names, eEnum, Length);
 }
