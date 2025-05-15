@@ -164,7 +164,7 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig static !T GetSystemMinValue() cil managed {
+    .method public hidebysig virtual instance !T GetSystemMinValue() cil managed {
         .maxstack 1
         ldc.i4.0
         ret
@@ -344,7 +344,7 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig static !T GetSystemMinValue() cil managed {
+    .method public hidebysig virtual instance !T GetSystemMinValue() cil managed {
         .maxstack 1
         ldc.i4.0
         ret
@@ -532,7 +532,7 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig static !T GetSystemMinValue() cil managed {
+    .method public hidebysig virtual instance !T GetSystemMinValue() cil managed {
         .maxstack 1
         ldc.i4.0
         conv.i8
@@ -721,7 +721,7 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig static !T GetSystemMinValue() cil managed {
+    .method public hidebysig virtual instance !T GetSystemMinValue() cil managed {
         .maxstack 1
         ldc.i4.0
         conv.u8
@@ -920,7 +920,7 @@ Throw:
         throw
     }
 
-    .method public hidebysig static !T GetSystemMinValue() cil managed {
+    .method public hidebysig virtual instance !T GetSystemMinValue() cil managed {
         .maxstack 1
         ldc.i4.0
         ret
