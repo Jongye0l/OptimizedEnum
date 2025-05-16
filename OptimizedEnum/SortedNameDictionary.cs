@@ -26,7 +26,7 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
         }
         return array[left].Key == key ? array[left].Value : throw new ArgumentException($"Invalid enum value: {key}");
     }
-    
+
     public T GetValue(string key, bool ignoreCase) {
         int left = 0;
         int right = count - 1;
@@ -46,7 +46,7 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
         }
         return array[left].Key == key ? array[left].Value : throw new ArgumentException($"Invalid enum value: {key}");
     }
-    
+
     public bool TryGetValue(string key, out T value, bool ignoreCase) {
         int left = 0;
         int right = count - 1;
@@ -72,7 +72,7 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
         value = default;
         return false;
     }
-    
+
     public bool TryGetValue(string key, out T value) {
         int left = 0;
         int right = count - 1;
@@ -111,11 +111,11 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
         array[left] = new KeyValuePair<string, T>(key, value);
         count++;
     }
-    
+
     private static int Compare(string a, string b) {
         return a.Length == b.Length ? string.CompareOrdinal(a, b) : a.Length - b.Length;
     }
-    
+
     private static unsafe int Compare(string a, string b, bool ignoreCase) {
         if(a.Length != b.Length) return a.Length - b.Length;
         if(!ignoreCase) return string.CompareOrdinal(a, b);
@@ -128,7 +128,7 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
         }
         return 0;
     }
-    
+
     private static char ToLower(char c) {
         if(c is >= 'A' and <= 'Z') return (char) (c + 32);
         return c;

@@ -99,11 +99,19 @@ static class EnumData<T> where T : struct, Enum {
         };
     }
 
-    public static T Parse(string str) => NameDictionary.GetValue(str);
+    public static T Parse(string str) {
+        return NameDictionary.GetValue(str);
+    }
 
-    public static T Parse(string str, bool ignoreCase) => NameDictionary.GetValue(str, ignoreCase);
+    public static T Parse(string str, bool ignoreCase) {
+        return NameDictionary.GetValue(str, ignoreCase);
+    }
 
-    public static bool TryParse(string str, out T eEnum) => NameDictionary.TryGetValue(str, out eEnum);
-    
-    public static bool TryParse(string str, bool ignoreCase, out T eEnum) => NameDictionary.TryGetValue(str, out eEnum, ignoreCase);
+    public static bool TryParse(string str, out T eEnum) {
+        return NameDictionary.TryGetValue(str, out eEnum);
+    }
+
+    public static bool TryParse(string str, bool ignoreCase, out T eEnum) {
+        return NameDictionary.TryGetValue(str, out eEnum, ignoreCase);
+    }
 }

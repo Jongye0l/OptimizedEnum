@@ -48,7 +48,7 @@ static class FlagEnumData<T> where T : struct, Enum {
         }
         if(!EnumData<T>.AllFlags.HasAllFlags(eEnum)) return ILUtils.GetString(eEnum);
         int index = 0;
-        if(eEnum.AsLong() != 0) 
+        if(eEnum.AsLong() != 0)
             foreach(int i in ILUtils.GetBitLocations(eEnum)) {
                 while(sortedList.count > index && sortedList.array[index].Key < i) sb.Append(sortedList.array[index++].Value).Append(", ");
                 sb.Append(FlagEnums[i]).Append(", ");
