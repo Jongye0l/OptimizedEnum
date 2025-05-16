@@ -43,6 +43,7 @@ static class EnumData<T> where T : struct, Enum {
         bool outOfRange = false;
         bool isSorted = true;
         int length = fields.Length;
+        int realCount = 0;
         if(ILUtils.GetSize<T>() == 8) {
             ulong lengthLong = (ulong) length;
             for(uint i = 0; i < length; i++) {
@@ -51,6 +52,7 @@ static class EnumData<T> where T : struct, Enum {
                     outOfRange = true;
                     break;
                 }
+                if(!checkField[v]) realCount++;
                 checkField[v] = true;
                 if(i != v) isSorted = false;
             }
@@ -61,12 +63,27 @@ static class EnumData<T> where T : struct, Enum {
                     outOfRange = true;
                     break;
                 }
+                if(!checkField[v]) realCount++;
                 checkField[v] = true;
                 if(i != v) isSorted = false;
             }
         }
-        if(!outOfRange && checkField.All(t => t)) SortedEnumData<T>.Setup(fields, isSorted);
-        else UnsortedEnumData<T>.Setup(fields);
+        uint cur = 0;
+        if(!outOfRange) {
+            if(isSorted) cur = 0;
+            else foreach(bool b in checkField) {
+                switch(cur) {
+                    case 0:
+                        if(!b) cur++;
+                        break;
+                    case 1:
+                        if(b) cur++;
+                        break;
+                }
+            }
+            if(cur < 2) SortedEnumData<T>.Setup(fields, isSorted, realCount);
+        }
+        else UnsortedEnumData<T>.Setup(fields, realCount);
     }
 
     public static string GetString(T eEnum) {

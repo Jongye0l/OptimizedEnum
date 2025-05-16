@@ -22,11 +22,11 @@ static class FlagEnumData<T> where T : struct, Enum {
         foreach(FieldInfo field in fields) {
             T value = (T) field.GetValue(null);
             string name = field.Name;
-            if(value.AsLong() == 0) zeroString = name;
-            else if(value.AsLong() == 1) flagEnums[0] = name;
+            if(value.AsLong() == 0) zeroString ??= name;
+            else if(value.AsLong() == 1) flagEnums[0] ??= name;
             else {
                 double logValue = Utils.Log2(value.AsDouble());
-                if(logValue % 1 == 0) flagEnums[(int) logValue] = name;
+                if(logValue % 1 == 0) flagEnums[(int) logValue] ??= name;
                 else dictionary.Add(value, name);
             }
         }
