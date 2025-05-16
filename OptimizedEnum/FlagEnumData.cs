@@ -71,7 +71,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         return sb.ToString();
     }
 
-    public static new bool IsDefined(T eEnum) {
+    public static bool IsDefined(T eEnum) {
         double logValue = Utils.Log2(eEnum.AsDouble());
         return logValue % 1 == 0 ? FlagEnums[(int) logValue] != null : dictionary?[eEnum] != null;
     }

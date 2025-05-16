@@ -26,18 +26,58 @@ public static class OptEnum {
     }
 
     public static T Parse<T>(string str) where T : struct, Enum {
+        if(EnumData<T>.enumType == EnumType.Flag) {
+            string[] split = str.Split(',');
+            if(split.Length > 1) {
+                T value = 0L.As<long, T>();
+                foreach(string s in split) value.CombineFlags(EnumData<T>.NameDictionary.GetValue(s.Trim()));
+                return value;
+            }
+        }
         return EnumData<T>.NameDictionary.GetValue(str);
     }
 
     public static T Parse<T>(string str, bool ignoreCase) where T : struct, Enum {
+        if(EnumData<T>.enumType == EnumType.Flag) {
+            if(!ignoreCase) return Parse<T>(str);
+            string[] split = str.Split(',');
+            if(split.Length > 1) {
+                T value = 0L.As<long, T>();
+                foreach(string s in split) value = value.CombineFlags(EnumData<T>.NameDictionary.GetValueIgnoreCase(s.Trim()));
+                return value;
+            }
+        }
         return ignoreCase ? EnumData<T>.NameDictionary.GetValueIgnoreCase(str) : EnumData<T>.NameDictionary.GetValue(str);
     }
 
     public static bool TryParse<T>(string str, out T eEnum) where T : struct, Enum {
+        if(EnumData<T>.enumType == EnumType.Flag) {
+            string[] split = str.Split(',');
+            if(split.Length > 1) {
+                eEnum = 0L.As<long, T>();
+                foreach(string s in split) {
+                    if(!EnumData<T>.NameDictionary.TryGetValue(s.Trim(), out T flag)) return false;
+                    eEnum = eEnum.CombineFlags(flag);
+                }
+                return true;
+            }
+        }
         return EnumData<T>.NameDictionary.TryGetValue(str, out eEnum);
     }
 
     public static bool TryParse<T>(string str, bool ignoreCase, out T eEnum) where T : struct, Enum {
+        if(EnumData<T>.enumType == EnumType.Flag) {
+            if(!ignoreCase) return TryParse(str, out eEnum);
+            string[] split = str.Split(',');
+            if(split.Length > 1) {
+                eEnum = 0L.As<long, T>();
+                foreach(string s in split) {
+                    if(!EnumData<T>.NameDictionary.TryGetValueIgnoreCase(s.Trim(), out T flag)) return false;
+                    eEnum = eEnum.CombineFlags(flag);
+                }
+                return true;
+            }
+        }
         return ignoreCase ? EnumData<T>.NameDictionary.TryGetValueIgnoreCase(str, out eEnum) : EnumData<T>.NameDictionary.TryGetValue(str, out eEnum);
     }
     
