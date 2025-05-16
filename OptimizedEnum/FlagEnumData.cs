@@ -46,7 +46,7 @@ static class FlagEnumData<T> where T : struct, Enum {
             sortedList.Add(Utils.Log2(valuePair.Key.AsDouble()), valuePair.Value);
             eEnum = eEnum.RemoveFlags(valuePair.Key);
         }
-        if(!EnumData<T>.AllFlags.HasAllFlags(eEnum)) return ILUtils.GetString(eEnum);
+        if(!EnumData<T>.AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberString();
         int index = 0;
         if(eEnum.AsLong() != 0)
             foreach(int i in ILUtils.GetBitLocations(eEnum)) {
@@ -60,7 +60,7 @@ static class FlagEnumData<T> where T : struct, Enum {
 
     public static string GetStringNormal(T eEnum) {
         if(eEnum.AsLong() == 0) return zeroString;
-        if(!EnumData<T>.AllFlags.HasAllFlags(eEnum)) return ILUtils.GetString(eEnum);
+        if(!EnumData<T>.AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberString();
         if(eEnum.AsLong() == 1) return FlagEnums[0];
         double logValue = Utils.Log2(eEnum.AsDouble());
         if(logValue % 1 == 0) return FlagEnums[(int) logValue];

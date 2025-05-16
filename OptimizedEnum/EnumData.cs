@@ -88,7 +88,7 @@ static class EnumData<T> where T : struct, Enum {
     public static string GetString(T eEnum) {
         return enumType switch {
             EnumType.Sorted => ILUtils.GetOrDefault(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
-            EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum] ?? ILUtils.GetString(eEnum),
+            EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum] ?? eEnum.GetNumberString(),
             EnumType.Flag => FlagEnumData<T>.dictionary == null ? FlagEnumData<T>.GetStringNormal(eEnum) : FlagEnumData<T>.GetStringDict(eEnum),
             _ => throw new NotSupportedException()
         };
@@ -98,10 +98,10 @@ static class EnumData<T> where T : struct, Enum {
         return enumType switch {
             EnumType.Sorted => ILUtils.GetOrNull(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
             EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum],
-            EnumType.Flag => FlagEnumData<T>.dictionary != null && ILUtils.BitCount(eEnum) > 1 ? FlagEnumData<T>.dictionary[eEnum] ?? ILUtils.GetString(eEnum) :
-                             eEnum.AsLong() == 0                                               ? FlagEnumData<T>.zeroString :
-                             !AllFlags.HasAllFlags(eEnum) || ILUtils.BitCount(eEnum) != 1      ? ILUtils.GetString(eEnum) :
-                             eEnum.AsLong() == 1                                               ? FlagEnumData<T>.FlagEnums[0] : FlagEnumData<T>.FlagEnums[(int) Utils.Log2(eEnum.AsDouble())],
+            EnumType.Flag => FlagEnumData<T>.dictionary != null && eEnum.BitCount() > 1 ? FlagEnumData<T>.dictionary[eEnum] ?? eEnum.GetNumberString() :
+                             eEnum.AsLong() == 0                                        ? FlagEnumData<T>.zeroString :
+                             !AllFlags.HasAllFlags(eEnum) || eEnum.BitCount() != 1      ? eEnum.GetNumberString() :
+                             eEnum.AsLong() == 1                                        ? FlagEnumData<T>.FlagEnums[0] : FlagEnumData<T>.FlagEnums[(int) Utils.Log2(eEnum.AsDouble())],
             _ => throw new NotSupportedException()
         };
     }

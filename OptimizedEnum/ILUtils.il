@@ -136,6 +136,7 @@
     }
 
     .method public hidebysig static bool Equal<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags', !!T otherFlags) cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 2
         ldarg.0
         ldarg.1
@@ -144,6 +145,7 @@
     }
 
     .method public hidebysig static bool LessThan<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags', !!T otherFlags) cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 2
         ldarg.0
         ldarg.1
@@ -151,7 +153,35 @@
         ret
     }
 
+    .method public hidebysig static bool LessThanUnsigned<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags', !!T otherFlags) cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        clt.un
+        ret
+    }
+
+    .method public hidebysig static bool GreaterThan<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags', !!T otherFlags) cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        cgt
+        ret
+    }
+
+    .method public hidebysig static bool GreaterThanUnsigned<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags', !!T otherFlags) cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 2
+        ldarg.0
+        ldarg.1
+        cgt.un
+        ret
+    }
+
     .method public hidebysig static int32 BitCount<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 3
         ldarg.0
         dup
@@ -220,6 +250,7 @@ Bit8:
     }
 
     .method public hidebysig static int32[] GetBitLocations<valuetype .ctor (class [mscorlib]System.Enum) T>(!!T eEnum) cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 4
         .locals init (int32[] bits, int32 count, int32 subValue)
         ldarg.0
@@ -341,7 +372,8 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig static string GetString<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
+    .method public hidebysig static string GetNumberString<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 2
         ldarg.0
         ldsfld valuetype [OptimizedEnum]OptimizedEnum.DataType class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::dataType
