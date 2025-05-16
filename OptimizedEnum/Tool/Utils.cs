@@ -69,7 +69,7 @@ public static class Utils {
         } else if(value[i] == '+') i++;
         while(i < value.Length) {
             char ch = value[i];
-            if(ch is < '0' or > '9') throw new FormatException($"Invalid character '{ch}' in string '{value}'");
+            if(ch is < '0' or > '9') throw new ArgumentException($"Invalid enum value: {value}");
             result = result * 10 + (ch - '0');
             i++;
         }
@@ -82,7 +82,7 @@ public static class Utils {
         if(value[i] == '+') i++;
         while(i < value.Length) {
             char ch = value[i];
-            if(ch is < '0' or > '9') throw new FormatException($"Invalid character '{ch}' in string '{value}'");
+            if(ch is < '0' or > '9') throw new ArgumentException($"Invalid enum value: {value}");
             result = result * 10 + (uint) (ch - '0');
             i++;
         }
@@ -99,7 +99,7 @@ public static class Utils {
         } else if(value[i] == '+') i++;
         while(i < value.Length) {
             char ch = value[i];
-            if(ch is < '0' or > '9') throw new FormatException($"Invalid character '{ch}' in string '{value}'");
+            if(ch is < '0' or > '9') throw new ArgumentException($"Invalid enum value: {value}");
             result = result * 10 + (ch - '0');
             i++;
         }
@@ -112,10 +112,72 @@ public static class Utils {
         if(value[i] == '+') i++;
         while(i < value.Length) {
             char ch = value[i];
-            if(ch is < '0' or > '9') throw new FormatException($"Invalid character '{ch}' in string '{value}'");
+            if(ch is < '0' or > '9') throw new ArgumentException($"Invalid enum value: {value}");
             result = result * 10 + (ulong) (ch - '0');
             i++;
         }
         return result;
+    }
+    
+    public static bool TryParseInt32(this string value, out int result) {
+        result = 0;
+        bool isNegative = false;
+        int i = 0;
+        if(value[i] == '-') {
+            isNegative = true;
+            i++;
+        } else if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') return false;
+            result = result * 10 + (ch - '0');
+            i++;
+        }
+        if(isNegative) result = -result;
+        return true;
+    }
+    
+    public static bool TryParseUInt32(this string value, out uint result) {
+        result = 0;
+        int i = 0;
+        if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') return false;
+            result = result * 10 + (uint) (ch - '0');
+            i++;
+        }
+        return true;
+    }
+    
+    public static bool TryParseInt64(this string value, out long result) {
+        result = 0;
+        bool isNegative = false;
+        int i = 0;
+        if(value[i] == '-') {
+            isNegative = true;
+            i++;
+        } else if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') return false;
+            result = result * 10 + (ch - '0');
+            i++;
+        }
+        if(isNegative) result = -result;
+        return true;
+    }
+    
+    public static bool TryParseUInt64(this string value, out ulong result) {
+        result = 0;
+        int i = 0;
+        if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') return false;
+            result = result * 10 + (ulong) (ch - '0');
+            i++;
+        }
+        return true;
     }
 }

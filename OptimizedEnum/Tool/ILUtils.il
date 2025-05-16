@@ -389,6 +389,7 @@ SkipGetValue:
         switch (IsInt, IsUInt, IsLong, IsULong)
         ldc.i4.1
         newobj instance void System.String::.ctor(char, int32)
+        ret
 IsInt:
         call string [OptimizedEnum]OptimizedEnum.Tool.Utils::Int32ToString(int32)
         ret
@@ -402,4 +403,79 @@ IsULong:
         call string [OptimizedEnum]OptimizedEnum.Tool.Utils::UInt64ToString(uint64)
         ret
     }
+
+    .method public hidebysig static !!T ParseAsNumber<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string 'value') cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 2
+        ldarg.0
+        ldsfld valuetype [OptimizedEnum]OptimizedEnum.DataType class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::dataType
+        switch (IsInt, IsUInt, IsLong, IsULong)
+
+        call instance int32 [mscorlib]System.String::get_Length()
+        ldc.i4.1
+        beq SkipThrow
+
+        ldstr        "Invalid enum value: "
+        ldarg.0
+        call         string [mscorlib]System.String::Concat(string, string)
+        newobj       instance void [mscorlib]System.ArgumentException::.ctor(string)
+        throw
+SkipThrow:
+        ldarg.0
+        ldc.i4.0
+        call instance char [mscorlib]System.String::get_Chars(int32)
+        ret
+IsInt:
+        call int32 [OptimizedEnum]OptimizedEnum.Tool.Utils::ParseInt32(string)
+        ret
+IsUInt:
+        call uint32[OptimizedEnum]OptimizedEnum.Tool.Utils::ParseUInt32(string)
+        ret
+IsLong:
+        call int64 [OptimizedEnum]OptimizedEnum.Tool.Utils::ParseInt64(string)
+        ret
+IsULong:
+        call uint64 [OptimizedEnum]OptimizedEnum.Tool.Utils::ParseUInt64(string)
+        ret
+    }
+
+    .method public hidebysig static bool TryParseAsNumber<valuetype .ctor (class [mscorlib]System.Enum) T>(string 'value', [out] !!T& result) cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 4
+        ldarg.0
+        ldarg.1
+        ldsfld valuetype [OptimizedEnum]OptimizedEnum.DataType class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::dataType
+        switch (IsInt, IsUInt, IsLong, IsULong)
+
+        ldarg.0
+        call instance int32 [mscorlib]System.String::get_Length()
+        ldc.i4.1
+        beq SkipThrow
+
+        pop
+        pop
+        ldc.i4.0
+        ret
+
+SkipThrow:
+        ldarg.0
+        ldc.i4.0
+        call instance char [mscorlib]System.String::get_Chars(int32)
+        stind.i2
+        pop
+        ldc.i4.1
+        ret
+IsInt:
+        call bool [OptimizedEnum]OptimizedEnum.Tool.Utils::TryParseInt32(string, int32&)
+        ret
+IsUInt:
+        call bool [OptimizedEnum]OptimizedEnum.Tool.Utils::TryParseUInt32(string, uint32&)
+        ret
+IsLong:
+        call bool [OptimizedEnum]OptimizedEnum.Tool.Utils::TryParseInt64(string, int64&)
+        ret
+IsULong:
+        call bool [OptimizedEnum]OptimizedEnum.Tool.Utils::TryParseUInt64(string, uint64&)
+        ret
+  }
 }

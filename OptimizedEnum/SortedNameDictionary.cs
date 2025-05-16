@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using OptimizedEnum.Tool;
 
 namespace OptimizedEnum;
 
@@ -24,7 +25,7 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
                     break;
             }
         }
-        throw new ArgumentException($"Invalid enum value: {key}");
+        return key.ParseAsNumber<T>();
     }
 
     public T GetValueIgnoreCase(string key) {
@@ -67,7 +68,7 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
             }
             if(!run) break;
         }
-        throw new ArgumentException($"Invalid enum value: {key}");
+        return key.ParseAsNumber<T>();
     }
 
     public bool TryGetValue(string key, out T value) {
@@ -88,8 +89,7 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
                     break;
             }
         }
-        value = default;
-        return false;
+        return key.TryParseAsNumber(out value);
     }
 
     public bool TryGetValueIgnoreCase(string key, out T value) {
@@ -134,8 +134,7 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
             }
             if(!run) break;
         }
-        value = default;
-        return false;
+        return key.TryParseAsNumber(out value);
     }
 
     public void Add(string key, T value) {
