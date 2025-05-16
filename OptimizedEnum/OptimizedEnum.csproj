@@ -54,6 +54,7 @@
         <Compile Include="SortedEnumData.cs" />
         <Compile Include="SortedEnumDictionary.cs" />
         <Compile Include="SortedIndexedDictionary.cs" />
+        <Compile Include="SortedList.cs" />
         <Compile Include="SortedNameDictionary.cs" />
         <Compile Include="Tool\Utils.cs" />
         <Compile Include="UnsortedEnumData.cs" />

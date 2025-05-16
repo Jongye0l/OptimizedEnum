@@ -40,15 +40,17 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         FieldInfo[] fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
         T allFlags = ILUtils.GetZero<T>();
         int count = fields.Length;
-        Values = ILUtils.GetSystemEnumValues<T>();
+        SortedList<T> list = new(count);
         NameDictionary = new SortedNameDictionary<T>(count);
         for(int i = 0; i < count; i++) {
             T value = (T) fields[i].GetValue(null);
+            list.Add(value);
             string name = fields[i].Name;
             NameDictionary.Add(name, value);
             if(value.AsLong() == 0) HasZero = true;
             else allFlags = allFlags.CombineFlags(value);
         }
+        Values = list.array;
         AllFlags = allFlags;
         if(typeof(T).GetCustomAttribute(typeof(FlagsAttribute)) != null) {
             FlagEnumData<T>.Setup(fields);
