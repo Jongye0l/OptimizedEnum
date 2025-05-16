@@ -147,4 +147,18 @@ public static class OptEnum {
         CheckType(type);
         return EnumData.EnumDataDictionary.GetOrCreate(type).IsDefined(eEnum);
     }
+    
+    public static bool HasAllFlag(object eEnum1, object eEnum2) => HasAllFlag(eEnum1.GetType(), eEnum1, eEnum2);
+
+    public static bool HasAllFlag(Type type, object eEnum1, object eEnum2) {
+        CheckType(type);
+        return EnumData.EnumDataDictionary.GetOrCreate(type).HasAllFlag(eEnum1, eEnum2);
+    }
+    
+    public static bool HasAnyFlag(object eEnum1, object eEnum2) => HasAnyFlag(eEnum1.GetType(), eEnum1, eEnum2);
+    
+    public static bool HasAnyFlag(Type type, object eEnum1, object eEnum2) {
+        CheckType(type);
+        return EnumData.EnumDataDictionary.GetOrCreate(type).HasAnyFlag(eEnum1, eEnum2);
+    }
 }

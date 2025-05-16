@@ -477,5 +477,18 @@ IsLong:
 IsULong:
         call bool [OptimizedEnum]OptimizedEnum.Tool.Utils::TryParseUInt64(string, uint64&)
         ret
-  }
+    }
+
+    .method public hidebysig static !!T GetZero<T>() cil managed {
+        .maxstack 3
+        ldc.i4.0
+        sizeof !!T
+        ldc.i4.8
+        ceq
+        brfalse SkipConv
+
+        conv.i8
+SkipConv:
+        ret
+    }
 }

@@ -15,6 +15,8 @@ abstract class EnumData {
     public abstract object ParseObj(string str, bool ignoreCase);
     public abstract bool TryParse(string str, out object eEnum);
     public abstract bool TryParse(string str, bool ignoreCase, out object eEnum);
+    public abstract bool HasAllFlag(object eEnum1, object eEnum2);
+    public abstract bool HasAnyFlag(object eEnum1, object eEnum2);
 }
 
 abstract class EnumData<T> : EnumData where T : struct, Enum {
@@ -146,5 +148,13 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         }
         eEnum = null;
         return false;
+    }
+    
+    public override bool HasAllFlag(object eEnum1, object eEnum2) {
+        return ((T) eEnum1).HasAllFlags((T) eEnum2);
+    }
+    
+    public override bool HasAnyFlag(object eEnum1, object eEnum2) {
+        return ((T) eEnum1).HasAnyFlags((T) eEnum2);
     }
 }
