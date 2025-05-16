@@ -313,30 +313,51 @@ EndRepeat:
     }
 
     .method public hidebysig static string GetOrDefault<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
-        .maxstack 4
-        ldarg.1
-        ldarg.2
-
+        .maxstack 2
         sizeof !!T
         ldc.i4.8
         ceq
         brtrue Bit8
+        
+        call string OptimizedEnum.Tool.ILUtils::GetOrDefault4<!!T>(string[], !!T, int32)
+        ret
+Bit8:
+        call string OptimizedEnum.Tool.ILUtils::GetOrDefault8<!!T>(string[], !!T, int32)
+        ret
+    }
 
+    .method public hidebysig static string GetOrDefault4<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+        .maxstack 2
+        ldarg.1
+        ldarg.2
         clt.un
         brfalse SkipGetValue
+
         ldarg.0
         ldarg.1
         ldelem string
         ret
-Bit8:
+
+SkipGetValue:
+        ldarg.1
+        call string OptimizedEnum.Tool.ILUtils::GetNumberString<!!T>(!!T)
+        ret
+    }
+
+    .method public hidebysig static string GetOrDefault8<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+        .maxstack 2
+        ldarg.1
+        ldarg.2
         conv.i8
         clt.un
         brfalse SkipGetValue
+
         ldarg.0
         ldarg.1
         conv.i4
         ldelem string
         ret
+
 SkipGetValue:
         ldarg.1
         call string OptimizedEnum.Tool.ILUtils::GetNumberString<!!T>(!!T)
@@ -344,30 +365,50 @@ SkipGetValue:
     }
 
     .method public hidebysig static string GetOrNull<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
-        .maxstack 4
-        ldarg.1
-        ldarg.2
-
+        .maxstack 2
         sizeof !!T
         ldc.i4.8
         ceq
         brtrue Bit8
+        
+        call string OptimizedEnum.Tool.ILUtils::GetOrNull4<!!T>(string[], !!T, int32)
+        ret
+Bit8:
+        call string OptimizedEnum.Tool.ILUtils::GetOrNull8<!!T>(string[], !!T, int32)
+        ret
+    }
 
+    .method public hidebysig static string GetOrNull4<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+        .maxstack 2
+        ldarg.1
+        ldarg.2
         clt.un
         brfalse SkipGetValue
+
         ldarg.0
         ldarg.1
         ldelem string
         ret
-Bit8:
+
+SkipGetValue:
+        ldnull
+        ret
+    }
+
+    .method public hidebysig static string GetOrNull8<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+        .maxstack 2
+        ldarg.1
+        ldarg.2
         conv.i8
         clt.un
         brfalse SkipGetValue
+
         ldarg.0
         ldarg.1
         conv.i4
         ldelem string
         ret
+
 SkipGetValue:
         ldnull
         ret
