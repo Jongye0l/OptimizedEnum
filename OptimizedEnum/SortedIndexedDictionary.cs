@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using OptimizedEnum.Tool;
 
 namespace OptimizedEnum;
 
@@ -13,8 +14,8 @@ class SortedIndexedDictionary<T>(int count) where T : struct, Enum {
             int right = count - 1;
             while(left <= right) {
                 int mid = (left + right) / 2;
-                if(ILUtils.Equal(array[left].Key, key)) return array[mid].Value;
-                if(ILUtils.LessThan(array[mid].Key, key)) left = mid + 1;
+                if(array[mid].Key.Equal(key)) return array[mid].Value;
+                if(array[mid].Key.LessThan(key)) left = mid + 1;
                 else right = mid - 1;
             }
             return null;
@@ -26,8 +27,8 @@ class SortedIndexedDictionary<T>(int count) where T : struct, Enum {
         int right = count - 1;
         while(left <= right) {
             int mid = (left + right) / 2;
-            if(ILUtils.Equal(array[mid].Key, key)) return;
-            if(ILUtils.LessThan(array[mid].Key, key)) left = mid + 1;
+            if(array[mid].Key.Equal(key)) return;
+            if(array[mid].Key.LessThan(key)) left = mid + 1;
             else right = mid - 1;
         }
         for(int i = count; i > left; i--) array[i] = array[i - 1];

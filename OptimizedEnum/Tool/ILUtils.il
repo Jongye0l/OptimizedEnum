@@ -1,4 +1,4 @@
-.class public abstract sealed auto ansi beforefieldinit OptimizedEnum.ILUtils extends [mscorlib]System.Object {
+.class public abstract sealed auto ansi beforefieldinit OptimizedEnum.Tool.ILUtils extends [mscorlib]System.Object {
     .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
 
     .method public hidebysig static bool HasAnyFlags<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags') cil managed {
@@ -254,7 +254,7 @@ Bit8:
         .maxstack 4
         .locals init (int32[] bits, int32 count, int32 subValue)
         ldarg.0
-        call int32 OptimizedEnum.ILUtils::BitCount<!!T>(!!T)
+        call int32 OptimizedEnum.Tool.ILUtils::BitCount<!!T>(!!T)
         newarr [mscorlib]System.Int32
         stloc.0
         ldc.i4.0
@@ -330,7 +330,7 @@ Bit8:
         ret
 SkipGetValue:
         ldarg.1
-        call string OptimizedEnum.ILUtils::GetString<!!T>(!!T)
+        call string OptimizedEnum.Tool.ILUtils::GetString<!!T>(!!T)
         ret
     }
 
@@ -381,16 +381,16 @@ SkipGetValue:
         ldc.i4.1
         newobj instance void System.String::.ctor(char, int32)
 IsInt:
-        call string [OptimizedEnum]OptimizedEnum.Utils::Int32ToString(int32)
+        call string [OptimizedEnum]OptimizedEnum.Tool.Utils::Int32ToString(int32)
         ret
 IsUInt:
-        call string [OptimizedEnum]OptimizedEnum.Utils::UInt32ToString(uint32)
+        call string [OptimizedEnum]OptimizedEnum.Tool.Utils::UInt32ToString(uint32)
         ret
 IsLong:
-        call string [OptimizedEnum]OptimizedEnum.Utils::Int64ToString(int64)
+        call string [OptimizedEnum]OptimizedEnum.Tool.Utils::Int64ToString(int64)
         ret
 IsULong:
-        call string [OptimizedEnum]OptimizedEnum.Utils::UInt64ToString(uint64)
+        call string [OptimizedEnum]OptimizedEnum.Tool.Utils::UInt64ToString(uint64)
         ret
     }
 }

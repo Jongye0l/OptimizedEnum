@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using OptimizedEnum.Tool;
 
 namespace OptimizedEnum;
 

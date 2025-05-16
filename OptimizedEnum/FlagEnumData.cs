@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using OptimizedEnum.Tool;
 
 namespace OptimizedEnum;
 
@@ -17,7 +18,7 @@ static class FlagEnumData<T> where T : struct, Enum {
         else if(allFlags.AsLong() == 1) flagEnums = new string[1];
         else flagEnums = new string[(int) Utils.Log2(allFlags.AsDouble()) + 1];
         FlagEnums = flagEnums;
-        int dictCount = fields.Length - ILUtils.BitCount(allFlags) - (EnumData<T>.HasZero ? 1 : 0);
+        int dictCount = fields.Length - allFlags.BitCount() - (EnumData<T>.HasZero ? 1 : 0);
         if(dictCount != 0) dictionary = new SortedIndexedDictionary<T>(dictCount);
         foreach(FieldInfo field in fields) {
             T value = (T) field.GetValue(null);
@@ -34,7 +35,7 @@ static class FlagEnumData<T> where T : struct, Enum {
     }
 
     public static string GetStringDict(T eEnum) {
-        int bitCount = ILUtils.BitCount(eEnum);
+        int bitCount = eEnum.BitCount();
         if(bitCount <= 1) return GetStringNormal(eEnum);
         string str = dictionary[eEnum];
         if(str != null) return str;
@@ -49,7 +50,7 @@ static class FlagEnumData<T> where T : struct, Enum {
         if(!EnumData<T>.AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberString();
         int index = 0;
         if(eEnum.AsLong() != 0)
-            foreach(int i in ILUtils.GetBitLocations(eEnum)) {
+            foreach(int i in eEnum.GetBitLocations()) {
                 while(sortedList.count > index && sortedList.array[index].Key < i) sb.Append(sortedList.array[index++].Value).Append(", ");
                 sb.Append(FlagEnums[i]).Append(", ");
             }
@@ -65,7 +66,7 @@ static class FlagEnumData<T> where T : struct, Enum {
         double logValue = Utils.Log2(eEnum.AsDouble());
         if(logValue % 1 == 0) return FlagEnums[(int) logValue];
         StringBuilder sb = new();
-        foreach(int i in ILUtils.GetBitLocations(eEnum)) sb.Append(FlagEnums[i]).Append(", ");
+        foreach(int i in eEnum.GetBitLocations()) sb.Append(FlagEnums[i]).Append(", ");
         sb.Length -= 2;
         return sb.ToString();
     }
