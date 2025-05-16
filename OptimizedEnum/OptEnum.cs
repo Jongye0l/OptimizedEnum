@@ -29,7 +29,7 @@ public static class OptEnum {
         if(EnumData<T>.enumType == EnumType.Flag) {
             string[] split = str.Split(',');
             if(split.Length > 1) {
-                T value = 0L.As<long, T>();
+                T value = ILUtils.GetZero<T>();
                 foreach(string s in split) value.CombineFlags(EnumData<T>.NameDictionary.GetValue(s.Trim()));
                 return value;
             }
@@ -42,7 +42,7 @@ public static class OptEnum {
             if(!ignoreCase) return Parse<T>(str);
             string[] split = str.Split(',');
             if(split.Length > 1) {
-                T value = 0L.As<long, T>();
+                T value = ILUtils.GetZero<T>();
                 foreach(string s in split) value = value.CombineFlags(EnumData<T>.NameDictionary.GetValueIgnoreCase(s.Trim()));
                 return value;
             }
@@ -54,7 +54,7 @@ public static class OptEnum {
         if(EnumData<T>.enumType == EnumType.Flag) {
             string[] split = str.Split(',');
             if(split.Length > 1) {
-                eEnum = 0L.As<long, T>();
+                eEnum = ILUtils.GetZero<T>();
                 foreach(string s in split) {
                     if(!EnumData<T>.NameDictionary.TryGetValue(s.Trim(), out T flag)) return false;
                     eEnum = eEnum.CombineFlags(flag);
@@ -70,7 +70,7 @@ public static class OptEnum {
             if(!ignoreCase) return TryParse(str, out eEnum);
             string[] split = str.Split(',');
             if(split.Length > 1) {
-                eEnum = 0L.As<long, T>();
+                eEnum = ILUtils.GetZero<T>();
                 foreach(string s in split) {
                     if(!EnumData<T>.NameDictionary.TryGetValueIgnoreCase(s.Trim(), out T flag)) return false;
                     eEnum = eEnum.CombineFlags(flag);
