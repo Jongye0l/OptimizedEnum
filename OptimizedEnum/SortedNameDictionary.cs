@@ -10,7 +10,7 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
     public T GetValue(string key) {
         int left = 0;
         int right = count - 1;
-        while(left < right) {
+        while(left <= right) {
             int mid = (left + right) / 2;
             int result = Compare(array[mid].Key, key);
             switch(result) {
@@ -24,59 +24,56 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
                     break;
             }
         }
-        return array[left].Key == key ? array[left].Value : throw new ArgumentException($"Invalid enum value: {key}");
+        throw new ArgumentException($"Invalid enum value: {key}");
     }
 
-    public T GetValue(string key, bool ignoreCase) {
-        int left = 0;
-        int right = count - 1;
-        while(left < right) {
-            int mid = (left + right) / 2;
-            int result = Compare(array[mid].Key, key, ignoreCase);
-            switch(result) {
-                case 0:
-                    return array[mid].Value;
-                case < 0:
-                    left = mid + 1;
-                    break;
-                default:
-                    right = mid - 1;
-                    break;
+    public T GetValueIgnoreCase(string key) {
+        int left2, right2;
+        int left = left2 = 0;
+        int right = right2 = count - 1;
+        while(true) {
+            bool run = false;
+            int mid;
+            int result;
+            if(left <= right) {
+                mid = (left + right) / 2;
+                result = Compare(array[mid].Key, key, false);
+                switch(result) {
+                    case 0:
+                        return array[mid].Value;
+                    case < 0:
+                        left = mid + 1;
+                        break;
+                    default:
+                        right = mid - 1;
+                        break;
+                }
+                run = true;
             }
-        }
-        return array[left].Key == key ? array[left].Value : throw new ArgumentException($"Invalid enum value: {key}");
-    }
-
-    public bool TryGetValue(string key, out T value, bool ignoreCase) {
-        int left = 0;
-        int right = count - 1;
-        while(left < right) {
-            int mid = (left + right) / 2;
-            int result = Compare(array[mid].Key, key, ignoreCase);
-            switch(result) {
-                case 0:
-                    value = array[mid].Value;
-                    return true;
-                case < 0:
-                    left = mid + 1;
-                    break;
-                default:
-                    right = mid - 1;
-                    break;
+            if(left2 <= right2) {
+                mid = (left2 + right2) / 2;
+                result = Compare(array[mid].Key, key, true);
+                switch(result) {
+                    case 0:
+                        return array[mid].Value;
+                    case < 0:
+                        left2 = mid + 1;
+                        break;
+                    default:
+                        right2 = mid - 1;
+                        break;
+                }
+                run = true;
             }
+            if(!run) break;
         }
-        if(array[left].Key == key) {
-            value = array[left].Value;
-            return true;
-        }
-        value = default;
-        return false;
+        throw new ArgumentException($"Invalid enum value: {key}");
     }
 
     public bool TryGetValue(string key, out T value) {
         int left = 0;
         int right = count - 1;
-        while(left < right) {
+        while(left <= right) {
             int mid = (left + right) / 2;
             int result = Compare(array[mid].Key, key);
             switch(result) {
@@ -91,9 +88,51 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
                     break;
             }
         }
-        if(array[left].Key == key) {
-            value = array[left].Value;
-            return true;
+        value = default;
+        return false;
+    }
+
+    public bool TryGetValueIgnoreCase(string key, out T value) {
+        int left2, right2;
+        int left = left2 = 0;
+        int right = right2 = count - 1;
+        while(true) {
+            bool run = false;
+            int mid;
+            int result;
+            if(left <= right) {
+                mid = (left + right) / 2;
+                result = Compare(array[mid].Key, key, false);
+                switch(result) {
+                    case 0:
+                        value = array[mid].Value;
+                        return true;
+                    case < 0:
+                        left = mid + 1;
+                        break;
+                    default:
+                        right = mid - 1;
+                        break;
+                }
+                run = true;
+            }
+            if(left2 <= right2) {
+                mid = (left2 + right2) / 2;
+                result = Compare(array[mid].Key, key, true);
+                switch(result) {
+                    case 0:
+                        value = array[mid].Value;
+                        return true;
+                    case < 0:
+                        left2 = mid + 1;
+                        break;
+                    default:
+                        right2 = mid - 1;
+                        break;
+                }
+                run = true;
+            }
+            if(!run) break;
         }
         value = default;
         return false;
@@ -116,21 +155,23 @@ struct SortedNameDictionary<T>(int count) where T : struct, Enum {
         return a.Length == b.Length ? string.CompareOrdinal(a, b) : a.Length - b.Length;
     }
 
-    private static unsafe int Compare(string a, string b, bool ignoreCase) {
+    private static unsafe int Compare(string a, string b, bool lower) {
         if(a.Length != b.Length) return a.Length - b.Length;
-        if(!ignoreCase) return string.CompareOrdinal(a, b);
         fixed(char* aPtr = a) fixed(char* bPtr = b) {
             for(int i = 0; i < a.Length; i++) {
-                char c1 = ToLower(aPtr[i]);
-                char c2 = ToLower(bPtr[i]);
+                char c1 = FixChar(aPtr[i], lower);
+                char c2 = FixChar(bPtr[i], lower);
                 if(c1 != c2) return c1 - c2;
             }
         }
         return 0;
     }
 
-    private static char ToLower(char c) {
-        if(c is >= 'A' and <= 'Z') return (char) (c + 32);
-        return c;
+    private static char FixChar(char c, bool lower) {
+        return lower switch {
+            true when c is >= 'A' and <= 'Z' => (char) (c + 32),
+            false when c is >= 'a' and <= 'z' => (char) (c - 32),
+            _ => c
+        };
     }
 }

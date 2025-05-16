@@ -104,7 +104,7 @@ static class EnumData<T> where T : struct, Enum {
     }
 
     public static T Parse(string str, bool ignoreCase) {
-        return NameDictionary.GetValue(str, ignoreCase);
+        return ignoreCase ? NameDictionary.GetValueIgnoreCase(str) : NameDictionary.GetValue(str);
     }
 
     public static bool TryParse(string str, out T eEnum) {
@@ -112,6 +112,6 @@ static class EnumData<T> where T : struct, Enum {
     }
 
     public static bool TryParse(string str, bool ignoreCase, out T eEnum) {
-        return NameDictionary.TryGetValue(str, out eEnum, ignoreCase);
+        return ignoreCase ? NameDictionary.TryGetValueIgnoreCase(str, out eEnum) : NameDictionary.TryGetValue(str, out eEnum);
     }
 }
