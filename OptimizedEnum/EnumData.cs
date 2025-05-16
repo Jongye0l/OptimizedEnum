@@ -111,52 +111,6 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         EnumDataDictionary.Add(typeof(T), this);
     }
 
-    public static string GetString(T eEnum) {
-        return enumType switch {
-            EnumType.Sorted => ILUtils.GetOrDefault(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
-            EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum] ?? eEnum.GetNumberString(),
-            EnumType.Flag => FlagEnumData<T>.dictionary == null ? FlagEnumData<T>.GetStringNormal(eEnum) : FlagEnumData<T>.GetStringDict(eEnum),
-            _ => throw new NotSupportedException()
-        };
-    }
-
-    public static string GetName(T eEnum) {
-        return enumType switch {
-            EnumType.Sorted => ILUtils.GetOrNull(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
-            EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum],
-            EnumType.Flag => FlagEnumData<T>.dictionary != null && eEnum.BitCount() > 1 ? FlagEnumData<T>.dictionary[eEnum] ?? eEnum.GetNumberString() :
-                             eEnum.AsLong() == 0                                        ? FlagEnumData<T>.zeroString :
-                             !AllFlags.HasAllFlags(eEnum) || eEnum.BitCount() != 1      ? eEnum.GetNumberString() :
-                             eEnum.AsLong() == 1                                        ? FlagEnumData<T>.FlagEnums[0] : FlagEnumData<T>.FlagEnums[(int) Utils.Log2(eEnum.AsDouble())],
-            _ => throw new NotSupportedException()
-        };
-    }
-
-    public static bool IsDefined(T eEnum) {
-        return enumType switch {
-            EnumType.Sorted => (uint) eEnum.AsInteger() < SortedEnumData<T>.Length,
-            EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum] != null,
-            EnumType.Flag => FlagEnumData<T>.IsDefined(eEnum),
-            _ => throw new NotSupportedException()
-        };
-    }
-
-    public static T Parse(string str) {
-        return NameDictionary.GetValue(str);
-    }
-
-    public static T Parse(string str, bool ignoreCase) {
-        return ignoreCase ? NameDictionary.GetValueIgnoreCase(str) : NameDictionary.GetValue(str);
-    }
-
-    public static bool TryParse(string str, out T eEnum) {
-        return NameDictionary.TryGetValue(str, out eEnum);
-    }
-
-    public static bool TryParse(string str, bool ignoreCase, out T eEnum) {
-        return ignoreCase ? NameDictionary.TryGetValueIgnoreCase(str, out eEnum) : NameDictionary.TryGetValue(str, out eEnum);
-    }
-
     public override object ParseObj(string str) {
         return NameDictionary.GetValue(str);
     }

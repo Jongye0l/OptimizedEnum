@@ -5,6 +5,7 @@
         .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 2
         ldarg.0
+        conv.i8
         ldc.i4.0
         conv.i8
         cgt.un
@@ -17,6 +18,7 @@
         ldarg.0
         ldarg.1
         and
+        conv.i8
         ldc.i4.0
         conv.i8
         cgt.un
@@ -108,7 +110,7 @@
         .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 1
         ldarg.0
-        conv.u2
+        conv.u4
         ret
     }
 
