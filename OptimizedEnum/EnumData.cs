@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 
 namespace OptimizedEnum;
@@ -24,10 +23,10 @@ static class EnumData<T> where T : struct, Enum {
         FieldInfo[] fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
         T allFlags = 0.As<int, T>();
         int count = fields.Length;
-        Values = new T[count];
+        Values = ILUtils.GetSystemEnumValues<T>();
         NameDictionary = new SortedNameDictionary<T>(count);
         for(int i = 0; i < count; i++) {
-            T value = Values[i] = (T) fields[i].GetValue(null);
+            T value = (T) fields[i].GetValue(null);
             string name = fields[i].Name;
             NameDictionary.Add(name, value);
             if(value.AsLong() == 0) HasZero = true;
