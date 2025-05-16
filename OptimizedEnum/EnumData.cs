@@ -73,10 +73,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         } else {
             for(uint i = 0; i < length; i++) {
                 uint v = ((T) fields[i].GetValue(null)).As<T, uint>();
-                if(length <= v) {
-                    outOfRange = true;
-                    break;
-                }
+                if(length <= v) outOfRange = true;
                 if(!checkField[v]) realCount++;
                 checkField[v] = true;
                 if(i != v) isSorted = false;
