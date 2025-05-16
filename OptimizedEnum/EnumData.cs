@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using OptimizedEnum.Tool;
 
@@ -54,6 +55,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             return;
         }
         bool[] checkField = new bool[fields.Length];
+        List<uint> overflowField = [];
         bool outOfRange = false;
         bool isSorted = true;
         int length = fields.Length;
@@ -73,10 +75,17 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         } else {
             for(uint i = 0; i < length; i++) {
                 uint v = ((T) fields[i].GetValue(null)).As<T, uint>();
-                if(length <= v) outOfRange = true;
-                if(!checkField[v]) realCount++;
-                checkField[v] = true;
-                if(i != v) isSorted = false;
+                if(length <= v) {
+                    outOfRange = true;
+                    if(!overflowField.Contains(v)) {
+                        overflowField.Add(v);
+                        realCount++;
+                    }
+                } else {
+                    if(!checkField[v]) realCount++;
+                    checkField[v] = true;
+                    if(i != v) isSorted = false;
+                }
             }
         }
         uint cur = 0;
