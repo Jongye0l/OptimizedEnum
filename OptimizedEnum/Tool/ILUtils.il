@@ -135,6 +135,13 @@
         ret
     }
 
+    .method public hidebysig static !!T As<T>(object 'value') cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 1
+        ldarg.0
+        ret
+    }
+
     .method public hidebysig static bool Equal<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags', !!T otherFlags) cil managed {
         .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 2
@@ -330,7 +337,7 @@ Bit8:
         ret
 SkipGetValue:
         ldarg.1
-        call string OptimizedEnum.Tool.ILUtils::GetString<!!T>(!!T)
+        call string OptimizedEnum.Tool.ILUtils::GetNumberString<!!T>(!!T)
         ret
     }
 

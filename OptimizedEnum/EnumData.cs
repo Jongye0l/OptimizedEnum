@@ -4,7 +4,20 @@ using OptimizedEnum.Tool;
 
 namespace OptimizedEnum;
 
-static class EnumData<T> where T : struct, Enum {
+abstract class EnumData {
+    public static SortedEnumDictionary EnumDataDictionary = new();
+    public Array ValuesArray;
+    public abstract string GetString(object eEnum);
+    public abstract string GetName(object eEnum);
+    public abstract bool IsDefined(object eEnum);
+    public abstract object ParseObj(string str);
+    public abstract object ParseObj(string str, bool ignoreCase);
+    public abstract bool TryParse(string str, out object eEnum);
+    public abstract bool TryParse(string str, bool ignoreCase, out object eEnum);
+}
+
+abstract class EnumData<T> : EnumData where T : struct, Enum {
+    public static EnumData<T> Instance;
     public static readonly DataType dataType;
     public static readonly EnumType enumType;
     public static SortedNameDictionary<T> NameDictionary;
@@ -36,6 +49,7 @@ static class EnumData<T> where T : struct, Enum {
         AllFlags = allFlags;
         if(typeof(T).GetCustomAttribute(typeof(FlagsAttribute)) != null) {
             FlagEnumData<T>.Setup(fields);
+            Instance = new FlagEnumData<T>();
             enumType = EnumType.Flag;
             return;
         }
@@ -81,9 +95,20 @@ static class EnumData<T> where T : struct, Enum {
                         break;
                 }
             }
-            if(cur < 2) SortedEnumData<T>.Setup(fields, isSorted, realCount);
+            if(cur < 2) {
+                SortedEnumData<T>.Setup(fields, isSorted, realCount);
+                Instance = new SortedEnumData<T>();
+                return;
+            }
         }
-        else UnsortedEnumData<T>.Setup(fields, realCount);
+        UnsortedEnumData<T>.Setup(fields, realCount);
+        Instance = new UnsortedEnumData<T>();
+        enumType = EnumType.Unsorted;
+    }
+
+    protected EnumData() {
+        ValuesArray = Values;
+        EnumDataDictionary.Add(typeof(T), this);
     }
 
     public static string GetString(T eEnum) {
@@ -130,5 +155,36 @@ static class EnumData<T> where T : struct, Enum {
 
     public static bool TryParse(string str, bool ignoreCase, out T eEnum) {
         return ignoreCase ? NameDictionary.TryGetValueIgnoreCase(str, out eEnum) : NameDictionary.TryGetValue(str, out eEnum);
+    }
+
+    public override object ParseObj(string str) {
+        return NameDictionary.GetValue(str);
+    }
+    
+    public override object ParseObj(string str, bool ignoreCase) {
+        return ignoreCase ? NameDictionary.GetValueIgnoreCase(str) : NameDictionary.GetValue(str);
+    }
+    
+    public override bool TryParse(string str, out object eEnum) {
+        if(NameDictionary.TryGetValue(str, out T value)) {
+            eEnum = value;
+            return true;
+        }
+        eEnum = null;
+        return false;
+    }
+    
+    public override bool TryParse(string str, bool ignoreCase, out object eEnum) {
+        if(ignoreCase) {
+            if(NameDictionary.TryGetValueIgnoreCase(str, out T value)) {
+                eEnum = value;
+                return true;
+            }
+        } else if(NameDictionary.TryGetValue(str, out T value)) {
+            eEnum = value;
+            return true;
+        }
+        eEnum = null;
+        return false;
     }
 }

@@ -6,19 +6,19 @@ using OptimizedEnum.Tool;
 
 namespace OptimizedEnum;
 
-static class FlagEnumData<T> where T : struct, Enum {
+class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
     public static SortedIndexedDictionary<T> dictionary;
     public static string[] FlagEnums;
     public static string zeroString;
 
     public static void Setup(FieldInfo[] fields) {
         string[] flagEnums;
-        T allFlags = EnumData<T>.AllFlags;
+        T allFlags = AllFlags;
         if(allFlags.AsLong() == 0) flagEnums = [];
         else if(allFlags.AsLong() == 1) flagEnums = new string[1];
         else flagEnums = new string[(int) Utils.Log2(allFlags.AsDouble()) + 1];
         FlagEnums = flagEnums;
-        int dictCount = fields.Length - allFlags.BitCount() - (EnumData<T>.HasZero ? 1 : 0);
+        int dictCount = fields.Length - allFlags.BitCount() - (HasZero ? 1 : 0);
         if(dictCount != 0) dictionary = new SortedIndexedDictionary<T>(dictCount);
         foreach(FieldInfo field in fields) {
             T value = (T) field.GetValue(null);
@@ -47,7 +47,7 @@ static class FlagEnumData<T> where T : struct, Enum {
             sortedList.Add(Utils.Log2(valuePair.Key.AsDouble()), valuePair.Value);
             eEnum = eEnum.RemoveFlags(valuePair.Key);
         }
-        if(!EnumData<T>.AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberString();
+        if(!AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberString();
         int index = 0;
         if(eEnum.AsLong() != 0)
             foreach(int i in eEnum.GetBitLocations()) {
@@ -61,7 +61,7 @@ static class FlagEnumData<T> where T : struct, Enum {
 
     public static string GetStringNormal(T eEnum) {
         if(eEnum.AsLong() == 0) return zeroString;
-        if(!EnumData<T>.AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberString();
+        if(!AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberString();
         if(eEnum.AsLong() == 1) return FlagEnums[0];
         double logValue = Utils.Log2(eEnum.AsDouble());
         if(logValue % 1 == 0) return FlagEnums[(int) logValue];
@@ -71,8 +71,23 @@ static class FlagEnumData<T> where T : struct, Enum {
         return sb.ToString();
     }
 
-    public static bool IsDefined(T eEnum) {
+    public static new bool IsDefined(T eEnum) {
         double logValue = Utils.Log2(eEnum.AsDouble());
         return logValue % 1 == 0 ? FlagEnums[(int) logValue] != null : dictionary?[eEnum] != null;
     }
+
+    public override string GetString(object eEnum) {
+        return dictionary == null ? GetStringNormal((T) eEnum) : GetStringDict((T) eEnum);
+    }
+    
+    public override string GetName(object eEnum) {
+        T value = (T) eEnum;
+        return dictionary != null && value.BitCount() > 1            ? dictionary[value] ?? value.GetNumberString() :
+               value.AsLong() == 0                                   ? zeroString :
+               !AllFlags.HasAllFlags(value) || value.BitCount() != 1 ? value.GetNumberString() :
+               value.AsLong() == 1                                   ? FlagEnums[0] : FlagEnums[(int) Utils.Log2(value.AsDouble())];
+
+    }
+
+    public override bool IsDefined(object eEnum) => IsDefined((T) eEnum);
 }

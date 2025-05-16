@@ -51,14 +51,15 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="SortedDoubleDictionary.cs" />
         <Compile Include="SortedEnumData.cs" />
+        <Compile Include="SortedEnumDictionary.cs" />
         <Compile Include="SortedIndexedDictionary.cs" />
         <Compile Include="SortedNameDictionary.cs" />
+        <Compile Include="Tool\Utils.cs" />
         <Compile Include="UnsortedEnumData.cs" />
-        <Compile Include="Utils.cs" />
     </ItemGroup>
     <ItemGroup>
-      <Content Include="ILUtils.il" />
       <Content Include="Properties\AssemblyInfo.il" />
+      <Content Include="Tool\ILUtils.il" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
@@ -74,7 +75,7 @@
 
     <Target Name="CompileIL" BeforeTargets="CoreCompile">
         <MakeDir Directories="lib" />
-        <Exec Command="C:\Windows\Microsoft.NET\Framework\v4.0.30319\ilasm Properties\AssemblyInfo.il ILUtils.il /dll /pdb /optimize /output:lib\OptimizedEnum-IL.dll" />
+        <Exec Command="C:\Windows\Microsoft.NET\Framework\v4.0.30319\ilasm Properties\AssemblyInfo.il Tool\ILUtils.il /dll /pdb /optimize /output:lib\OptimizedEnum-IL.dll" />
     </Target>
 
     <Target Name="ILMerge" BeforeTargets="AfterBuild">
