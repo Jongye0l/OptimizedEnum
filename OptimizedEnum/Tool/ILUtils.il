@@ -313,7 +313,11 @@ EndRepeat:
     }
 
     .method public hidebysig static string GetOrDefault<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
-        .maxstack 2
+        .maxstack 5
+        ldarg.0
+        ldarg.1
+        ldarg.2
+
         sizeof !!T
         ldc.i4.8
         ceq
@@ -365,7 +369,11 @@ SkipGetValue:
     }
 
     .method public hidebysig static string GetOrNull<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
-        .maxstack 2
+        .maxstack 5
+        ldarg.0
+        ldarg.1
+        ldarg.2
+
         sizeof !!T
         ldc.i4.8
         ceq
