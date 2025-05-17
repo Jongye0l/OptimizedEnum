@@ -20,11 +20,11 @@ class SortedEnumData<T> : EnumData<T> where T : struct, Enum {
     }
 
     public override string GetString(object eEnum) {
-        return ILUtils.GetOrDefault(Names, (T) eEnum, Length);
+        return Utils.GetOrDefault(Names, (T) eEnum, Length);
     }
     
     public override string GetName(object eEnum) {
-        return ILUtils.GetOrNull(Names, (T) eEnum, Length);
+        return Utils.GetOrNull(Names, (T) eEnum, Length);
     }
     
     public override bool IsDefined(object eEnum) {

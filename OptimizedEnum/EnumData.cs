@@ -38,7 +38,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             _ => throw new NotSupportedException($"Enum type {typeof(T)} is not supported.")
         };
         FieldInfo[] fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
-        T allFlags = ILUtils.GetZero<T>();
+        T allFlags = Utils.GetZero<T>();
         int count = fields.Length;
         SortedList<T> list = new(count);
         NameDictionary = new SortedNameDictionary<T>(count);
@@ -64,7 +64,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         bool isSorted = true;
         int length = fields.Length;
         int realCount = 0;
-        if(ILUtils.GetSize<T>() == 8) {
+        if(Utils.GetSize<T>() == 8) {
             ulong lengthLong = (ulong) length;
             for(uint i = 0; i < length; i++) {
                 ulong v = ((T) fields[i].GetValue(null)).As<T, ulong>();

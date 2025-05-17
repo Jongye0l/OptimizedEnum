@@ -6,11 +6,11 @@ namespace OptimizedEnum;
 public static class OptEnum {
     public static string GetName<T>(this T eEnum) where T : struct, Enum {
         return EnumData<T>.enumType switch {
-            EnumType.Sorted => ILUtils.GetOrNull(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
+            EnumType.Sorted => Utils.GetOrNull(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
             EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum],
-            EnumType.Flag => FlagEnumData<T>.dictionary != null && eEnum.BitCount() > 1        ? FlagEnumData<T>.dictionary[eEnum] ?? eEnum.GetNumberString() :
+            EnumType.Flag => FlagEnumData<T>.dictionary != null && eEnum.BitCount() > 1        ? FlagEnumData<T>.dictionary[eEnum] ?? eEnum.GetNumberStringFast() :
                              eEnum.AsLong() == 0                                               ? FlagEnumData<T>.zeroString :
-                             !EnumData<T>.AllFlags.HasAllFlags(eEnum) || eEnum.BitCount() != 1 ? eEnum.GetNumberString() :
+                             !EnumData<T>.AllFlags.HasAllFlags(eEnum) || eEnum.BitCount() != 1 ? eEnum.GetNumberStringFast() :
                              eEnum.AsLong() == 1                                               ? FlagEnumData<T>.FlagEnums[0] : FlagEnumData<T>.FlagEnums[(int) Utils.Log2(eEnum.AsDouble())],
             _ => throw new NotSupportedException()
         };
@@ -18,8 +18,8 @@ public static class OptEnum {
 
     public static string GetString<T>(this T eEnum) where T : struct, Enum {
         return EnumData<T>.enumType switch {
-            EnumType.Sorted => ILUtils.GetOrDefault(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
-            EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum] ?? eEnum.GetNumberString(),
+            EnumType.Sorted => Utils.GetOrDefault(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
+            EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum] ?? eEnum.GetNumberStringFast(),
             EnumType.Flag => FlagEnumData<T>.dictionary == null ? FlagEnumData<T>.GetStringNormal(eEnum) : FlagEnumData<T>.GetStringDict(eEnum),
             _ => throw new NotSupportedException()
         };
@@ -29,7 +29,7 @@ public static class OptEnum {
         if(EnumData<T>.enumType == EnumType.Flag) {
             string[] split = str.Split(',');
             if(split.Length > 1) {
-                T value = ILUtils.GetZero<T>();
+                T value = Utils.GetZero<T>();
                 foreach(string s in split) value.CombineFlags(EnumData<T>.NameDictionary.GetValue(s.Trim()));
                 return value;
             }
@@ -42,7 +42,7 @@ public static class OptEnum {
             if(!ignoreCase) return Parse<T>(str);
             string[] split = str.Split(',');
             if(split.Length > 1) {
-                T value = ILUtils.GetZero<T>();
+                T value = Utils.GetZero<T>();
                 foreach(string s in split) value = value.CombineFlags(EnumData<T>.NameDictionary.GetValueIgnoreCase(s.Trim()));
                 return value;
             }
@@ -54,7 +54,7 @@ public static class OptEnum {
         if(EnumData<T>.enumType == EnumType.Flag) {
             string[] split = str.Split(',');
             if(split.Length > 1) {
-                eEnum = ILUtils.GetZero<T>();
+                eEnum = Utils.GetZero<T>();
                 foreach(string s in split) {
                     if(!EnumData<T>.NameDictionary.TryGetValue(s.Trim(), out T flag)) return false;
                     eEnum = eEnum.CombineFlags(flag);
@@ -70,7 +70,7 @@ public static class OptEnum {
             if(!ignoreCase) return TryParse(str, out eEnum);
             string[] split = str.Split(',');
             if(split.Length > 1) {
-                eEnum = ILUtils.GetZero<T>();
+                eEnum = Utils.GetZero<T>();
                 foreach(string s in split) {
                     if(!EnumData<T>.NameDictionary.TryGetValueIgnoreCase(s.Trim(), out T flag)) return false;
                     eEnum = eEnum.CombineFlags(flag);

@@ -47,7 +47,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
             sortedList.Add(Utils.Log2(valuePair.Key.AsDouble()), valuePair.Value);
             eEnum = eEnum.RemoveFlags(valuePair.Key);
         }
-        if(!AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberString();
+        if(!AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberStringFast();
         int index = 0;
         if(eEnum.AsLong() != 0)
             foreach(int i in eEnum.GetBitLocations()) {
@@ -61,7 +61,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 
     public static string GetStringNormal(T eEnum) {
         if(eEnum.AsLong() == 0) return zeroString;
-        if(!AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberString();
+        if(!AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberStringFast();
         if(eEnum.AsLong() == 1) return FlagEnums[0];
         double logValue = Utils.Log2(eEnum.AsDouble());
         if(logValue % 1 == 0) return FlagEnums[(int) logValue];
@@ -82,9 +82,9 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
     
     public override string GetName(object eEnum) {
         T value = (T) eEnum;
-        return dictionary != null && value.BitCount() > 1            ? dictionary[value] ?? value.GetNumberString() :
+        return dictionary != null && value.BitCount() > 1            ? dictionary[value] ?? value.GetNumberStringFast() :
                value.AsLong() == 0                                   ? zeroString :
-               !AllFlags.HasAllFlags(value) || value.BitCount() != 1 ? value.GetNumberString() :
+               !AllFlags.HasAllFlags(value) || value.BitCount() != 1 ? value.GetNumberStringFast() :
                value.AsLong() == 1                                   ? FlagEnums[0] : FlagEnums[(int) Utils.Log2(value.AsDouble())];
 
     }

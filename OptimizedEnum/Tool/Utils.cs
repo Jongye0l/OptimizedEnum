@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace OptimizedEnum.Tool;
 
@@ -8,7 +9,7 @@ public static class Utils {
     public static double Log2(double value) {
         return Math.Log(value) / _log2;
     }
-#if NET35
+
     public static string Int32ToString(this int value) {
         if(value == 0) return "0";
         bool isNegative = value < 0;
@@ -58,7 +59,6 @@ public static class Utils {
         }
         return new string(buffer, i, 20 - i);
     }
-#endif
 
     public static int ParseInt32(this string value) {
         int result = 0;
@@ -119,7 +119,7 @@ public static class Utils {
         }
         return result;
     }
-    
+
     public static bool TryParseInt32(this string value, out int result) {
         result = 0;
         bool isNegative = false;
@@ -137,7 +137,7 @@ public static class Utils {
         if(isNegative) result = -result;
         return true;
     }
-    
+
     public static bool TryParseUInt32(this string value, out uint result) {
         result = 0;
         int i = 0;
@@ -150,7 +150,7 @@ public static class Utils {
         }
         return true;
     }
-    
+
     public static bool TryParseInt64(this string value, out long result) {
         result = 0;
         bool isNegative = false;
@@ -168,7 +168,7 @@ public static class Utils {
         if(isNegative) result = -result;
         return true;
     }
-    
+
     public static bool TryParseUInt64(this string value, out ulong result) {
         result = 0;
         int i = 0;
@@ -181,4 +181,121 @@ public static class Utils {
         }
         return true;
     }
+
+    public static string GetNumberStringFast<T>(this T eEnum) where T : struct, Enum {
+        return 
+#if NET35
+            eEnum.GetNumberStringCustom();
+#else
+            eEnum.GetNumberString();
+#endif
+    }
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern bool HasAnyFlags<T>(this T flags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern bool HasAnyFlags<T>(this T flags, T otherFlags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern bool HasAllFlags<T>(this T flags, T otherFlags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern T ToggleFlags<T>(this T flags, T otherFlags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern T CommonFlags<T>(this T flags, T otherFlags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern T CombineFlags<T>(this T flags, T otherFlags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern T RemoveFlags<T>(this T flags, T otherFlags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern int AsInteger<T>(this T flags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern uint AsUnsignedInteger<T>(this T flags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern long AsLong<T>(this T flags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern ulong AsUnsignedLong<T>(this T flags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern char AsChar<T>(this T flags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern float AsFloat<T>(this T flags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern double AsDouble<T>(this T flags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern T2 As<T, T2>(this T flags) where T : struct where T2 : struct;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern T As<T>(this object value);
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern bool Equal<T>(this T flags, T otherFlags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern bool LessThan<T>(this T flags, T otherFlags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern bool LessThanUnsigned<T>(this T flags, T otherFlags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern bool GreaterThan<T>(this T flags, T otherFlags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern bool GreaterThanUnsigned<T>(this T flags, T otherFlags) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern int BitCount<T>(this T eEnum) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern int[] GetBitLocations<T>(this T eEnum) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern int GetSize<T>() where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern string GetOrDefault<T>(string[] array, T eEnum, int length) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern string GetOrDefault4<T>(string[] array, T eEnum, int length) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern string GetOrDefault8<T>(string[] array, T eEnum, int length) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern string GetOrNull<T>(string[] array, T eEnum, int length) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern string GetOrNull4<T>(string[] array, T eEnum, int length) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern string GetOrNull8<T>(string[] array, T eEnum, int length) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern T[] GetSystemEnumValues<T>() where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern string GetNumberStringCustom<T>(this T eEnum) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern string GetNumberString<T>(this T eEnum) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern T ParseAsNumber<T>(this string value) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern bool TryParseAsNumber<T>(this string value, out T result) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern T GetZero<T>();
 }

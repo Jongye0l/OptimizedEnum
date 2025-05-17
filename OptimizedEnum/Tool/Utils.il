@@ -1,8 +1,4 @@
-.assembly extern mscorlib { }
-.assembly extern OptimizedEnum { }
-.assembly OptimizedEnum_IL { }
-
-.class public abstract sealed auto ansi beforefieldinit OptimizedEnum.Tool.ILUtils extends [mscorlib]System.Object {
+.class public abstract sealed auto ansi beforefieldinit OptimizedEnum.Tool.Utils extends [mscorlib]System.Object {
     .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
 
     .method public hidebysig static bool HasAnyFlags<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags') cil managed {
@@ -267,7 +263,7 @@ Bit8:
         .maxstack 4
         .locals init (int32[] bits, int32 count, int32 subValue)
         ldarg.0
-        call int32 OptimizedEnum.Tool.ILUtils::BitCount<!!T>(!!T)
+        call int32 OptimizedEnum.Tool.Utils::BitCount<!!T>(!!T)
         newarr [mscorlib]System.Int32
         stloc.0
         ldc.i4.0
@@ -327,10 +323,10 @@ EndRepeat:
         ceq
         brtrue Bit8
         
-        call string OptimizedEnum.Tool.ILUtils::GetOrDefault4<!!T>(string[], !!T, int32)
+        call string OptimizedEnum.Tool.Utils::GetOrDefault4<!!T>(string[], !!T, int32)
         ret
 Bit8:
-        call string OptimizedEnum.Tool.ILUtils::GetOrDefault8<!!T>(string[], !!T, int32)
+        call string OptimizedEnum.Tool.Utils::GetOrDefault8<!!T>(string[], !!T, int32)
         ret
     }
 
@@ -348,7 +344,7 @@ Bit8:
 
 SkipGetValue:
         ldarg.1
-        call string OptimizedEnum.Tool.ILUtils::GetNumberString<!!T>(!!T)
+        call string OptimizedEnum.Tool.Utils::GetNumberString<!!T>(!!T)
         ret
     }
 
@@ -368,7 +364,7 @@ SkipGetValue:
 
 SkipGetValue:
         ldarg.1
-        call string OptimizedEnum.Tool.ILUtils::GetNumberString<!!T>(!!T)
+        call string OptimizedEnum.Tool.Utils::GetNumberString<!!T>(!!T)
         ret
     }
 
@@ -383,10 +379,10 @@ SkipGetValue:
         ceq
         brtrue Bit8
         
-        call string OptimizedEnum.Tool.ILUtils::GetOrNull4<!!T>(string[], !!T, int32)
+        call string OptimizedEnum.Tool.Utils::GetOrNull4<!!T>(string[], !!T, int32)
         ret
 Bit8:
-        call string OptimizedEnum.Tool.ILUtils::GetOrNull8<!!T>(string[], !!T, int32)
+        call string OptimizedEnum.Tool.Utils::GetOrNull8<!!T>(string[], !!T, int32)
         ret
     }
 
@@ -434,7 +430,7 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig static string GetNumberString<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
+    .method public hidebysig static string GetNumberStringCustom<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
         .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 2
         ldarg.0
@@ -454,6 +450,31 @@ IsLong:
         ret
 IsULong:
         call string [OptimizedEnum]OptimizedEnum.Tool.Utils::UInt64ToString(uint64)
+        ret
+    }
+
+    .method public hidebysig static string GetNumberString<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 2
+        ldarga.s eEnum
+        ldsfld valuetype [OptimizedEnum]OptimizedEnum.DataType class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::dataType
+        switch (IsInt, IsUInt, IsLong, IsULong)
+        pop
+        ldarg.0
+        ldc.i4.1
+        newobj instance void System.String::.ctor(char, int32)
+        ret
+IsInt:
+        call instance string [mscorlib]System.Int32::ToString()
+        ret
+IsUInt:
+        call instance string [mscorlib]System.UInt32::ToString()
+        ret
+IsLong:
+        call instance string [mscorlib]System.Int64::ToString()
+        ret
+IsULong:
+        call instance string [mscorlib]System.UInt64::ToString()
         ret
     }
 

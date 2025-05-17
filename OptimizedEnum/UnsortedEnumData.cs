@@ -14,7 +14,7 @@ class UnsortedEnumData<T> : EnumData<T> where T : struct, Enum {
 
     public override string GetString(object eEnum) {
         T value = (T) eEnum;
-        return dictionary[value] ?? value.GetNumberString();
+        return dictionary[value] ?? value.GetNumberStringFast();
     }
     
     public override string GetName(object eEnum) {
