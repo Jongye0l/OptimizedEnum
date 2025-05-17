@@ -1,6 +1,6 @@
 ﻿namespace OptimizedEnum;
 
-public enum DataType {
+enum DataType {
     Int,
     Unsigned,
     Long,

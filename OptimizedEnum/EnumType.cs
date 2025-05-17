@@ -1,6 +1,6 @@
 ﻿namespace OptimizedEnum;
 
-public enum EnumType {
+enum EnumType {
     Sorted,
     Unsorted,
     Flag
