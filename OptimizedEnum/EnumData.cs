@@ -52,7 +52,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         }
         Values = list.array;
         AllFlags = allFlags;
-        if(typeof(T).GetCustomAttribute(typeof(FlagsAttribute)) != null) {
+        if(typeof(T).GetCustomAttributes(typeof(FlagsAttribute), false).Length > 0) {
             FlagEnumData<T>.Setup(fields);
             Instance = new FlagEnumData<T>();
             enumType = EnumType.Flag;

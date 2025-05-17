@@ -10,3 +10,6 @@ obj/
 
 # Library
 packages/
+
+# Sign key
+*.snk

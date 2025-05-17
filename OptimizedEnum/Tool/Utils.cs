@@ -8,7 +8,7 @@ public static class Utils {
     public static double Log2(double value) {
         return Math.Log(value) / _log2;
     }
-
+#if NET35
     public static string Int32ToString(this int value) {
         if(value == 0) return "0";
         bool isNegative = value < 0;
@@ -58,6 +58,7 @@ public static class Utils {
         }
         return new string(buffer, i, 20 - i);
     }
+#endif
 
     public static int ParseInt32(this string value) {
         int result = 0;

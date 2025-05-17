@@ -1,3 +1,7 @@
+.assembly extern mscorlib { }
+.assembly extern OptimizedEnum { }
+.assembly OptimizedEnum_IL { }
+
 .class public abstract sealed auto ansi beforefieldinit OptimizedEnum.Tool.ILUtils extends [mscorlib]System.Object {
     .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
 
