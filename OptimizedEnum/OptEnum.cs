@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using OptimizedEnum.Tool;
 
 namespace OptimizedEnum;
@@ -95,7 +96,13 @@ public static class OptEnum {
     }
 
     private static void CheckType(Type type) {
-        if(!type.IsEnum) throw new ArgumentException($"Type {type} is not an enum.");
+        if(
+#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
+            type.GetTypeInfo().BaseType != typeof(Enum)
+#else
+            !type.IsEnum
+#endif
+            ) throw new ArgumentException($"Type {type} is not an enum.");
     }
 
     public static string GetName(object eEnum) => GetName(eEnum.GetType(), eEnum);

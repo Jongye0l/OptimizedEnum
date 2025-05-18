@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using OptimizedEnum.Tool;
 
@@ -29,6 +30,22 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
     public static readonly bool HasZero;
 
     static EnumData() {
+#if NETSTANDARD1_0
+        List<FieldInfo> fieldList = typeof(T).GetRuntimeFields().ToList();
+        Type fieldType = null;
+        foreach(FieldInfo fieldInfo in fieldList) {
+            if(fieldInfo.Name != "value__") continue;
+            fieldType = fieldInfo.FieldType;
+            fieldList.Remove(fieldInfo);
+            break;
+        }
+        dataType = fieldType == typeof(sbyte) || fieldType == typeof(short) || fieldType == typeof(int) ? DataType.Int :
+            fieldType == typeof(long) ? DataType.Long :
+            fieldType == typeof(byte) || fieldType == typeof(ushort) || fieldType == typeof(uint) ? DataType.Unsigned :
+            fieldType == typeof(ulong) ? DataType.UnsignedLong :
+            fieldType == typeof(char) ? DataType.Char : throw new NotSupportedException($"Enum type {typeof(T)} is not supported.");
+        FieldInfo[] fields = fieldList.ToArray();
+#else
         dataType = Type.GetTypeCode(typeof(T)) switch {
             TypeCode.Char => DataType.Char,
             TypeCode.SByte or TypeCode.Int16 or TypeCode.Int32 => DataType.Int,
@@ -37,7 +54,13 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             TypeCode.UInt64 => DataType.UnsignedLong,
             _ => throw new NotSupportedException($"Enum type {typeof(T)} is not supported.")
         };
-        FieldInfo[] fields = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
+        FieldInfo[] fields =
+#if NETSTANDARD1_5
+            typeof(T).GetTypeInfo().GetFields(BindingFlags.Public | BindingFlags.Static);
+#else
+            typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
+#endif
+#endif
         T allFlags = Utils.GetZero<T>();
         int count = fields.Length;
         SortedList<T> list = new(count);
@@ -52,7 +75,15 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         }
         Values = list.array;
         AllFlags = allFlags;
-        if(typeof(T).GetCustomAttributes(typeof(FlagsAttribute), false).Length > 0) {
+        if(
+#if NETCOREAPP1_0
+            ((ICustomAttributeProvider) typeof(T)).GetCustomAttributes(typeof(FlagsAttribute), true)
+#elif NETSTANDARD1_0 || NETSTANDARD1_5
+            typeof(T).GetTypeInfo().GetCustomAttributes(typeof(FlagsAttribute)).ToArray()
+#else
+            typeof(T).GetCustomAttributes(typeof(FlagsAttribute), false)
+#endif
+               .Length > 0) {
             FlagEnumData<T>.Setup(fields);
             Instance = new FlagEnumData<T>();
             enumType = EnumType.Flag;

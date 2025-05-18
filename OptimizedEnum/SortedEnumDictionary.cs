@@ -25,7 +25,15 @@ struct SortedEnumDictionary {
             if(array[mid].Key < hash) left = mid + 1;
             else right = mid - 1;
         }
-        return EnumDataType.MakeGenericType(key).GetField("Instance", BindingFlags.Public | BindingFlags.Static).GetValue(null).As<EnumData>();
+        return EnumDataType.MakeGenericType(key).
+#if NETSTANDARD1_0
+            GetRuntimeField("Instance")
+#elif NETSTANDARD1_5
+            GetTypeInfo().GetField("Instance", BindingFlags.Public | BindingFlags.Static)
+#else
+            GetField("Instance", BindingFlags.Public | BindingFlags.Static)
+#endif
+            .GetValue(null).As<EnumData>();
     }
 
     public void Add(Type key, EnumData value) {
