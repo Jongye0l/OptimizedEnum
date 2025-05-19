@@ -588,15 +588,29 @@ IsULong:
     }
 
     .method public hidebysig static !!T GetZero<T>() cil managed {
-        .maxstack 3
-        ldc.i4.0
+        .maxstack 2
         sizeof !!T
         ldc.i4.8
         ceq
-        brfalse SkipConv
+        brtrue IsLong
 
+        call !!T OptimizedEnum.Tool.Utils::GetZero4<!!T>()
+        ret
+IsLong:
+        call !!T OptimizedEnum.Tool.Utils::GetZero8<!!T>()
+        ret
+    }
+
+    .method private hidebysig static !!T GetZero4<T>() cil managed {
+        .maxstack 1
+        ldc.i4.0
+        ret
+    }
+
+    .method private hidebysig static !!T GetZero8<T>() cil managed {
+        .maxstack 1
+        ldc.i4.0
         conv.i8
-SkipConv:
         ret
     }
 }
