@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net20;net35;netcoreapp1.0;netcoreapp2.0;net5.0;netstandard1.0;netstandard1.5;netstandard2.0;</TargetFrameworks>
+    <TargetFrameworks>net20;net35;netcoreapp1.0;netcoreapp2.0;net5.0;netstandard1.0;netstandard1.5;netstandard2.0</TargetFrameworks>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
     <VersionPrefix>1.0.0.0</VersionPrefix>
     <PackageVersion>1.0.0.0</PackageVersion>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Jongyeol</Authors>
     <Company>Jongyeol</Company>
     <Description>OptimizedEnum is an optimized library for faster and more efficient Enum operations</Description>
@@ -14,7 +14,6 @@
     <PackageId>OptimizedEnum</PackageId>
     <PackageTags>enum flag optimized fast</PackageTags>
     <PackageProjectUrl>https://github.com/Jongye0l/OptimizedEnum</PackageProjectUrl>
-    <PackageLicenseExpression>BSD 3-Clause</PackageLicenseExpression>
     <PublishRepositoryUrl>True</PublishRepositoryUrl>
     <RootNamespace>OptimizedEnum</RootNamespace>
     <AssemblyName>OptimizedEnum</AssemblyName>
@@ -23,8 +22,18 @@
     <DelaySign>False</DelaySign>
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AssemblySignKey>OptimizedEnumKey.snk</AssemblySignKey>
+    <AssemblyOriginatorKeyFile>OptimizedEnumKey.snk</AssemblyOriginatorKeyFile>
     <IlasmPath>C:\Windows\Microsoft.NET\Framework\v4.0.30319\ilasm</IlasmPath>
+    <Title>OptimizedEnum</Title>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/Jongye0l/OptimizedEnum</RepositoryUrl>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Core" Version="3.5.21022.801" Condition="'$(TargetFramework)' == 'net20'" />
