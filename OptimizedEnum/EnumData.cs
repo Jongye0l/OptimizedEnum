@@ -28,7 +28,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
     public static readonly T AllFlags;
     public static readonly T[] Values;
     public static readonly bool HasZero;
-    public static readonly bool IsUnsigned;
+    public static readonly bool LowNotUnsigned;
 
     static EnumData() {
 #if NETSTANDARD1_0
@@ -62,7 +62,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
 #endif
 #endif
-        IsUnsigned = (dataType & DataType.Unsigned) == DataType.Unsigned;
+        LowNotUnsigned = dataType == DataType.Unsigned && Utils.GetSize<T>() < 4;
         T allFlags = Utils.GetZero<T>();
         int count = fields.Length;
         SortedList<T> list = new(count);
@@ -76,7 +76,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             else if(value.BitCount() == 1) allFlags = allFlags.CombineFlags(value);
         }
         Values = list.array;
-        AllFlags = allFlags.AsUnsigned();
+        AllFlags = allFlags;
         if(
 #if NETCOREAPP1_0
             ((ICustomAttributeProvider) typeof(T)).GetCustomAttributes(typeof(FlagsAttribute), true)

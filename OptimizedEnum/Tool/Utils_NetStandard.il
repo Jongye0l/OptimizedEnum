@@ -130,17 +130,61 @@
 
     .method public hidebysig static float32 AsFloatUnsigned<valuetype .ctor (class [netstandard]System.Enum, class [netstandard]System.ValueType) T>(!!T 'flags') cil managed {
         .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
-        .maxstack 1
+        .maxstack 3
         ldarg.0
+        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::LowNotUnsigned
+        brfalse Skip
+        
+        call float32 OptimizedEnum.Tool.Utils::AsFloatUnsigned0<!!T>(!!T)
+        ret
+Skip:
         conv.r.un
+        ret
+    }
+
+    .method public hidebysig static float32 AsFloatUnsigned0<valuetype .ctor (class [netstandard]System.Enum, class [netstandard]System.ValueType) T>(!!T 'flags') cil managed {
+        .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 3
+        ldarg.0
+        sizeof !!T
+        ldc.i4.1
+        beq IsByte
+        conv.u2
+        conv.r4
+        ret
+IsByte:
+        conv.u1
+        conv.r4
         ret
     }
 
     .method public hidebysig static float64 AsDoubleUnsigned<valuetype .ctor (class [netstandard]System.Enum, class [netstandard]System.ValueType) T>(!!T 'flags') cil managed {
         .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
-        .maxstack 1
+        .maxstack 3
         ldarg.0
+        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::LowNotUnsigned
+        brfalse Skip
+
+        call float64 OptimizedEnum.Tool.Utils::AsDoubleUnsigned0<!!T>(!!T)
+        ret
+Skip:
         conv.r.un
+        conv.r8
+        ret
+    }
+
+    .method private hidebysig static float64 AsDoubleUnsigned0<valuetype .ctor (class [netstandard]System.Enum, class [netstandard]System.ValueType) T>(!!T 'flags') cil managed {
+        .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 3
+        ldarg.0
+        sizeof !!T
+        ldc.i4.1
+        beq IsByte
+        conv.u2
+        conv.r8
+        ret
+IsByte:
+        conv.u1
         conv.r8
         ret
     }
@@ -149,12 +193,9 @@
         .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 3
         ldarg.0
-        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::IsUnsigned
-        brtrue Skip
+        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::LowNotUnsigned
+        brfalse Skip
 
-        sizeof !!T
-        ldc.i4.4
-        bge Skip
         call !!T OptimizedEnum.Tool.Utils::AsUnsigned0<!!T>(!!T)
 Skip:
         ret
@@ -238,8 +279,7 @@ IsByte:
         .maxstack 2
         sizeof !!T
         ldc.i4.8
-        ceq
-        brtrue Bit8
+        beq Bit8
 
         ldarg.0
         call int32 OptimizedEnum.Tool.Utils::BitCount4<!!T>(!!T)
@@ -254,6 +294,21 @@ Bit8:
         .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 3
         ldarg.0
+        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::LowNotUnsigned
+        brfalse Skip
+        
+        sizeof !!T
+        ldc.i4.1
+        beq IsByte
+        sizeof !!T
+        ldc.i4.2
+        beq IsShort
+IsByte:
+        conv.u1
+        br Skip
+IsShort:
+        conv.u2
+Skip:
         dup
         ldc.i4.1
         shr
@@ -383,8 +438,7 @@ EndRepeat:
 
         sizeof !!T
         ldc.i4.8
-        ceq
-        brtrue Bit8
+        beq Bit8
         
         call string OptimizedEnum.Tool.Utils::GetOrDefault4<!!T>(string[], !!T, int32)
         ret
@@ -439,8 +493,7 @@ SkipGetValue:
 
         sizeof !!T
         ldc.i4.8
-        ceq
-        brtrue Bit8
+        beq Bit8
         
         call string OptimizedEnum.Tool.Utils::GetOrNull4<!!T>(string[], !!T, int32)
         ret
@@ -620,8 +673,7 @@ IsULong:
         .maxstack 2
         sizeof !!T
         ldc.i4.8
-        ceq
-        brtrue IsLong
+        beq IsLong
 
         call !!T OptimizedEnum.Tool.Utils::GetZero4<!!T>()
         ret
