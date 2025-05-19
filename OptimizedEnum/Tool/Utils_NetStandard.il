@@ -1,6 +1,4 @@
 .class public abstract sealed auto ansi beforefieldinit OptimizedEnum.Tool.Utils extends [netstandard]System.Object {
-    .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
-
     .method public hidebysig static bool HasAnyFlags<valuetype .ctor (class [netstandard]System.Enum, class [netstandard]System.ValueType) T>(!!T 'flags') cil managed {
         .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 2
