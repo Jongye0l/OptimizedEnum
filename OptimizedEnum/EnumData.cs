@@ -73,7 +73,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             string name = fields[i].Name;
             NameDictionary.Add(name, value);
             if(value.AsLong() == 0) HasZero = true;
-            else allFlags = allFlags.CombineFlags(value);
+            else if(value.BitCount() == 1) allFlags = allFlags.CombineFlags(value);
         }
         Values = list.array;
         AllFlags = allFlags;
