@@ -114,27 +114,33 @@
 
     .method public hidebysig static float32 AsFloat<valuetype .ctor (class [netstandard]System.Enum, class [netstandard]System.ValueType) T>(!!T 'flags') cil managed {
         .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
-        .maxstack 2
+        .maxstack 1
         ldarg.0
-        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::IsUnsigned
-        brfalse SkipConv
-        conv.r.un
-        ret
-SkipConv:
         conv.r4
         ret
     }
 
     .method public hidebysig static float64 AsDouble<valuetype .ctor (class [netstandard]System.Enum, class [netstandard]System.ValueType) T>(!!T 'flags') cil managed {
         .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
-        .maxstack 2
+        .maxstack 1
         ldarg.0
-        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::IsUnsigned
-        brfalse SkipConv
-        conv.r.un
         conv.r8
         ret
-SkipConv:
+    }
+
+    .method public hidebysig static float32 AsFloatUnsigned<valuetype .ctor (class [netstandard]System.Enum, class [netstandard]System.ValueType) T>(!!T 'flags') cil managed {
+        .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 1
+        ldarg.0
+        conv.r.un
+        ret
+    }
+
+    .method public hidebysig static float64 AsDoubleUnsigned<valuetype .ctor (class [netstandard]System.Enum, class [netstandard]System.ValueType) T>(!!T 'flags') cil managed {
+        .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 1
+        ldarg.0
+        conv.r.un
         conv.r8
         ret
     }

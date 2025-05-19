@@ -12,7 +12,7 @@ public static class OptEnum {
             EnumType.Flag => FlagEnumData<T>.dictionary != null && eEnum.BitCount() > 1        ? FlagEnumData<T>.dictionary[eEnum] ?? eEnum.GetNumberStringFast() :
                              eEnum.AsLong() == 0                                               ? FlagEnumData<T>.zeroString :
                              !EnumData<T>.AllFlags.HasAllFlags(eEnum) || eEnum.BitCount() != 1 ? eEnum.GetNumberStringFast() :
-                             eEnum.AsLong() == 1                                               ? FlagEnumData<T>.FlagEnums[0] : FlagEnumData<T>.FlagEnums[(int) Utils.Log2(eEnum.AsDouble())],
+                             eEnum.AsLong() == 1                                               ? FlagEnumData<T>.FlagEnums[0] : FlagEnumData<T>.FlagEnums[(int) Utils.Log2(eEnum.AsDoubleUnsigned())],
             _ => throw new NotSupportedException()
         };
     }

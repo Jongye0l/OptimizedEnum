@@ -294,6 +294,20 @@ public static class Utils {
 #else
     [MethodImpl(MethodImplOptions.ForwardRef)]
 #endif
+    public static extern float AsFloatUnsigned<T>(this T flags) where T : struct, Enum;
+
+#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
+    [MethodImpl((MethodImplOptions) 16)]
+#else
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+#endif
+    public static extern double AsDoubleUnsigned<T>(this T flags) where T : struct, Enum;
+
+#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
+    [MethodImpl((MethodImplOptions) 16)]
+#else
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+#endif
     public static extern T2 As<T, T2>(this T flags) where T : struct where T2 : struct;
 
 #if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
