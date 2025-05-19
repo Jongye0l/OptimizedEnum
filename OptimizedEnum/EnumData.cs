@@ -92,24 +92,29 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             return;
         }
         bool[] checkField = new bool[fields.Length];
-        List<uint> overflowField = [];
         bool outOfRange = false;
         bool isSorted = true;
         int length = fields.Length;
         int realCount = 0;
         if(Utils.GetSize<T>() == 8) {
+            List<ulong> overflowField = [];
             ulong lengthLong = (ulong) length;
             for(uint i = 0; i < length; i++) {
                 ulong v = ((T) fields[i].GetValue(null)).As<T, ulong>();
                 if(lengthLong <= v) {
                     outOfRange = true;
-                    break;
+                    if(!overflowField.Contains(v)) {
+                        overflowField.Add(v);
+                        realCount++;
+                    }
+                } else {
+                    if(!checkField[v]) realCount++;
+                    checkField[v] = true;
+                    if(i != v) isSorted = false;
                 }
-                if(!checkField[v]) realCount++;
-                checkField[v] = true;
-                if(i != v) isSorted = false;
             }
         } else {
+            List<uint> overflowField = [];
             for(uint i = 0; i < length; i++) {
                 uint v = ((T) fields[i].GetValue(null)).As<T, uint>();
                 if(length <= v) {
