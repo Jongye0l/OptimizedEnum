@@ -76,7 +76,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             else if(value.BitCount() == 1) allFlags = allFlags.CombineFlags(value);
         }
         Values = list.array;
-        AllFlags = allFlags;
+        AllFlags = allFlags.AsUnsigned();
         if(
 #if NETCOREAPP1_0
             ((ICustomAttributeProvider) typeof(T)).GetCustomAttributes(typeof(FlagsAttribute), true)

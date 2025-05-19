@@ -145,6 +145,35 @@
         ret
     }
 
+    .method public hidebysig static !!T AsUnsigned<valuetype .ctor (class [netstandard]System.Enum, class [netstandard]System.ValueType) T>(!!T 'flags') cil managed {
+        .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 3
+        ldarg.0
+        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::IsUnsigned
+        brtrue Skip
+
+        sizeof !!T
+        ldc.i4.4
+        bge Skip
+        call !!T OptimizedEnum.Tool.Utils::AsUnsigned0<!!T>(!!T)
+Skip:
+        ret
+    }
+
+    .method private hidebysig static !!T AsUnsigned0<valuetype .ctor (class [netstandard]System.Enum, class [netstandard]System.ValueType) T>(!!T 'flags') cil managed {
+        .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 3
+        ldarg.0
+        sizeof !!T
+        ldc.i4.1
+        beq IsByte
+        conv.u2
+        ret
+IsByte:
+        conv.u1
+        ret
+    }
+
     .method public hidebysig static !!T2 As<valuetype .ctor (class [netstandard]System.ValueType) T, valuetype .ctor (class [netstandard]System.ValueType) T2>(!!T 'flags') cil managed {
         .custom instance void [netstandard]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 1
