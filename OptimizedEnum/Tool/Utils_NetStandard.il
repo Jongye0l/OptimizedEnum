@@ -132,6 +132,8 @@ SkipConv:
         ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::IsUnsigned
         brfalse SkipConv
         conv.r.un
+        conv.r8
+        ret
 SkipConv:
         conv.r8
         ret
