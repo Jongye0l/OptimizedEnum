@@ -189,17 +189,28 @@
 
     .method public hidebysig static int32 BitCount<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
         .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
-        .maxstack 3
-        ldarg.0
-        dup
-        ldc.i4.1
-        shr
-
+        .maxstack 2
         sizeof !!T
         ldc.i4.8
         ceq
         brtrue Bit8
 
+        ldarg.0
+        call int32 OptimizedEnum.Tool.Utils::BitCount4<!!T>(!!T)
+        ret
+Bit8:
+        ldarg.0
+        call int32 OptimizedEnum.Tool.Utils::BitCount8<!!T>(!!T)
+        ret
+    }
+
+    .method private hidebysig static int32 BitCount4<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 3
+        ldarg.0
+        dup
+        ldc.i4.1
+        shr
         ldc.i4 0x55555555
         and
         sub
@@ -226,7 +237,15 @@
         ldc.i4.s 24
         shr
         ret
-Bit8:
+    }
+
+    .method private hidebysig static int32 BitCount8<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
+        .custom instance void [mscorlib]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .maxstack 3
+        ldarg.0
+        dup
+        ldc.i4.1
+        shr
         ldc.i8 0x5555555555555555
         and
         sub
@@ -328,7 +347,7 @@ Bit8:
         ret
     }
 
-    .method public hidebysig static string GetOrDefault4<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+    .method private hidebysig static string GetOrDefault4<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
         .maxstack 2
         ldarg.1
         ldarg.2
@@ -346,7 +365,7 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig static string GetOrDefault8<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+    .method private hidebysig static string GetOrDefault8<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
         .maxstack 2
         ldarg.1
         ldarg.2
@@ -384,7 +403,7 @@ Bit8:
         ret
     }
 
-    .method public hidebysig static string GetOrNull4<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+    .method private hidebysig static string GetOrNull4<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
         .maxstack 2
         ldarg.1
         ldarg.2
@@ -401,7 +420,7 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig static string GetOrNull8<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+    .method private hidebysig static string GetOrNull8<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
         .maxstack 2
         ldarg.1
         ldarg.2

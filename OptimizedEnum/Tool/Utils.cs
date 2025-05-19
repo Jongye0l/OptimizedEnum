@@ -371,35 +371,7 @@ public static class Utils {
 #else
     [MethodImpl(MethodImplOptions.ForwardRef)]
 #endif
-    public static extern string GetOrDefault4<T>(string[] array, T eEnum, int length) where T : struct, Enum;
-
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
-    public static extern string GetOrDefault8<T>(string[] array, T eEnum, int length) where T : struct, Enum;
-
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
     public static extern string GetOrNull<T>(string[] array, T eEnum, int length) where T : struct, Enum;
-
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
-    public static extern string GetOrNull4<T>(string[] array, T eEnum, int length) where T : struct, Enum;
-
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
-    public static extern string GetOrNull8<T>(string[] array, T eEnum, int length) where T : struct, Enum;
 
 #if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
     [MethodImpl((MethodImplOptions) 16)]
