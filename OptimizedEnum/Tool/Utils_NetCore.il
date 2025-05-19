@@ -114,16 +114,25 @@
 
     .method public hidebysig static float32 AsFloat<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>(!!T 'flags') cil managed {
         .custom instance void [System.Runtime]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
-        .maxstack 1
+        .maxstack 2
         ldarg.0
+        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::IsUnsigned
+        brfalse SkipConv
+        conv.r.un
+        ret
+SkipConv:
         conv.r4
         ret
     }
 
     .method public hidebysig static float64 AsDouble<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>(!!T 'flags') cil managed {
         .custom instance void [System.Runtime]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
-        .maxstack 1
+        .maxstack 2
         ldarg.0
+        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::IsUnsigned
+        brfalse SkipConv
+        conv.r.un
+SkipConv:
         conv.r8
         ret
     }

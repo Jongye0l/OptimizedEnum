@@ -28,6 +28,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
     public static readonly T AllFlags;
     public static readonly T[] Values;
     public static readonly bool HasZero;
+    public static readonly bool IsUnsigned;
 
     static EnumData() {
 #if NETSTANDARD1_0
@@ -61,6 +62,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
 #endif
 #endif
+        IsUnsigned = (dataType & DataType.Unsigned) == DataType.Unsigned;
         T allFlags = Utils.GetZero<T>();
         int count = fields.Length;
         SortedList<T> list = new(count);

@@ -16,7 +16,11 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         T allFlags = AllFlags;
         if(allFlags.AsLong() == 0) flagEnums = [];
         else if(allFlags.AsLong() == 1) flagEnums = new string[1];
-        else flagEnums = new string[(int) Utils.Log2(allFlags.AsDouble()) + 1];
+        else {
+            double logValue = allFlags.AsDouble();
+            logValue = Utils.Log2(logValue);
+            flagEnums = new string[(int) logValue + 1];
+        }
         FlagEnums = flagEnums;
         int dictCount = fields.Length - allFlags.BitCount() - (HasZero ? 1 : 0);
         if(dictCount != 0) dictionary = new SortedIndexedDictionary<T>(dictCount);
