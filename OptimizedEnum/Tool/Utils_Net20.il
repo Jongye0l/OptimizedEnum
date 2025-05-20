@@ -117,7 +117,7 @@
     .method public hidebysig static float32 AsFloatUnsigned<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags') cil managed {
         .maxstack 3
         ldarg.0
-        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::LowNotUnsigned
+        ldsfld bool class OptimizedEnum.EnumData`1<!!T>::LowNotUnsigned
         brfalse Skip
         
         call float32 OptimizedEnum.Tool.Utils::AsFloatUnsigned0<!!T>(!!T)
@@ -145,7 +145,7 @@ IsByte:
     .method public hidebysig static float64 AsDoubleUnsigned<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags') cil managed {
         .maxstack 3
         ldarg.0
-        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::LowNotUnsigned
+        ldsfld bool class OptimizedEnum.EnumData`1<!!T>::LowNotUnsigned
         brfalse Skip
 
         call float64 OptimizedEnum.Tool.Utils::AsDoubleUnsigned0<!!T>(!!T)
@@ -174,7 +174,7 @@ IsByte:
     .method public hidebysig static !!T AsUnsigned<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags') cil managed {
         .maxstack 3
         ldarg.0
-        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::LowNotUnsigned
+        ldsfld bool class OptimizedEnum.EnumData`1<!!T>::LowNotUnsigned
         brfalse Skip
 
         call !!T OptimizedEnum.Tool.Utils::AsUnsigned0<!!T>(!!T)
@@ -265,7 +265,7 @@ Bit8:
     .method private hidebysig static int32 BitCount4<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
         .maxstack 3
         ldarg.0
-        ldsfld bool class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::LowNotUnsigned
+        ldsfld bool class OptimizedEnum.EnumData`1<!!T>::LowNotUnsigned
         brfalse Skip
         
         sizeof !!T
@@ -518,29 +518,29 @@ SkipGetValue:
     .method public hidebysig static string GetNumberStringCustom<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
         .maxstack 2
         ldarg.0
-        ldsfld valuetype [OptimizedEnum]OptimizedEnum.DataType class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::dataType
+        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::dataType
         switch (IsInt, IsUInt, IsLong, IsULong)
         ldc.i4.1
         newobj instance void System.String::.ctor(char, int32)
         ret
 IsInt:
-        call string [OptimizedEnum]OptimizedEnum.Tool.Utils::Int32ToString(int32)
+        call string OptimizedEnum.Tool.Utils::Int32ToString(int32)
         ret
 IsUInt:
-        call string [OptimizedEnum]OptimizedEnum.Tool.Utils::UInt32ToString(uint32)
+        call string OptimizedEnum.Tool.Utils::UInt32ToString(uint32)
         ret
 IsLong:
-        call string [OptimizedEnum]OptimizedEnum.Tool.Utils::Int64ToString(int64)
+        call string OptimizedEnum.Tool.Utils::Int64ToString(int64)
         ret
 IsULong:
-        call string [OptimizedEnum]OptimizedEnum.Tool.Utils::UInt64ToString(uint64)
+        call string OptimizedEnum.Tool.Utils::UInt64ToString(uint64)
         ret
     }
 
     .method public hidebysig static string GetNumberString<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
         .maxstack 2
         ldarga.s eEnum
-        ldsfld valuetype [OptimizedEnum]OptimizedEnum.DataType class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::dataType
+        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::dataType
         switch (IsInt, IsUInt, IsLong, IsULong)
         pop
         ldarg.0
@@ -564,7 +564,7 @@ IsULong:
     .method public hidebysig static !!T ParseAsNumber<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string 'value') cil managed {
         .maxstack 2
         ldarg.0
-        ldsfld valuetype [OptimizedEnum]OptimizedEnum.DataType class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::dataType
+        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::dataType
         switch (IsInt, IsUInt, IsLong, IsULong)
 
         call instance int32 [mscorlib]System.String::get_Length()
@@ -582,16 +582,16 @@ SkipThrow:
         call instance char [mscorlib]System.String::get_Chars(int32)
         ret
 IsInt:
-        call int32 [OptimizedEnum]OptimizedEnum.Tool.Utils::ParseInt32(string)
+        call int32 OptimizedEnum.Tool.Utils::ParseInt32(string)
         ret
 IsUInt:
-        call uint32[OptimizedEnum]OptimizedEnum.Tool.Utils::ParseUInt32(string)
+        call uint32 OptimizedEnum.Tool.Utils::ParseUInt32(string)
         ret
 IsLong:
-        call int64 [OptimizedEnum]OptimizedEnum.Tool.Utils::ParseInt64(string)
+        call int64 OptimizedEnum.Tool.Utils::ParseInt64(string)
         ret
 IsULong:
-        call uint64 [OptimizedEnum]OptimizedEnum.Tool.Utils::ParseUInt64(string)
+        call uint64 OptimizedEnum.Tool.Utils::ParseUInt64(string)
         ret
     }
 
@@ -599,7 +599,7 @@ IsULong:
         .maxstack 4
         ldarg.0
         ldarg.1
-        ldsfld valuetype [OptimizedEnum]OptimizedEnum.DataType class [OptimizedEnum]OptimizedEnum.EnumData`1<!!T>::dataType
+        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::dataType
         switch (IsInt, IsUInt, IsLong, IsULong)
 
         ldarg.0
@@ -621,16 +621,16 @@ SkipThrow:
         ldc.i4.1
         ret
 IsInt:
-        call bool [OptimizedEnum]OptimizedEnum.Tool.Utils::TryParseInt32(string, int32&)
+        call bool OptimizedEnum.Tool.Utils::TryParseInt32(string, int32&)
         ret
 IsUInt:
-        call bool [OptimizedEnum]OptimizedEnum.Tool.Utils::TryParseUInt32(string, uint32&)
+        call bool OptimizedEnum.Tool.Utils::TryParseUInt32(string, uint32&)
         ret
 IsLong:
-        call bool [OptimizedEnum]OptimizedEnum.Tool.Utils::TryParseInt64(string, int64&)
+        call bool OptimizedEnum.Tool.Utils::TryParseInt64(string, int64&)
         ret
 IsULong:
-        call bool [OptimizedEnum]OptimizedEnum.Tool.Utils::TryParseUInt64(string, uint64&)
+        call bool OptimizedEnum.Tool.Utils::TryParseUInt64(string, uint64&)
         ret
     }
 
