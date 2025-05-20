@@ -4,10 +4,27 @@ using System.Runtime.CompilerServices;
 namespace OptimizedEnum.Tool;
 
 public static class Utils {
+#if NETCOREAPP2_0
+    private static readonly float _log2 = MathF.Log(2);
+#elif !NETCOREAPP3_0 && !NET5_0
     private static readonly double _log2 = Math.Log(2);
-
+#endif
+    public static float Log2(float value) {
+#if NETCOREAPP2_0
+        return MathF.Log(value) / _log2;
+#elif NETCOREAPP3_0 || NET5_0
+        return MathF.Log2(value);
+#else
+        return (float) (Math.Log(value) / _log2);
+#endif
+    }
+    
     public static double Log2(double value) {
+#if NETCOREAPP3_0 || NET5_0
+        return Math.Log2(value);
+#else
         return Math.Log(value) / _log2;
+#endif
     }
 
     public static string Int32ToString(this int value) {

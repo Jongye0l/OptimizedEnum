@@ -16,7 +16,15 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         T allFlags = AllFlags;
         if(allFlags.AsLong() == 0) flagEnums = [];
         else if(allFlags.AsLong() == 1) flagEnums = new string[1];
-        else flagEnums = new string[(int) Utils.Log2(allFlags.AsDoubleUnsigned()) + 1];
+        else flagEnums = new string[(int)
+#if NETCOREAPP2_0
+                                    Utils.Log2(allFlags.AsFloatUnsigned())
+#elif NETCOREAPP3_0 || NET5_0
+                                    MathF.Log2(allFlags.AsFloatUnsigned())
+#else
+                                    Utils.Log2(allFlags.AsDoubleUnsigned())
+#endif
+                                    + 1];
         FlagEnums = flagEnums;
         int dictCount = fields.Length - allFlags.BitCount() - (HasZero ? 1 : 0);
         if(dictCount != 0) dictionary = new SortedIndexedDictionary<T>(dictCount);
@@ -26,7 +34,15 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
             if(value.AsLong() == 0) zeroString ??= name;
             else if(value.AsLong() == 1) flagEnums[0] ??= name;
             else {
-                if(value.BitCount() == 1) flagEnums[(int) Utils.Log2(value.AsDoubleUnsigned())] ??= name;
+                if(value.BitCount() == 1) flagEnums[(int) 
+#if NETCOREAPP2_0
+                    Utils.Log2(allFlags.AsFloatUnsigned())
+#elif NETCOREAPP3_0 || NET5_0
+                    MathF.Log2(allFlags.AsFloatUnsigned())
+#else
+                    Utils.Log2(allFlags.AsDoubleUnsigned())
+#endif
+                ] ??= name;
                 else dictionary.Add(value, name);
             }
         }
@@ -39,11 +55,19 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         string str = dictionary[eEnum];
         if(str != null) return str;
         StringBuilder sb = new();
-        SortedDoubleDictionary sortedList = new(bitCount);
+        SortedFloatDictionary sortedList = new(bitCount);
         for(int i = dictionary.array.Length - 1; i >= 0; i--) {
             KeyValuePair<T, string> valuePair = dictionary.array[i];
             if(!eEnum.HasAllFlags(valuePair.Key)) continue;
-            sortedList.Add(Utils.Log2(valuePair.Key.AsDoubleUnsigned()), valuePair.Value);
+            sortedList.Add(
+#if NETCOREAPP2_0
+                Utils.Log2(valuePair.Key.AsFloatUnsigned())
+#elif NETCOREAPP3_0 || NET5_0
+                MathF.Log2(valuePair.Key.AsFloatUnsigned())
+#else
+                Utils.Log2(valuePair.Key.AsDoubleUnsigned())
+#endif
+                , valuePair.Value);
             eEnum = eEnum.RemoveFlags(valuePair.Key);
         }
         if(!AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberStringFast();
@@ -62,7 +86,15 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         if(eEnum.AsLong() == 0) return zeroString;
         if(!AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberStringFast();
         if(eEnum.AsLong() == 1) return FlagEnums[0];
-        if(eEnum.BitCount() == 1) return FlagEnums[(int) Utils.Log2(eEnum.AsDoubleUnsigned())];
+        if(eEnum.BitCount() == 1) return FlagEnums[(int) 
+#if NETCOREAPP2_0
+                Utils.Log2(eEnum.AsFloatUnsigned())
+#elif NETCOREAPP3_0 || NET5_0
+                MathF.Log2(eEnum.AsFloatUnsigned())
+#else
+                Utils.Log2(eEnum.AsDoubleUnsigned())
+#endif
+        ];
         StringBuilder sb = new();
         foreach(int i in eEnum.GetBitLocations()) sb.Append(FlagEnums[i]).Append(", ");
         sb.Length -= 2;
@@ -70,7 +102,15 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
     }
 
     public static bool IsDefined(T eEnum) {
-        return eEnum.AsLong() == 0 ? HasZero : eEnum.BitCount() == 1 ? FlagEnums[(int) Utils.Log2(eEnum.AsDoubleUnsigned())] != null : dictionary?[eEnum] != null;
+        return eEnum.AsLong() == 0 ? HasZero : eEnum.BitCount() == 1 ? FlagEnums[(int)
+#if NETCOREAPP2_0
+                                                                           Utils.Log2(eEnum.AsFloatUnsigned())
+#elif NETCOREAPP3_0 || NET5_0
+                                                                           MathF.Log2(eEnum.AsFloatUnsigned())
+#else
+                                                                           Utils.Log2(eEnum.AsDoubleUnsigned())
+#endif
+                                                                       ] != null : dictionary?[eEnum] != null;
     }
 
     public override string GetString(object eEnum) {
@@ -82,7 +122,15 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         return dictionary != null && value.BitCount() > 1            ? dictionary[value] ?? value.GetNumberStringFast() :
                value.AsLong() == 0                                   ? zeroString :
                !AllFlags.HasAllFlags(value) || value.BitCount() != 1 ? value.GetNumberStringFast() :
-               value.AsLong() == 1                                   ? FlagEnums[0] : FlagEnums[(int) Utils.Log2(value.AsDoubleUnsigned())];
+               value.AsLong() == 1                                   ? FlagEnums[0] : FlagEnums[(int) 
+#if NETCOREAPP2_0
+                                                                           Utils.Log2(value.AsFloatUnsigned())
+#elif NETCOREAPP3_0 || NET5_0
+                                                                           MathF.Log2(value.AsFloatUnsigned())
+#else
+                                                                           Utils.Log2(value.AsDoubleUnsigned())
+#endif
+                                                                       ];
 
     }
 
