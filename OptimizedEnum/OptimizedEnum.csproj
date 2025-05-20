@@ -42,7 +42,7 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
     <IL Include="Tool\Utils_Net35.il" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' or '$(TargetFramework)' == 'netcoreapp2.0' or '$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'netstandard1.0' or '$(TargetFramework)' == 'netstandard1.5'">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' or '$(TargetFramework)' == 'netcoreapp2.0' or '$(TargetFramework)' == 'netcoreapp3.0' or '$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'netstandard1.0' or '$(TargetFramework)' == 'netstandard1.5'">
     <IL Include="Tool\Utils_NetCore.il" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
