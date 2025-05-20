@@ -29,17 +29,18 @@
     <RepositoryUrl>https://github.com/Jongye0l/OptimizedEnum</RepositoryUrl>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <NoWarn>$(NoWarn);NU1903;NETSDK1215</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Core" Version="3.5.21022.801" Condition="'$(TargetFramework)' == 'net20'" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
+    <IL Include="Tool\Utils_Net20.il" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net20' or '$(TargetFramework)' == 'net35' ">
-    <IL Include="Tool\Utils_NetFramework.il" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
+    <IL Include="Tool\Utils_Net35.il" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' or '$(TargetFramework)' == 'netcoreapp2.0' or '$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'netstandard1.0' or '$(TargetFramework)' == 'netstandard1.5'">
     <IL Include="Tool\Utils_NetCore.il" />

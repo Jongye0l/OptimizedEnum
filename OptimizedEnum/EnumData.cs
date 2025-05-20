@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+#if NETSTANDARD1_0 || NETSTANDARD1_5
 using System.Linq;
+#endif
 using System.Reflection;
 using OptimizedEnum.Tool;
 
