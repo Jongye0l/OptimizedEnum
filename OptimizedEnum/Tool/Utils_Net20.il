@@ -518,7 +518,7 @@ SkipGetValue:
     .method public hidebysig static string GetNumberStringCustom<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
         .maxstack 2
         ldarg.0
-        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::dataType
+        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
         switch (IsInt, IsUInt, IsLong, IsULong)
         ldc.i4.1
         newobj instance void System.String::.ctor(char, int32)
@@ -540,7 +540,7 @@ IsULong:
     .method public hidebysig static string GetNumberString<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
         .maxstack 2
         ldarga.s eEnum
-        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::dataType
+        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
         switch (IsInt, IsUInt, IsLong, IsULong)
         pop
         ldarg.0
@@ -564,7 +564,7 @@ IsULong:
     .method public hidebysig static !!T ParseAsNumber<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string 'value') cil managed {
         .maxstack 2
         ldarg.0
-        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::dataType
+        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
         switch (IsInt, IsUInt, IsLong, IsULong)
 
         call instance int32 [mscorlib]System.String::get_Length()
@@ -599,7 +599,7 @@ IsULong:
         .maxstack 4
         ldarg.0
         ldarg.1
-        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::dataType
+        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
         switch (IsInt, IsUInt, IsLong, IsULong)
 
         ldarg.0

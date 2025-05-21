@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using OptimizedEnum.Tool;
@@ -7,9 +6,9 @@ using OptimizedEnum.Tool;
 namespace OptimizedEnum;
 
 class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
-    public static SortedIndexedDictionary<T>? dictionary;
+    public static SortedIndexedDictionary<T>? Dictionary;
     public static string[] FlagEnums;
-    public static string zeroString;
+    public static string ZeroString;
 
     public static void Setup(FieldInfo[] fields) {
         string[] flagEnums;
@@ -27,13 +26,13 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
                                     + 1];
         FlagEnums = flagEnums;
         int dictCount = fields.Length - allFlags.BitCount() - (HasZero ? 1 : 0);
-        if(dictCount != 0) dictionary = new SortedIndexedDictionary<T>(dictCount);
+        if(dictCount != 0) Dictionary = new SortedIndexedDictionary<T>(dictCount);
         foreach(FieldInfo field in fields) {
 #pragma warning disable CS8605 // Unboxing a possibly null value.
             T value = (T) field.GetValue(null);
 #pragma warning restore CS8605 // Unboxing a possibly null value.
             string name = field.Name;
-            if(value.AsLong() == 0) zeroString = name;
+            if(value.AsLong() == 0) ZeroString = name;
             else if(value.AsLong() == 1) flagEnums[0] = name;
             else {
                 if(value.BitCount() == 1) flagEnums[(int) 
@@ -45,10 +44,10 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
                     Utils.Log2(value.AsDoubleUnsigned())
 #endif
                 ] = name;
-                else dictionary.Add(value, name);
+                else Dictionary.Add(value, name);
             }
         }
-        zeroString ??= "0";
+        ZeroString ??= "0";
     }
 
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
@@ -56,12 +55,12 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
     public static string GetStringDict(T eEnum) {
         int bitCount = eEnum.BitCount();
         if(bitCount <= 1) return GetStringNormal(eEnum);
-        string str = dictionary[eEnum];
+        string str = Dictionary[eEnum];
         if(str != null) return str;
         StringBuilder sb = new();
         SortedFloatDictionary sortedList = new(bitCount);
-        for(int i = dictionary.count - 1; i >= 0; i--) {
-            T key = dictionary.keys[i];
+        for(int i = Dictionary.Count - 1; i >= 0; i--) {
+            T key = Dictionary.Keys[i];
             if(!eEnum.HasAllFlags(key)) continue;
             sortedList.Add(
 #if NETCOREAPP2_0
@@ -71,17 +70,17 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 #else
                 Utils.Log2(key.AsDoubleUnsigned())
 #endif
-                , dictionary.values[i]);
+                , Dictionary.Values[i]);
             eEnum = eEnum.RemoveFlags(key);
         }
         if(!AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberStringFast();
         int index = 0;
         if(eEnum.AsLong() != 0)
             foreach(int i in eEnum.GetBitLocations()) {
-                while(sortedList.count > index && sortedList.array[index].Key < i) sb.Append(sortedList.array[index++].Value).Append(", ");
+                while(sortedList.count > index && sortedList.Array[index].Key < i) sb.Append(sortedList.Array[index++].Value).Append(", ");
                 sb.Append(FlagEnums[i]).Append(", ");
             }
-        while(sortedList.count > index) sb.Append(sortedList.array[index++].Value).Append(", ");
+        while(sortedList.count > index) sb.Append(sortedList.Array[index++].Value).Append(", ");
         sb.Length -= 2;
         return sb.ToString();
     }
@@ -89,7 +88,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
     public static string GetStringNormal(T eEnum) {
-        if(eEnum.AsLong() == 0) return zeroString;
+        if(eEnum.AsLong() == 0) return ZeroString;
         if(!AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberStringFast();
         if(eEnum.AsLong() == 1) return FlagEnums[0];
         if(eEnum.BitCount() == 1) return FlagEnums[(int) 
@@ -116,17 +115,17 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 #else
                                                                            Utils.Log2(eEnum.AsDoubleUnsigned())
 #endif
-                                                                       ] != null : dictionary?[eEnum] != null;
+                                                                       ] != null : Dictionary?[eEnum] != null;
     }
 
     public override string GetString(object eEnum) {
-        return dictionary == null ? GetStringNormal((T) eEnum) : GetStringDict((T) eEnum);
+        return Dictionary == null ? GetStringNormal((T) eEnum) : GetStringDict((T) eEnum);
     }
     
     public override string? GetName(object eEnum) {
         T value = (T) eEnum;
-        return value.AsLong() == 0                                   ? zeroString :
-               !AllFlags.HasAllFlags(value) || value.BitCount() != 1 ? dictionary?[value] :
+        return value.AsLong() == 0                                   ? ZeroString :
+               !AllFlags.HasAllFlags(value) || value.BitCount() != 1 ? Dictionary?[value] :
                value.AsLong() == 1                                   ? FlagEnums[0] : FlagEnums[(int) 
 #if NETCOREAPP2_0
                                                                            Utils.Log2(value.AsFloatUnsigned())

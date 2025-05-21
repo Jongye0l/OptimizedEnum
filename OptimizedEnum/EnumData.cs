@@ -25,8 +25,8 @@ abstract class EnumData {
 
 abstract class EnumData<T> : EnumData where T : struct, Enum {
     public static EnumData<T> Instance;
-    public static readonly DataType dataType;
-    public static readonly EnumType enumType;
+    public static readonly DataType DataType;
+    public static readonly EnumType EnumType;
     public static SortedNameDictionary<T> NameDictionary;
     public static readonly T AllFlags;
     public static readonly string[] Names;
@@ -44,14 +44,14 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             fieldList.Remove(fieldInfo);
             break;
         }
-        dataType = fieldType == typeof(sbyte) || fieldType == typeof(short) || fieldType == typeof(int) ? DataType.Int :
+        DataType = fieldType == typeof(sbyte) || fieldType == typeof(short) || fieldType == typeof(int) ? DataType.Int :
             fieldType == typeof(long) ? DataType.Long :
             fieldType == typeof(byte) || fieldType == typeof(ushort) || fieldType == typeof(uint) ? DataType.Unsigned :
             fieldType == typeof(ulong) ? DataType.UnsignedLong :
             fieldType == typeof(char) ? DataType.Char : throw new NotSupportedException($"Enum type {typeof(T)} is not supported.");
         FieldInfo[] fields = fieldList.ToArray();
 #else
-        dataType = Type.GetTypeCode(typeof(T)) switch {
+        DataType = Type.GetTypeCode(typeof(T)) switch {
             TypeCode.Char => DataType.Char,
             TypeCode.SByte or TypeCode.Int16 or TypeCode.Int32 => DataType.Int,
             TypeCode.Int64 => DataType.Long,
@@ -66,7 +66,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
 #endif
 #endif
-        LowNotUnsigned = dataType == DataType.Unsigned && Utils.GetSize<T>() < 4;
+        LowNotUnsigned = DataType == DataType.Unsigned && Utils.GetSize<T>() < 4;
         T allFlags = Utils.GetZero<T>();
         int count = fields.Length;
         SortedIndexedDictionary<T> dictionary = new(count);
@@ -79,8 +79,8 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             if(value.AsLong() == 0) HasZero = true;
             else if(value.BitCount() == 1) allFlags = allFlags.CombineFlags(value);
         }
-        Values = dictionary.keys;
-        Names = dictionary.values;
+        Values = dictionary.Keys;
+        Names = dictionary.Values;
         AllFlags = allFlags;
         if(
 #if NETCOREAPP1_0
@@ -93,7 +93,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
                .Length > 0) {
             FlagEnumData<T>.Setup(fields);
             Instance = new FlagEnumData<T>();
-            enumType = EnumType.Flag;
+            EnumType = EnumType.Flag;
             return;
         }
         bool[] checkField = new bool[fields.Length];
@@ -154,7 +154,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
 SortedSkip:
         UnsortedEnumData<T>.Setup(fields, realCount);
         Instance = new UnsortedEnumData<T>();
-        enumType = EnumType.Unsorted;
+        EnumType = EnumType.Unsorted;
     }
 
     protected EnumData() {

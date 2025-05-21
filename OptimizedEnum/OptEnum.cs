@@ -8,11 +8,11 @@ namespace OptimizedEnum;
 
 public static class OptEnum {
     public static string? GetName<T>(this T eEnum) where T : struct, Enum {
-        return EnumData<T>.enumType switch {
+        return EnumData<T>.EnumType switch {
             EnumType.Sorted => Utils.GetOrNull(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
-            EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum],
-            EnumType.Flag => eEnum.AsLong() == 0                                               ? FlagEnumData<T>.HasZero ? FlagEnumData<T>.zeroString : null :
-                             !EnumData<T>.AllFlags.HasAllFlags(eEnum) || eEnum.BitCount() != 1 ? FlagEnumData<T>.dictionary?[eEnum] :
+            EnumType.Unsorted => UnsortedEnumData<T>.Dictionary[eEnum],
+            EnumType.Flag => eEnum.AsLong() == 0                                               ? FlagEnumData<T>.HasZero ? FlagEnumData<T>.ZeroString : null :
+                             !EnumData<T>.AllFlags.HasAllFlags(eEnum) || eEnum.BitCount() != 1 ? FlagEnumData<T>.Dictionary?[eEnum] :
                              eEnum.AsLong() == 1                                               ? FlagEnumData<T>.FlagEnums[0] : FlagEnumData<T>.FlagEnums[(int) 
 #if NETCOREAPP2_0
                                                                                                      Utils.Log2(eEnum.AsFloatUnsigned())
@@ -27,16 +27,16 @@ public static class OptEnum {
     }
 
     public static string GetString<T>(this T eEnum) where T : struct, Enum {
-        return EnumData<T>.enumType switch {
+        return EnumData<T>.EnumType switch {
             EnumType.Sorted => Utils.GetOrDefault(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
-            EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum] ?? eEnum.GetNumberStringFast(),
-            EnumType.Flag => FlagEnumData<T>.dictionary == null ? FlagEnumData<T>.GetStringNormal(eEnum) : FlagEnumData<T>.GetStringDict(eEnum),
+            EnumType.Unsorted => UnsortedEnumData<T>.Dictionary[eEnum] ?? eEnum.GetNumberStringFast(),
+            EnumType.Flag => FlagEnumData<T>.Dictionary == null ? FlagEnumData<T>.GetStringNormal(eEnum) : FlagEnumData<T>.GetStringDict(eEnum),
             _ => throw new NotSupportedException()
         };
     }
 
     public static T Parse<T>(string str) where T : struct, Enum {
-        if(EnumData<T>.enumType == EnumType.Flag) {
+        if(EnumData<T>.EnumType == EnumType.Flag) {
             string[] split = str.Split(',');
             if(split.Length > 1) {
                 T value = Utils.GetZero<T>();
@@ -48,7 +48,7 @@ public static class OptEnum {
     }
 
     public static T Parse<T>(string str, bool ignoreCase) where T : struct, Enum {
-        if(EnumData<T>.enumType == EnumType.Flag) {
+        if(EnumData<T>.EnumType == EnumType.Flag) {
             if(!ignoreCase) return Parse<T>(str);
             string[] split = str.Split(',');
             if(split.Length > 1) {
@@ -61,7 +61,7 @@ public static class OptEnum {
     }
 
     public static bool TryParse<T>(string str, out T eEnum) where T : struct, Enum {
-        if(EnumData<T>.enumType == EnumType.Flag) {
+        if(EnumData<T>.EnumType == EnumType.Flag) {
             string[] split = str.Split(',');
             if(split.Length > 1) {
                 eEnum = Utils.GetZero<T>();
@@ -76,7 +76,7 @@ public static class OptEnum {
     }
 
     public static bool TryParse<T>(string str, bool ignoreCase, out T eEnum) where T : struct, Enum {
-        if(EnumData<T>.enumType == EnumType.Flag) {
+        if(EnumData<T>.EnumType == EnumType.Flag) {
             if(!ignoreCase) return TryParse(str, out eEnum);
             string[] split = str.Split(',');
             if(split.Length > 1) {
@@ -100,9 +100,9 @@ public static class OptEnum {
     }
 
     public static bool IsDefined<T>(T eEnum) where T : struct, Enum {
-        return EnumData<T>.enumType switch {
+        return EnumData<T>.EnumType switch {
             EnumType.Sorted => (uint) eEnum.AsInteger() < SortedEnumData<T>.Length,
-            EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum] != null,
+            EnumType.Unsorted => UnsortedEnumData<T>.Dictionary[eEnum] != null,
             EnumType.Flag => FlagEnumData<T>.IsDefined(eEnum),
             _ => throw new NotSupportedException()
         };
