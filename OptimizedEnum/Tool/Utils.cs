@@ -409,7 +409,7 @@ public static class Utils {
 #else
     [MethodImpl(MethodImplOptions.ForwardRef)]
 #endif
-    public static extern string GetOrNull<T>(string[] array, T eEnum, int length) where T : struct, Enum;
+    public static extern string? GetOrNull<T>(string[] array, T eEnum, int length) where T : struct, Enum;
 
 #if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
     [MethodImpl((MethodImplOptions) 16)]
