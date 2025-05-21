@@ -5,7 +5,7 @@ using OptimizedEnum.Tool;
 namespace OptimizedEnum;
 
 class SortedEnumData<T> : EnumData<T> where T : struct, Enum {
-    public static string[] Names;
+    public new static string[] Names;
     public static int Length;
 
     public static void Setup(FieldInfo[] fields, bool isSorted, int count) {

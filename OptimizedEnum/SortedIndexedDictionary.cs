@@ -4,14 +4,12 @@ using OptimizedEnum.Tool;
 
 namespace OptimizedEnum;
 
-class SortedIndexedDictionary<T>(T[] keys, string[] values, int count)
-    where T : struct, Enum
-{
+class SortedIndexedDictionary<T>(T[] keys, string[] values, int count) where T : struct, Enum {
     public readonly T[] keys = keys;
     public readonly string[] values = values;
     public int count = count;
     
-    public SortedIndexedDictionary(int count) : this(new T[count], new string[count], count) { }
+    public SortedIndexedDictionary(int count) : this(new T[count], new string[count], 0) { }
 
     public string this[T key] {
         get {

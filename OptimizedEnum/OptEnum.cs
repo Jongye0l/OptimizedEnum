@@ -1,5 +1,7 @@
 ﻿using System;
+#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
 using System.Reflection;
+#endif
 using OptimizedEnum.Tool;
 
 namespace OptimizedEnum;
@@ -94,6 +96,10 @@ public static class OptEnum {
         return EnumData<T>.Values;
     }
 
+    public static string[] GetNames<T>() where T : struct, Enum {
+        return EnumData<T>.Names;
+    }
+
     public static bool IsDefined<T>(T eEnum) where T : struct, Enum {
         return EnumData<T>.enumType switch {
             EnumType.Sorted => (uint) eEnum.AsInteger() < SortedEnumData<T>.Length,
@@ -154,6 +160,11 @@ public static class OptEnum {
     public static Array GetValues(Type type) {
         CheckType(type);
         return EnumData.EnumDataDictionary.GetOrCreate(type).ValuesArray;
+    }
+
+    public static string[] GetNames(Type type) {
+        CheckType(type);
+        return EnumData.EnumDataDictionary.GetOrCreate(type).NamesArray;
     }
     
     public static bool IsDefined(object eEnum) => IsDefined(eEnum.GetType(), eEnum);
