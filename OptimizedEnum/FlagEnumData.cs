@@ -31,8 +31,8 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         foreach(FieldInfo field in fields) {
             T value = (T) field.GetValue(null);
             string name = field.Name;
-            if(value.AsLong() == 0) zeroString ??= name;
-            else if(value.AsLong() == 1) flagEnums[0] ??= name;
+            if(value.AsLong() == 0) zeroString = name;
+            else if(value.AsLong() == 1) flagEnums[0] = name;
             else {
                 if(value.BitCount() == 1) flagEnums[(int) 
 #if NETCOREAPP2_0
@@ -42,7 +42,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 #else
                     Utils.Log2(value.AsDoubleUnsigned())
 #endif
-                ] ??= name;
+                ] = name;
                 else dictionary.Add(value, name);
             }
         }
