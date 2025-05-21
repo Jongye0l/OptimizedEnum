@@ -146,12 +146,12 @@ public static class OptEnum {
         return EnumData.EnumDataDictionary.GetOrCreate(type).ParseObj(str, ignoreCase);
     }
     
-    public static bool TryParse(Type type, string str, out object eEnum) {
+    public static bool TryParse(Type type, string str, out object? eEnum) {
         CheckType(type);
         return EnumData.EnumDataDictionary.GetOrCreate(type).TryParse(str, out eEnum);
     }
     
-    public static bool TryParse(Type type, string str, bool ignoreCase, out object eEnum) {
+    public static bool TryParse(Type type, string str, bool ignoreCase, out object? eEnum) {
         CheckType(type);
         return EnumData.EnumDataDictionary.GetOrCreate(type).TryParse(str, ignoreCase, out eEnum);
     }

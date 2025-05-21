@@ -10,15 +10,17 @@ namespace OptimizedEnum;
 
 abstract class EnumData {
     public static SortedEnumDictionary EnumDataDictionary = new();
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     public Array ValuesArray;
     public string[] NamesArray;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     public abstract string GetString(object eEnum);
     public abstract string? GetName(object eEnum);
     public abstract bool IsDefined(object eEnum);
     public abstract object ParseObj(string str);
     public abstract object ParseObj(string str, bool ignoreCase);
-    public abstract bool TryParse(string str, out object eEnum);
-    public abstract bool TryParse(string str, bool ignoreCase, out object eEnum);
+    public abstract bool TryParse(string str, out object? eEnum);
+    public abstract bool TryParse(string str, bool ignoreCase, out object? eEnum);
     public abstract bool HasAllFlag(object eEnum1, object eEnum2);
     public abstract bool HasAnyFlag(object eEnum1, object eEnum2);
 }
@@ -37,7 +39,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
     static EnumData() {
 #if NETSTANDARD1_0
         List<FieldInfo> fieldList = typeof(T).GetRuntimeFields().ToList();
-        Type fieldType = null;
+        Type? fieldType = null;
         foreach(FieldInfo fieldInfo in fieldList) {
             if(fieldInfo.Name != "value__") continue;
             fieldType = fieldInfo.FieldType;
@@ -72,7 +74,9 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         SortedIndexedDictionary<T> dictionary = new(count);
         NameDictionary = new SortedNameDictionary<T>(count);
         for(int i = 0; i < count; i++) {
+#pragma warning disable CS8605 // Unboxing a possibly null value.
             T value = (T) fields[i].GetValue(null);
+#pragma warning restore CS8605 // Unboxing a possibly null value.
             string name = fields[i].Name;
             dictionary.Add(value, name);
             NameDictionary.Add(name, value);
@@ -105,7 +109,9 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             List<ulong> overflowField = [];
             ulong lengthLong = (ulong) length;
             for(uint i = 0; i < length; i++) {
+#pragma warning disable CS8605 // Unboxing a possibly null value.
                 ulong v = ((T) fields[i].GetValue(null)).As<T, ulong>();
+#pragma warning restore CS8605 // Unboxing a possibly null value.
                 if(lengthLong <= v) {
                     outOfRange = true;
                     if(!overflowField.Contains(v)) {
@@ -121,7 +127,9 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         } else {
             List<uint> overflowField = [];
             for(uint i = 0; i < length; i++) {
+#pragma warning disable CS8605 // Unboxing a possibly null value.
                 uint v = ((T) fields[i].GetValue(null)).As<T, uint>();
+#pragma warning restore CS8605 // Unboxing a possibly null value.
                 if(length <= v) {
                     outOfRange = true;
                     if(!overflowField.Contains(v)) {
@@ -171,7 +179,7 @@ SortedSkip:
         return ignoreCase ? NameDictionary.GetValueIgnoreCase(str) : NameDictionary.GetValue(str);
     }
     
-    public override bool TryParse(string str, out object eEnum) {
+    public override bool TryParse(string str, out object? eEnum) {
         if(NameDictionary.TryGetValue(str, out T value)) {
             eEnum = value;
             return true;
@@ -180,7 +188,7 @@ SortedSkip:
         return false;
     }
     
-    public override bool TryParse(string str, bool ignoreCase, out object eEnum) {
+    public override bool TryParse(string str, bool ignoreCase, out object? eEnum) {
         if(ignoreCase) {
             if(NameDictionary.TryGetValueIgnoreCase(str, out T value)) {
                 eEnum = value;

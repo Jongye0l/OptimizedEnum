@@ -6,9 +6,11 @@ using OptimizedEnum.Tool;
 namespace OptimizedEnum;
 
 class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     public static SortedIndexedDictionary<T>? Dictionary;
     public static string[] FlagEnums;
     public static string ZeroString;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     public static void Setup(FieldInfo[] fields) {
         string[] flagEnums;
@@ -44,7 +46,9 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
                     Utils.Log2(value.AsDoubleUnsigned())
 #endif
                 ] = name;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 else Dictionary.Add(value, name);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             }
         }
         ZeroString ??= "0";
