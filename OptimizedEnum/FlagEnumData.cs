@@ -36,11 +36,11 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
             else {
                 if(value.BitCount() == 1) flagEnums[(int) 
 #if NETCOREAPP2_0
-                    Utils.Log2(allFlags.AsFloatUnsigned())
+                    Utils.Log2(value.AsFloatUnsigned())
 #elif NETCOREAPP3_0 || NET5_0
-                    MathF.Log2(allFlags.AsFloatUnsigned())
+                    MathF.Log2(value.AsFloatUnsigned())
 #else
-                    Utils.Log2(allFlags.AsDoubleUnsigned())
+                    Utils.Log2(value.AsDoubleUnsigned())
 #endif
                 ] ??= name;
                 else dictionary.Add(value, name);
@@ -131,7 +131,6 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
                                                                            Utils.Log2(value.AsDoubleUnsigned())
 #endif
                                                                        ];
-
     }
 
     public override bool IsDefined(object eEnum) => IsDefined((T) eEnum);
