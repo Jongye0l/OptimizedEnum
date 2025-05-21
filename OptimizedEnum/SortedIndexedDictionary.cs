@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using OptimizedEnum.Tool;
 
 namespace OptimizedEnum;
@@ -11,7 +10,7 @@ class SortedIndexedDictionary<T>(T[] keys, string[] values, int count) where T :
     
     public SortedIndexedDictionary(int count) : this(new T[count], new string[count], 0) { }
 
-    public string this[T key] {
+    public string? this[T key] {
         get {
             int left = 0;
             int right = count - 1;

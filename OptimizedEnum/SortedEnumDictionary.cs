@@ -25,6 +25,8 @@ struct SortedEnumDictionary {
             if(array[mid].Key < hash) left = mid + 1;
             else right = mid - 1;
         }
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8604 // Possible null reference argument.
         return EnumDataType.MakeGenericType(key).
 #if NETSTANDARD1_0
             GetRuntimeField("Instance")
@@ -34,6 +36,8 @@ struct SortedEnumDictionary {
             GetField("Instance", BindingFlags.Public | BindingFlags.Static)
 #endif
             .GetValue(null).As<EnumData>();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning restore CS8604 // Possible null reference argument.
     }
 
     public void Add(Type key, EnumData value) {

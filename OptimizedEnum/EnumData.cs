@@ -13,7 +13,7 @@ abstract class EnumData {
     public Array ValuesArray;
     public string[] NamesArray;
     public abstract string GetString(object eEnum);
-    public abstract string GetName(object eEnum);
+    public abstract string? GetName(object eEnum);
     public abstract bool IsDefined(object eEnum);
     public abstract object ParseObj(string str);
     public abstract object ParseObj(string str, bool ignoreCase);

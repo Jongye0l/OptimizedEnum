@@ -30,6 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <NoWarn>$(NoWarn);NU1903;NETSDK1215</NoWarn>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
     <IsPackable>true</IsPackable>

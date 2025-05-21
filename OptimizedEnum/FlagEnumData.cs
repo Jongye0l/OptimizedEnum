@@ -7,7 +7,7 @@ using OptimizedEnum.Tool;
 namespace OptimizedEnum;
 
 class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
-    public static SortedIndexedDictionary<T> dictionary;
+    public static SortedIndexedDictionary<T>? dictionary;
     public static string[] FlagEnums;
     public static string zeroString;
 
@@ -29,7 +29,9 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         int dictCount = fields.Length - allFlags.BitCount() - (HasZero ? 1 : 0);
         if(dictCount != 0) dictionary = new SortedIndexedDictionary<T>(dictCount);
         foreach(FieldInfo field in fields) {
+#pragma warning disable CS8605 // Unboxing a possibly null value.
             T value = (T) field.GetValue(null);
+#pragma warning restore CS8605 // Unboxing a possibly null value.
             string name = field.Name;
             if(value.AsLong() == 0) zeroString = name;
             else if(value.AsLong() == 1) flagEnums[0] = name;
@@ -49,6 +51,8 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         zeroString ??= "0";
     }
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
     public static string GetStringDict(T eEnum) {
         int bitCount = eEnum.BitCount();
         if(bitCount <= 1) return GetStringNormal(eEnum);
@@ -81,6 +85,8 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         sb.Length -= 2;
         return sb.ToString();
     }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
     public static string GetStringNormal(T eEnum) {
         if(eEnum.AsLong() == 0) return zeroString;
@@ -117,11 +123,10 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         return dictionary == null ? GetStringNormal((T) eEnum) : GetStringDict((T) eEnum);
     }
     
-    public override string GetName(object eEnum) {
+    public override string? GetName(object eEnum) {
         T value = (T) eEnum;
-        return dictionary != null && value.BitCount() > 1            ? dictionary[value] ?? value.GetNumberStringFast() :
-               value.AsLong() == 0                                   ? zeroString :
-               !AllFlags.HasAllFlags(value) || value.BitCount() != 1 ? value.GetNumberStringFast() :
+        return value.AsLong() == 0                                   ? zeroString :
+               !AllFlags.HasAllFlags(value) || value.BitCount() != 1 ? dictionary?[value] :
                value.AsLong() == 1                                   ? FlagEnums[0] : FlagEnums[(int) 
 #if NETCOREAPP2_0
                                                                            Utils.Log2(value.AsFloatUnsigned())

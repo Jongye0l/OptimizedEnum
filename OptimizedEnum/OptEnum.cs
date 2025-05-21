@@ -7,13 +7,12 @@ using OptimizedEnum.Tool;
 namespace OptimizedEnum;
 
 public static class OptEnum {
-    public static string GetName<T>(this T eEnum) where T : struct, Enum {
+    public static string? GetName<T>(this T eEnum) where T : struct, Enum {
         return EnumData<T>.enumType switch {
             EnumType.Sorted => Utils.GetOrNull(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
             EnumType.Unsorted => UnsortedEnumData<T>.dictionary[eEnum],
-            EnumType.Flag => FlagEnumData<T>.dictionary != null && eEnum.BitCount() > 1        ? FlagEnumData<T>.dictionary[eEnum] ?? eEnum.GetNumberStringFast() :
-                             eEnum.AsLong() == 0                                               ? FlagEnumData<T>.zeroString :
-                             !EnumData<T>.AllFlags.HasAllFlags(eEnum) || eEnum.BitCount() != 1 ? eEnum.GetNumberStringFast() :
+            EnumType.Flag => eEnum.AsLong() == 0                                               ? FlagEnumData<T>.HasZero ? FlagEnumData<T>.zeroString : null :
+                             !EnumData<T>.AllFlags.HasAllFlags(eEnum) || eEnum.BitCount() != 1 ? FlagEnumData<T>.dictionary?[eEnum] :
                              eEnum.AsLong() == 1                                               ? FlagEnumData<T>.FlagEnums[0] : FlagEnumData<T>.FlagEnums[(int) 
 #if NETCOREAPP2_0
                                                                                                      Utils.Log2(eEnum.AsFloatUnsigned())
@@ -119,9 +118,9 @@ public static class OptEnum {
             ) throw new ArgumentException($"Type {type} is not an enum.");
     }
 
-    public static string GetName(object eEnum) => GetName(eEnum.GetType(), eEnum);
+    public static string? GetName(object eEnum) => GetName(eEnum.GetType(), eEnum);
 
-    public static string GetName(Type type, object eEnum) {
+    public static string? GetName(Type type, object eEnum) {
         CheckType(type);
         return EnumData.EnumDataDictionary.GetOrCreate(type).GetName(eEnum);
     }
