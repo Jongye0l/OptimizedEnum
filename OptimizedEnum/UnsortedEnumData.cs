@@ -8,7 +8,7 @@ class UnsortedEnumData<T> : EnumData<T> where T : struct, Enum {
     public static SortedIndexedDictionary<T> dictionary;
 
     public static void Setup(FieldInfo[] fields, int count) {
-        dictionary = new SortedIndexedDictionary<T>(count);
+        dictionary = count == fields.Length ? new SortedIndexedDictionary<T>(Values, Names, count) : new SortedIndexedDictionary<T>(count);
         foreach(FieldInfo field in fields) dictionary.Add((T) field.GetValue(null), field.Name);
     }
 

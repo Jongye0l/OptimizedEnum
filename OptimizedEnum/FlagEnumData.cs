@@ -56,19 +56,19 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         if(str != null) return str;
         StringBuilder sb = new();
         SortedFloatDictionary sortedList = new(bitCount);
-        for(int i = dictionary.array.Length - 1; i >= 0; i--) {
-            KeyValuePair<T, string> valuePair = dictionary.array[i];
-            if(!eEnum.HasAllFlags(valuePair.Key)) continue;
+        for(int i = dictionary.count - 1; i >= 0; i--) {
+            T key = dictionary.keys[i];
+            if(!eEnum.HasAllFlags(key)) continue;
             sortedList.Add(
 #if NETCOREAPP2_0
-                Utils.Log2(valuePair.Key.AsFloatUnsigned())
+                Utils.Log2(key.AsFloatUnsigned())
 #elif NETCOREAPP3_0 || NET5_0
-                MathF.Log2(valuePair.Key.AsFloatUnsigned())
+                MathF.Log2(key.AsFloatUnsigned())
 #else
-                Utils.Log2(valuePair.Key.AsDoubleUnsigned())
+                Utils.Log2(key.AsDoubleUnsigned())
 #endif
-                , valuePair.Value);
-            eEnum = eEnum.RemoveFlags(valuePair.Key);
+                , dictionary.values[i]);
+            eEnum = eEnum.RemoveFlags(key);
         }
         if(!AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberStringFast();
         int index = 0;

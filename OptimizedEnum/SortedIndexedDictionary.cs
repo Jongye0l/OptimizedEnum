@@ -4,9 +4,14 @@ using OptimizedEnum.Tool;
 
 namespace OptimizedEnum;
 
-class SortedIndexedDictionary<T>(int count) where T : struct, Enum {
-    public readonly KeyValuePair<T, string>[] array = new KeyValuePair<T, string>[count];
-    private int count;
+class SortedIndexedDictionary<T>(T[] keys, string[] values, int count)
+    where T : struct, Enum
+{
+    public readonly T[] keys = keys;
+    public readonly string[] values = values;
+    public int count = count;
+    
+    public SortedIndexedDictionary(int count) : this(new T[count], new string[count], count) { }
 
     public string this[T key] {
         get {
@@ -14,8 +19,8 @@ class SortedIndexedDictionary<T>(int count) where T : struct, Enum {
             int right = count - 1;
             while(left <= right) {
                 int mid = (left + right) / 2;
-                if(array[mid].Key.Equal(key)) return array[mid].Value;
-                if(array[mid].Key.LessThan(key)) left = mid + 1;
+                if(keys[mid].Equal(key)) return values[mid];
+                if(keys[mid].LessThan(key)) left = mid + 1;
                 else right = mid - 1;
             }
             return null;
@@ -27,12 +32,16 @@ class SortedIndexedDictionary<T>(int count) where T : struct, Enum {
         int right = count - 1;
         while(left <= right) {
             int mid = (left + right) / 2;
-            if(array[mid].Key.Equal(key)) return;
-            if(array[mid].Key.LessThan(key)) left = mid + 1;
+            if(keys[mid].Equal(key)) return;
+            if(keys[mid].LessThan(key)) left = mid + 1;
             else right = mid - 1;
         }
-        for(int i = count; i > left; i--) array[i] = array[i - 1];
-        array[left] = new KeyValuePair<T, string>(key, value);
+        for(int i = count; i > left; i--) {
+            keys[i] = keys[i - 1];
+            values[i] = values[i - 1];
+        }
+        keys[left] = key;
+        values[left] = value;
         count++;
     }
 }
