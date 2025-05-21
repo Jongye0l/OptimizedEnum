@@ -137,23 +137,21 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         }
         uint cur = 0;
         if(!outOfRange) {
-            if(isSorted) cur = 0;
-            else foreach(bool b in checkField) {
+            if(!isSorted) foreach(bool b in checkField) {
                 switch(cur) {
                     case 0:
                         if(!b) cur++;
                         break;
                     case 1:
-                        if(b) cur++;
+                        if(b) goto SortedSkip;
                         break;
                 }
             }
-            if(cur < 2) {
-                SortedEnumData<T>.Setup(fields, isSorted, realCount);
-                Instance = new SortedEnumData<T>();
-                return;
-            }
+            SortedEnumData<T>.Setup(fields, isSorted, realCount);
+            Instance = new SortedEnumData<T>();
+            return;
         }
+SortedSkip:
         UnsortedEnumData<T>.Setup(fields, realCount);
         Instance = new UnsortedEnumData<T>();
         enumType = EnumType.Unsorted;
