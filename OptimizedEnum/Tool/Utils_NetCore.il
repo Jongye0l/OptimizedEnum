@@ -142,7 +142,7 @@ Skip:
         ret
     }
 
-    .method public hidebysig static float32 AsFloatUnsigned0<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>(!!T 'flags') cil managed {
+    .method private hidebysig static float32 AsFloatUnsigned0<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>(!!T 'flags') cil managed {
         .custom instance void [System.Runtime]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
         .maxstack 3
         ldarg.0

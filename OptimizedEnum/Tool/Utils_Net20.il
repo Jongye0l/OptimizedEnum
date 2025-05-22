@@ -127,7 +127,7 @@ Skip:
         ret
     }
 
-    .method public hidebysig static float32 AsFloatUnsigned0<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags') cil managed {
+    .method private hidebysig static float32 AsFloatUnsigned0<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T 'flags') cil managed {
         .maxstack 3
         ldarg.0
         sizeof !!T

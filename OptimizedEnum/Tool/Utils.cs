@@ -200,256 +200,116 @@ public static class Utils {
     }
 
     public static string GetNumberStringFast<T>(this T eEnum) where T : struct, Enum {
-        return 
+        return
 #if NETCOREAPP || NET5_0_OR_GREATER
             eEnum.GetNumberString();
 #else
             eEnum.GetNumberStringCustom();
 #endif
     }
-    
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern bool HasAnyFlags<T>(this T flags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern bool HasAnyFlags<T>(this T flags, T otherFlags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern bool HasAllFlags<T>(this T flags, T otherFlags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern T ToggleFlags<T>(this T flags, T otherFlags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern T CommonFlags<T>(this T flags, T otherFlags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern T CombineFlags<T>(this T flags, T otherFlags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern T RemoveFlags<T>(this T flags, T otherFlags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern int AsInteger<T>(this T flags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern uint AsUnsignedInteger<T>(this T flags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern long AsLong<T>(this T flags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern ulong AsUnsignedLong<T>(this T flags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern char AsChar<T>(this T flags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern float AsFloat<T>(this T flags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern double AsDouble<T>(this T flags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern float AsFloatUnsigned<T>(this T flags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern double AsDoubleUnsigned<T>(this T flags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern T AsUnsigned<T>(this T flags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern T2 As<T, T2>(this T flags) where T : struct where T2 : struct;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern T As<T>(this object value);
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern bool Equal<T>(this T flags, T otherFlags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern bool LessThan<T>(this T flags, T otherFlags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern bool LessThanUnsigned<T>(this T flags, T otherFlags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern bool GreaterThan<T>(this T flags, T otherFlags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern bool GreaterThanUnsigned<T>(this T flags, T otherFlags) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern int BitCount<T>(this T eEnum) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern int[] GetBitLocations<T>(this T eEnum) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern int GetSize<T>() where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern string GetOrDefault<T>(string[] array, T eEnum, int length) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern string? GetOrNull<T>(string[] array, T eEnum, int length) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern T[] GetSystemEnumValues<T>() where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern string GetNumberStringCustom<T>(this T eEnum) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern string GetNumberString<T>(this T eEnum) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern T ParseAsNumber<T>(this string value) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern bool TryParseAsNumber<T>(this string value, out T result) where T : struct, Enum;
 
-#if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
-    [MethodImpl((MethodImplOptions) 16)]
-#else
-    [MethodImpl(MethodImplOptions.ForwardRef)]
-#endif
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern T GetZero<T>();
 }
