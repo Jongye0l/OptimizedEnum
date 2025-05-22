@@ -7,8 +7,11 @@ class SortedIndexedDictionary<T>(T[] keys, string[] values, int count) where T :
     public readonly T[] Keys = keys;
     public readonly string[] Values = values;
     public int Count = count;
-    
-    public SortedIndexedDictionary(int count) : this(new T[count], new string[count], 0) { }
+    public bool AllowDuplicates = true;
+
+    public SortedIndexedDictionary(int count) : this(new T[count], new string[count], 0) {
+        AllowDuplicates = false;
+    }
 
     public string? this[T key] {
         get {
@@ -29,9 +32,9 @@ class SortedIndexedDictionary<T>(T[] keys, string[] values, int count) where T :
         int right = Count - 1;
         while(left <= right) {
             int mid = (left + right) / 2;
-            if(Keys[mid].Equal(key)) return;
-            if(Keys[mid].LessThan(key)) left = mid + 1;
-            else right = mid - 1;
+            if(Keys[mid].GreaterThan(key)) right = mid - 1;
+            else if(AllowDuplicates && Keys[mid].Equal(key)) return;
+            else left = mid + 1;
         }
         for(int i = Count; i > left; i--) {
             Keys[i] = Keys[i - 1];
