@@ -223,7 +223,10 @@ IsByte:
     }
 
     .method public hidebysig static !!T As<T>(object 'value') cil managed {
+        .custom instance void System.Runtime.CompilerServices.NullableContextAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
         .custom instance void [System.Runtime]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .param type T
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 02 00 00 )
         .maxstack 1
         ldarg.0
         ret
@@ -378,6 +381,8 @@ Skip:
 
     .method public hidebysig static int32[] GetBitLocations<valuetype .ctor (class [System.Runtime]System.Enum) T>(!!T eEnum) cil managed {
         .custom instance void [System.Runtime]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .param [0]
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
         .maxstack 4
         .locals init (int32[] bits, int32 count, int32 subValue)
         ldarg.0
@@ -431,6 +436,11 @@ EndRepeat:
     }
 
     .method public hidebysig static string GetOrDefault<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+        .custom instance void System.Runtime.CompilerServices.NullableContextAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
+        .param type T
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 00 00 00 )
+        .param [2]
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 00 00 00 )
         .maxstack 5
         ldarg.0
         ldarg.1
@@ -486,6 +496,10 @@ SkipGetValue:
     }
 
     .method public hidebysig static string GetOrNull<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+        .param [0]
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 02 00 00 )
+        .param [1]
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
         .maxstack 5
         ldarg.0
         ldarg.1
@@ -539,6 +553,8 @@ SkipGetValue:
     }
 
     .method public hidebysig static !!T[] GetSystemEnumValues<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>() cil managed {
+        .param [0]
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8[]) = ( 01 00 02 00 00 00 01 00 00 00 )
         .maxstack 1
         ldtoken !!T
         call class [System.Runtime]System.Type [System.Runtime]System.Type::GetTypeFromHandle(valuetype [System.Runtime]System.RuntimeTypeHandle)
@@ -548,6 +564,8 @@ SkipGetValue:
 
     .method public hidebysig static string GetNumberStringCustom<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>(!!T eEnum) cil managed {
         .custom instance void [System.Runtime]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .param [0]
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
         .maxstack 2
         ldarg.0
         ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
@@ -571,6 +589,8 @@ IsULong:
 
     .method public hidebysig static string GetNumberString<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>(!!T eEnum) cil managed {
         .custom instance void [System.Runtime]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .param [0]
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
         .maxstack 2
         ldarga.s eEnum
         ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
@@ -596,6 +616,8 @@ IsULong:
 
     .method public hidebysig static !!T ParseAsNumber<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>(string 'value') cil managed {
         .custom instance void [System.Runtime]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .param [1]
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
         .maxstack 2
         ldarg.0
         ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
@@ -631,6 +653,8 @@ IsULong:
 
     .method public hidebysig static bool TryParseAsNumber<valuetype .ctor (class [System.Runtime]System.Enum) T>(string 'value', [out] !!T& result) cil managed {
         .custom instance void [System.Runtime]System.Runtime.CompilerServices.ExtensionAttribute::.ctor() = ( 01 00 00 00 )
+        .param [1]
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
         .maxstack 4
         ldarg.0
         ldarg.1
@@ -670,6 +694,9 @@ IsULong:
     }
 
     .method public hidebysig static !!T GetZero<T>() cil managed {
+        .custom instance void System.Runtime.CompilerServices.NullableContextAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
+        .param type T
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 02 00 00 )
         .maxstack 2
         sizeof !!T
         ldc.i4.8
