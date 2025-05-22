@@ -18,7 +18,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         if(allFlags.AsLong() == 0) flagEnums = [];
         else if(allFlags.AsLong() == 1) flagEnums = new string[1];
         else flagEnums = new string[(int)
-#if NETCOREAPP2_0
+#if NETCOREAPP2_0 || NETCOREAPP2_1
                                     Utils.Log2(allFlags.AsFloatUnsigned())
 #elif NETCOREAPP3_0 || NET5_0
                                     MathF.Log2(allFlags.AsFloatUnsigned())
@@ -38,7 +38,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
             else if(value.AsLong() == 1) flagEnums[0] = name;
             else {
                 if(value.BitCount() == 1) flagEnums[(int) 
-#if NETCOREAPP2_0
+#if NETCOREAPP2_0 || NETCOREAPP2_1
                     Utils.Log2(value.AsFloatUnsigned())
 #elif NETCOREAPP3_0 || NET5_0
                     MathF.Log2(value.AsFloatUnsigned())
@@ -67,7 +67,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
             T key = Dictionary.Keys[i];
             if(!eEnum.HasAllFlags(key)) continue;
             sortedList.Add(
-#if NETCOREAPP2_0
+#if NETCOREAPP2_0 || NETCOREAPP2_1
                 Utils.Log2(key.AsFloatUnsigned())
 #elif NETCOREAPP3_0 || NET5_0
                 MathF.Log2(key.AsFloatUnsigned())
@@ -96,7 +96,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         if(!AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberStringFast();
         if(eEnum.AsLong() == 1) return FlagEnums[0];
         if(eEnum.BitCount() == 1) return FlagEnums[(int) 
-#if NETCOREAPP2_0
+#if NETCOREAPP2_0 || NETCOREAPP2_1
                 Utils.Log2(eEnum.AsFloatUnsigned())
 #elif NETCOREAPP3_0 || NET5_0
                 MathF.Log2(eEnum.AsFloatUnsigned())
@@ -111,8 +111,9 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
     }
 
     public static bool IsDefined(T eEnum) {
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         return eEnum.AsLong() == 0 ? HasZero : eEnum.BitCount() == 1 ? FlagEnums[(int)
-#if NETCOREAPP2_0
+#if NETCOREAPP2_0 || NETCOREAPP2_1
                                                                            Utils.Log2(eEnum.AsFloatUnsigned())
 #elif NETCOREAPP3_0 || NET5_0
                                                                            MathF.Log2(eEnum.AsFloatUnsigned())
@@ -131,7 +132,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         return value.AsLong() == 0                                   ? ZeroString :
                !AllFlags.HasAllFlags(value) || value.BitCount() != 1 ? Dictionary?[value] :
                value.AsLong() == 1                                   ? FlagEnums[0] : FlagEnums[(int) 
-#if NETCOREAPP2_0
+#if NETCOREAPP2_0 || NETCOREAPP2_1
                                                                            Utils.Log2(value.AsFloatUnsigned())
 #elif NETCOREAPP3_0 || NET5_0
                                                                            MathF.Log2(value.AsFloatUnsigned())

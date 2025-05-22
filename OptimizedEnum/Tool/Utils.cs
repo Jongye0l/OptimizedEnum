@@ -4,13 +4,13 @@ using System.Runtime.CompilerServices;
 namespace OptimizedEnum.Tool;
 
 public static class Utils {
-#if NETCOREAPP2_0
+#if NETCOREAPP2_0 || NETCOREAPP2_1
     private static readonly float _log2 = MathF.Log(2);
 #elif !NETCOREAPP3_0 && !NET5_0
     private static readonly double _log2 = Math.Log(2);
 #endif
     public static float Log2(float value) {
-#if NETCOREAPP2_0
+#if NETCOREAPP2_0 || NETCOREAPP2_1
         return MathF.Log(value) / _log2;
 #elif NETCOREAPP3_0 || NET5_0
         return MathF.Log2(value);
@@ -18,7 +18,7 @@ public static class Utils {
         return (float) (Math.Log(value) / _log2);
 #endif
     }
-    
+
     public static double Log2(double value) {
 #if NETCOREAPP3_0 || NET5_0
         return Math.Log2(value);
@@ -198,6 +198,129 @@ public static class Utils {
         }
         return true;
     }
+#if NETCOREAPP2_1_OR_GREATER || NET5_0
+    public static int ParseInt32(this ReadOnlySpan<char> value) {
+        int result = 0;
+        bool isNegative = false;
+        int i = 0;
+        if(value[i] == '-') {
+            isNegative = true;
+            i++;
+        } else if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') throw new ArgumentException("Invalid enum value: " + new string(value));
+            result = result * 10 + (ch - '0');
+            i++;
+        }
+        return isNegative ? -result : result;
+    }
+
+    public static uint ParseUInt32(this ReadOnlySpan<char> value) {
+        uint result = 0;
+        int i = 0;
+        if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') throw new ArgumentException("Invalid enum value: " + new string(value));
+            result = result * 10 + (uint) (ch - '0');
+            i++;
+        }
+        return result;
+    }
+
+    public static long ParseInt64(this ReadOnlySpan<char> value) {
+        long result = 0;
+        bool isNegative = false;
+        int i = 0;
+        if(value[i] == '-') {
+            isNegative = true;
+            i++;
+        } else if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') throw new ArgumentException("Invalid enum value: " + new string(value));
+            result = result * 10 + (ch - '0');
+            i++;
+        }
+        return isNegative ? -result : result;
+    }
+
+    public static ulong ParseUInt64(this ReadOnlySpan<char> value) {
+        ulong result = 0;
+        int i = 0;
+        if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') throw new ArgumentException("Invalid enum value: " + new string(value));
+            result = result * 10 + (ulong) (ch - '0');
+            i++;
+        }
+        return result;
+    }
+
+    public static bool TryParseInt32(this ReadOnlySpan<char> value, out int result) {
+        result = 0;
+        bool isNegative = false;
+        int i = 0;
+        if(value[i] == '-') {
+            isNegative = true;
+            i++;
+        } else if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') return false;
+            result = result * 10 + (ch - '0');
+            i++;
+        }
+        if(isNegative) result = -result;
+        return true;
+    }
+
+    public static bool TryParseUInt32(this ReadOnlySpan<char> value, out uint result) {
+        result = 0;
+        int i = 0;
+        if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') return false;
+            result = result * 10 + (uint) (ch - '0');
+            i++;
+        }
+        return true;
+    }
+
+    public static bool TryParseInt64(this ReadOnlySpan<char> value, out long result) {
+        result = 0;
+        bool isNegative = false;
+        int i = 0;
+        if(value[i] == '-') {
+            isNegative = true;
+            i++;
+        } else if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') return false;
+            result = result * 10 + (ch - '0');
+            i++;
+        }
+        if(isNegative) result = -result;
+        return true;
+    }
+
+    public static bool TryParseUInt64(this ReadOnlySpan<char> value, out ulong result) {
+        result = 0;
+        int i = 0;
+        if(value[i] == '+') i++;
+        while(i < value.Length) {
+            char ch = value[i];
+            if(ch is < '0' or > '9') return false;
+            result = result * 10 + (ulong) (ch - '0');
+            i++;
+        }
+        return true;
+    }
+#endif
 
     public static string GetNumberStringFast<T>(this T eEnum) where T : struct, Enum {
         return
@@ -309,6 +432,16 @@ public static class Utils {
 
     [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern bool TryParseAsNumber<T>(this string value, out T result) where T : struct, Enum;
+    
+#if NETCOREAPP2_1_OR_GREATER || NET5_0
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern T ParseAsNumber<T>(this ReadOnlySpan<char> value) where T : struct, Enum;
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern bool TryParseAsNumber<T>(this ReadOnlySpan<char> value, out T result) where T : struct, Enum;
+    
+#endif
 
     [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern T GetZero<T>();

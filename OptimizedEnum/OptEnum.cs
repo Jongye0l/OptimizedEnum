@@ -14,7 +14,7 @@ public static class OptEnum {
             EnumType.Flag => eEnum.AsLong() == 0                                               ? FlagEnumData<T>.HasZero ? FlagEnumData<T>.ZeroString : null :
                              !EnumData<T>.AllFlags.HasAllFlags(eEnum) || eEnum.BitCount() != 1 ? FlagEnumData<T>.Dictionary?[eEnum] :
                              eEnum.AsLong() == 1                                               ? FlagEnumData<T>.FlagEnums[0] : FlagEnumData<T>.FlagEnums[(int) 
-#if NETCOREAPP2_0
+#if NETCOREAPP2_0 || NETCOREAPP2_1
                                                                                                      Utils.Log2(eEnum.AsFloatUnsigned())
 #elif NETCOREAPP3_0 || NET5_0
                                                                                                      MathF.Log2(eEnum.AsFloatUnsigned())
@@ -90,7 +90,139 @@ public static class OptEnum {
         }
         return ignoreCase ? EnumData<T>.NameDictionary.TryGetValueIgnoreCase(str, out eEnum) : EnumData<T>.NameDictionary.TryGetValue(str, out eEnum);
     }
-    
+#if NETCOREAPP2_1_OR_GREATER || NET5_0
+    public static T Parse<T>(ReadOnlySpan<char> str) where T : struct, Enum {
+        if(EnumData<T>.EnumType == EnumType.Flag) {
+            int commaIndex = str.IndexOf(',');
+            if(commaIndex >= 0) {
+                T value = Utils.GetZero<T>();
+                int start = 0;
+                while(commaIndex >= 0) {
+                    ReadOnlySpan<char> part = str.Slice(start, commaIndex - start).Trim();
+                    value = value.CombineFlags(EnumData<T>.NameDictionary.GetValue(part));
+                    start = commaIndex + 1;
+                    commaIndex = 
+#if NETCOREAPP2_1
+                        str.Slice(start, str.Length - start)
+#else
+                        str[start..]
+#endif
+                            .IndexOf(',');
+                    if(commaIndex >= 0) commaIndex += start;
+                }
+                ReadOnlySpan<char> lastPart = 
+#if NETCOREAPP2_1
+                    str.Slice(start, str.Length - start)
+#else
+                    str[start..]
+#endif
+                        .Trim();
+                value = value.CombineFlags(EnumData<T>.NameDictionary.GetValue(lastPart));
+                return value;
+            }
+        }
+        return EnumData<T>.NameDictionary.GetValue(str.Trim());
+    }
+
+    public static T Parse<T>(ReadOnlySpan<char> str, bool ignoreCase) where T : struct, Enum {
+        if(EnumData<T>.EnumType == EnumType.Flag) {
+            if(!ignoreCase) return Parse<T>(str);
+            int commaIndex = str.IndexOf(',');
+            if(commaIndex >= 0) {
+                T value = Utils.GetZero<T>();
+                int start = 0;
+                while(commaIndex >= 0) {
+                    ReadOnlySpan<char> part = str.Slice(start, commaIndex - start).Trim();
+                    value = value.CombineFlags(EnumData<T>.NameDictionary.GetValueIgnoreCase(part));
+                    start = commaIndex + 1;
+                    commaIndex = 
+#if NETCOREAPP2_1
+                        str.Slice(start, str.Length - start)
+#else
+                    str[start..]
+#endif
+                        .IndexOf(',');
+                    if(commaIndex >= 0) commaIndex += start;
+                }
+                ReadOnlySpan<char> lastPart = 
+#if NETCOREAPP2_1
+                    str.Slice(start, str.Length - start)
+#else
+                    str[start..]
+#endif
+                    .Trim();
+                value = value.CombineFlags(EnumData<T>.NameDictionary.GetValue(lastPart));
+                return value;
+            }
+        }
+        return ignoreCase ? EnumData<T>.NameDictionary.GetValueIgnoreCase(str.Trim()) : EnumData<T>.NameDictionary.GetValue(str.Trim());
+    }
+
+    public static bool TryParse<T>(ReadOnlySpan<char> str, out T eEnum) where T : struct, Enum {
+        if(EnumData<T>.EnumType == EnumType.Flag) {
+            int commaIndex = str.IndexOf(',');
+            if(commaIndex >= 0) {
+                eEnum = Utils.GetZero<T>();
+                int start = 0;
+                while(commaIndex >= 0) {
+                    if(!EnumData<T>.NameDictionary.TryGetValue(str.Slice(start, commaIndex - start).Trim(), out T flag)) return false;
+                    eEnum = eEnum.CombineFlags(flag);
+                    start = commaIndex + 1;
+                    commaIndex = 
+#if NETCOREAPP2_1
+                        str.Slice(start, str.Length - start)
+#else
+                    str[start..]
+#endif
+                            .IndexOf(',');
+                    if(commaIndex >= 0) commaIndex += start;
+                }
+                eEnum = eEnum.CombineFlags(EnumData<T>.NameDictionary.GetValue(
+#if NETCOREAPP2_1
+                    str.Slice(start, str.Length - start)
+#else
+                    str[start..]
+#endif
+                        .Trim()));
+                return true;
+            }
+        }
+        return EnumData<T>.NameDictionary.TryGetValue(str, out eEnum);
+    }
+
+    public static bool TryParse<T>(ReadOnlySpan<char> str, bool ignoreCase, out T eEnum) where T : struct, Enum {
+        if(EnumData<T>.EnumType == EnumType.Flag) {
+            if(!ignoreCase) return TryParse(str, out eEnum);
+            int commaIndex = str.IndexOf(',');
+            if(commaIndex >= 0) {
+                eEnum = Utils.GetZero<T>();
+                int start = 0;
+                while(commaIndex >= 0) {
+                    if(!EnumData<T>.NameDictionary.TryGetValueIgnoreCase(str.Slice(start, commaIndex - start).Trim(), out T flag)) return false;
+                    eEnum = eEnum.CombineFlags(flag);
+                    start = commaIndex + 1;
+                    commaIndex = 
+#if NETCOREAPP2_1
+                        str.Slice(start, str.Length - start)
+#else
+                    str[start..]
+#endif
+                            .IndexOf(',');
+                    if(commaIndex >= 0) commaIndex += start;
+                }
+                eEnum = eEnum.CombineFlags(EnumData<T>.NameDictionary.GetValue(
+#if NETCOREAPP2_1
+                    str.Slice(start, str.Length - start)
+#else
+                    str[start..]
+#endif
+                        .Trim()));
+                return true;
+            }
+        }
+        return ignoreCase ? EnumData<T>.NameDictionary.TryGetValueIgnoreCase(str, out eEnum) : EnumData<T>.NameDictionary.TryGetValue(str, out eEnum);
+    }
+#endif
     public static T[] GetValues<T>() where T : struct, Enum {
         return EnumData<T>.Values;
     }
