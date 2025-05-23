@@ -12,7 +12,7 @@ class UnsortedEnumData<T> : EnumData<T> where T : struct, Enum {
     public static void Setup(FieldInfo[] fields, int count) {
         if(count == fields.Length) Dictionary = new SortedIndexedDictionary<T>(Values, Names, count);
         else {
-            Dictionary = new SortedIndexedDictionary<T>(count);
+            Dictionary = new SortedIndexedDictionary<T>(count, false);
 #pragma warning disable CS8605 // Unboxing a possibly null value.
             foreach(FieldInfo field in fields) Dictionary.Add((T) field.GetValue(null), field.Name);
 #pragma warning restore CS8605 // Unboxing a possibly null value.

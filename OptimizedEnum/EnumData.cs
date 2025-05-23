@@ -71,7 +71,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         LowNotUnsigned = DataType == DataType.Unsigned && Utils.GetSize<T>() < 4;
         T allFlags = Utils.GetZero<T>();
         int count = fields.Length;
-        SortedIndexedDictionary<T> dictionary = new(count);
+        SortedIndexedDictionary<T> dictionary = new(count, true);
         NameDictionary = new SortedNameDictionary<T>(count);
         for(int i = 0; i < count; i++) {
 #pragma warning disable CS8605 // Unboxing a possibly null value.
@@ -105,41 +105,42 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         bool isSorted = true;
         int length = fields.Length;
         int realCount = 0;
+        uint u;
         if(Utils.GetSize<T>() == 8) {
-            List<ulong> overflowField = [];
+            List<ulong> overflowField8 = [];
             ulong lengthLong = (ulong) length;
-            for(uint i = 0; i < length; i++) {
+            for(u = 0; u < length; u++) {
 #pragma warning disable CS8605 // Unboxing a possibly null value.
-                ulong v = ((T) fields[i].GetValue(null)).As<T, ulong>();
+                ulong longValue = ((T) fields[u].GetValue(null)).As<T, ulong>();
 #pragma warning restore CS8605 // Unboxing a possibly null value.
-                if(lengthLong <= v) {
+                if(lengthLong <= longValue) {
                     outOfRange = true;
-                    if(!overflowField.Contains(v)) {
-                        overflowField.Add(v);
+                    if(!overflowField8.Contains(longValue)) {
+                        overflowField8.Add(longValue);
                         realCount++;
                     }
                 } else {
-                    if(!checkField[v]) realCount++;
-                    checkField[v] = true;
-                    if(i != v) isSorted = false;
+                    if(!checkField[longValue]) realCount++;
+                    checkField[longValue] = true;
+                    if(u != longValue) isSorted = false;
                 }
             }
         } else {
-            List<uint> overflowField = [];
-            for(uint i = 0; i < length; i++) {
+            List<uint> overflowField4 = [];
+            for(u = 0; u < length; u++) {
 #pragma warning disable CS8605 // Unboxing a possibly null value.
-                uint v = ((T) fields[i].GetValue(null)).As<T, uint>();
+                uint intValue = ((T) fields[u].GetValue(null)).As<T, uint>();
 #pragma warning restore CS8605 // Unboxing a possibly null value.
-                if(length <= v) {
+                if(length <= intValue) {
                     outOfRange = true;
-                    if(!overflowField.Contains(v)) {
-                        overflowField.Add(v);
+                    if(!overflowField4.Contains(intValue)) {
+                        overflowField4.Add(intValue);
                         realCount++;
                     }
                 } else {
-                    if(!checkField[v]) realCount++;
-                    checkField[v] = true;
-                    if(i != v) isSorted = false;
+                    if(!checkField[intValue]) realCount++;
+                    checkField[intValue] = true;
+                    if(u != intValue) isSorted = false;
                 }
             }
         }

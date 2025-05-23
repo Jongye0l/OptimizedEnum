@@ -28,7 +28,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
                                     + 1];
         FlagEnums = flagEnums;
         int dictCount = fields.Length - allFlags.BitCount() - (HasZero ? 1 : 0);
-        if(dictCount != 0) Dictionary = new SortedIndexedDictionary<T>(dictCount);
+        if(dictCount != 0) Dictionary = new SortedIndexedDictionary<T>(dictCount, false);
         foreach(FieldInfo field in fields) {
 #pragma warning disable CS8605 // Unboxing a possibly null value.
             T value = (T) field.GetValue(null);
