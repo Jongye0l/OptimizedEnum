@@ -101,22 +101,10 @@ public static class OptEnum {
                     ReadOnlySpan<char> part = str.Slice(start, commaIndex - start).Trim();
                     value = value.CombineFlags(EnumData<T>.NameDictionary.GetValue(part));
                     start = commaIndex + 1;
-                    commaIndex = 
-#if NETCOREAPP2_1
-                        str.Slice(start, str.Length - start)
-#else
-                        str[start..]
-#endif
-                            .IndexOf(',');
+                    commaIndex = str.Slice(start, str.Length - start).IndexOf(',');
                     if(commaIndex >= 0) commaIndex += start;
                 }
-                ReadOnlySpan<char> lastPart = 
-#if NETCOREAPP2_1
-                    str.Slice(start, str.Length - start)
-#else
-                    str[start..]
-#endif
-                        .Trim();
+                ReadOnlySpan<char> lastPart = str.Slice(start, str.Length - start).Trim();
                 value = value.CombineFlags(EnumData<T>.NameDictionary.GetValue(lastPart));
                 return value;
             }
@@ -135,22 +123,10 @@ public static class OptEnum {
                     ReadOnlySpan<char> part = str.Slice(start, commaIndex - start).Trim();
                     value = value.CombineFlags(EnumData<T>.NameDictionary.GetValueIgnoreCase(part));
                     start = commaIndex + 1;
-                    commaIndex = 
-#if NETCOREAPP2_1
-                        str.Slice(start, str.Length - start)
-#else
-                    str[start..]
-#endif
-                        .IndexOf(',');
+                    commaIndex = str.Slice(start, str.Length - start).IndexOf(',');
                     if(commaIndex >= 0) commaIndex += start;
                 }
-                ReadOnlySpan<char> lastPart = 
-#if NETCOREAPP2_1
-                    str.Slice(start, str.Length - start)
-#else
-                    str[start..]
-#endif
-                    .Trim();
+                ReadOnlySpan<char> lastPart = str.Slice(start, str.Length - start).Trim();
                 value = value.CombineFlags(EnumData<T>.NameDictionary.GetValue(lastPart));
                 return value;
             }
@@ -168,22 +144,10 @@ public static class OptEnum {
                     if(!EnumData<T>.NameDictionary.TryGetValue(str.Slice(start, commaIndex - start).Trim(), out T flag)) return false;
                     eEnum = eEnum.CombineFlags(flag);
                     start = commaIndex + 1;
-                    commaIndex = 
-#if NETCOREAPP2_1
-                        str.Slice(start, str.Length - start)
-#else
-                    str[start..]
-#endif
-                            .IndexOf(',');
+                    commaIndex = str.Slice(start, str.Length - start).IndexOf(',');
                     if(commaIndex >= 0) commaIndex += start;
                 }
-                eEnum = eEnum.CombineFlags(EnumData<T>.NameDictionary.GetValue(
-#if NETCOREAPP2_1
-                    str.Slice(start, str.Length - start)
-#else
-                    str[start..]
-#endif
-                        .Trim()));
+                eEnum = eEnum.CombineFlags(EnumData<T>.NameDictionary.GetValue(str.Slice(start, str.Length - start).Trim()));
                 return true;
             }
         }
@@ -201,22 +165,10 @@ public static class OptEnum {
                     if(!EnumData<T>.NameDictionary.TryGetValueIgnoreCase(str.Slice(start, commaIndex - start).Trim(), out T flag)) return false;
                     eEnum = eEnum.CombineFlags(flag);
                     start = commaIndex + 1;
-                    commaIndex = 
-#if NETCOREAPP2_1
-                        str.Slice(start, str.Length - start)
-#else
-                    str[start..]
-#endif
-                            .IndexOf(',');
+                    commaIndex = str.Slice(start, str.Length - start).IndexOf(',');
                     if(commaIndex >= 0) commaIndex += start;
                 }
-                eEnum = eEnum.CombineFlags(EnumData<T>.NameDictionary.GetValue(
-#if NETCOREAPP2_1
-                    str.Slice(start, str.Length - start)
-#else
-                    str[start..]
-#endif
-                        .Trim()));
+                eEnum = eEnum.CombineFlags(EnumData<T>.NameDictionary.GetValue(str.Slice(start, str.Length - start).Trim()));
                 return true;
             }
         }
