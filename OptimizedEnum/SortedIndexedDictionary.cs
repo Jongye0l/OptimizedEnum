@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using OptimizedEnum.Tool;
 
 namespace OptimizedEnum;
@@ -7,10 +8,8 @@ class SortedIndexedDictionary<T>(T[] keys, string[] values, int count) where T :
     public readonly T[] Keys = keys;
     public readonly string[] Values = values;
     public int Count = count;
-    public bool AllowDuplicates = true;
 
-    public SortedIndexedDictionary(int count, bool duplicate) : this(new T[count], new string[count], 0) {
-        AllowDuplicates = duplicate;
+    public SortedIndexedDictionary(int count) : this(new T[count], new string[count], 0) {
     }
 
     public string? this[T key] {
@@ -26,15 +25,19 @@ class SortedIndexedDictionary<T>(T[] keys, string[] values, int count) where T :
             return null;
         }
     }
-
-    public void Add(T key, string value) {
+    public void Add(T key, string value, List<T>? duplicates = null) {
         int left = 0;
         int right = Count - 1;
         while(left <= right) {
             int mid = (left + right) / 2;
             if(Keys[mid].GreaterThan(key)) right = mid - 1;
-            else if(!AllowDuplicates && Keys[mid].Equal(key)) return;
-            else left = mid + 1;
+            else if(duplicates != null && Keys[mid].Equal(key)) {
+                if(!duplicates.Contains(key)) {
+                    duplicates.Add(key);
+                    Values[mid] = EnumData<T>.Dictionary[key]!;
+                }
+                return;
+            } else left = mid + 1;
         }
         for(int i = Count; i > left; i--) {
             Keys[i] = Keys[i - 1];

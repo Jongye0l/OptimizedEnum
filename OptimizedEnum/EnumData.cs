@@ -31,8 +31,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
     public static readonly EnumType EnumType;
     public static SortedNameDictionary<T> NameDictionary;
     public static readonly T AllFlags;
-    public static readonly string[] Names;
-    public static readonly T[] Values;
+    public static readonly SortedIndexedDictionary<T> Dictionary;
     public static readonly bool HasZero;
     public static readonly bool LowNotUnsigned;
 
@@ -71,7 +70,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         LowNotUnsigned = DataType == DataType.Unsigned && Utils.GetSize<T>() < 4;
         T allFlags = Utils.GetZero<T>();
         int count = fields.Length;
-        SortedIndexedDictionary<T> dictionary = new(count, true);
+        SortedIndexedDictionary<T> dictionary = new(count);
         NameDictionary = new SortedNameDictionary<T>(count);
         for(int i = 0; i < count; i++) {
 #pragma warning disable CS8605 // Unboxing a possibly null value.
@@ -83,8 +82,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             if(value.AsLong() == 0) HasZero = true;
             else if(value.BitCount() == 1) allFlags = allFlags.CombineFlags(value);
         }
-        Values = dictionary.Keys;
-        Names = dictionary.Values;
+        Dictionary = dictionary;
         AllFlags = allFlags;
         if(
 #if NETCOREAPP1_0
@@ -167,8 +165,8 @@ SortedSkip:
     }
 
     protected EnumData() {
-        ValuesArray = Values;
-        NamesArray = Names;
+        ValuesArray = Dictionary.Keys;
+        NamesArray = Dictionary.Values;
         EnumDataDictionary.Add(typeof(T), this);
     }
 

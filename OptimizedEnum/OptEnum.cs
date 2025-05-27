@@ -10,9 +10,9 @@ public static class OptEnum {
     public static string? GetName<T>(this T eEnum) where T : struct, Enum {
         return EnumData<T>.EnumType switch {
             EnumType.Sorted => Utils.GetOrNull(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
-            EnumType.Unsorted => UnsortedEnumData<T>.Dictionary[eEnum],
+            EnumType.Unsorted => UnsortedEnumData<T>.NotDupDict[eEnum],
             EnumType.Flag => eEnum.AsLong() == 0                                               ? FlagEnumData<T>.HasZero ? FlagEnumData<T>.ZeroString : null :
-                             !EnumData<T>.AllFlags.HasAllFlags(eEnum) || eEnum.BitCount() != 1 ? FlagEnumData<T>.Dictionary?[eEnum] :
+                             !EnumData<T>.AllFlags.HasAllFlags(eEnum) || eEnum.BitCount() != 1 ? FlagEnumData<T>.RemoveFlagDictionary?[eEnum] :
                              eEnum.AsLong() == 1                                               ? FlagEnumData<T>.FlagEnums[0] : FlagEnumData<T>.FlagEnums[(int) 
 #if NETCOREAPP2_0 || NETCOREAPP2_1
                                                                                                      Utils.Log2(eEnum.AsFloatUnsigned())
@@ -29,8 +29,8 @@ public static class OptEnum {
     public static string GetString<T>(this T eEnum) where T : struct, Enum {
         return EnumData<T>.EnumType switch {
             EnumType.Sorted => Utils.GetOrDefault(SortedEnumData<T>.Names, eEnum, SortedEnumData<T>.Length),
-            EnumType.Unsorted => UnsortedEnumData<T>.Dictionary[eEnum] ?? eEnum.GetNumberStringFast(),
-            EnumType.Flag => FlagEnumData<T>.Dictionary == null ? FlagEnumData<T>.GetStringNormal(eEnum) : FlagEnumData<T>.GetStringDict(eEnum),
+            EnumType.Unsorted => UnsortedEnumData<T>.NotDupDict[eEnum] ?? eEnum.GetNumberStringFast(),
+            EnumType.Flag => FlagEnumData<T>.RemoveFlagDictionary == null ? FlagEnumData<T>.GetStringNormal(eEnum) : FlagEnumData<T>.GetStringDict(eEnum),
             _ => throw new NotSupportedException()
         };
     }
@@ -224,17 +224,17 @@ public static class OptEnum {
     }
 #endif
     public static T[] GetValues<T>() where T : struct, Enum {
-        return EnumData<T>.Values;
+        return EnumData<T>.Dictionary.Keys;
     }
 
     public static string[] GetNames<T>() where T : struct, Enum {
-        return EnumData<T>.Names;
+        return EnumData<T>.Dictionary.Values;
     }
 
     public static bool IsDefined<T>(T eEnum) where T : struct, Enum {
         return EnumData<T>.EnumType switch {
             EnumType.Sorted => (uint) eEnum.AsInteger() < SortedEnumData<T>.Length,
-            EnumType.Unsorted => UnsortedEnumData<T>.Dictionary[eEnum] != null,
+            EnumType.Unsorted => UnsortedEnumData<T>.NotDupDict[eEnum] != null,
             EnumType.Flag => FlagEnumData<T>.IsDefined(eEnum),
             _ => throw new NotSupportedException()
         };

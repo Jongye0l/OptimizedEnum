@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using OptimizedEnum.Tool;
@@ -7,7 +8,7 @@ namespace OptimizedEnum;
 
 class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-    public static SortedIndexedDictionary<T>? Dictionary;
+    public static SortedIndexedDictionary<T>? RemoveFlagDictionary;
     public static string[] FlagEnums;
     public static string ZeroString;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -28,7 +29,11 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
                                     + 1];
         FlagEnums = flagEnums;
         int dictCount = fields.Length - allFlags.BitCount() - (HasZero ? 1 : 0);
-        if(dictCount != 0) Dictionary = new SortedIndexedDictionary<T>(dictCount, false);
+        List<T>? duplicates = null;
+        if(dictCount != 0) {
+            RemoveFlagDictionary = new SortedIndexedDictionary<T>(dictCount);
+            duplicates = [];
+        }
         foreach(FieldInfo field in fields) {
 #pragma warning disable CS8605 // Unboxing a possibly null value.
             T value = (T) field.GetValue(null);
@@ -47,7 +52,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 #endif
                 ] = name;
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-                else Dictionary.Add(value, name);
+                else RemoveFlagDictionary.Add(value, name, duplicates);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
             }
         }
@@ -59,12 +64,12 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
     public static string GetStringDict(T eEnum) {
         int bitCount = eEnum.BitCount();
         if(bitCount <= 1) return GetStringNormal(eEnum);
-        string str = Dictionary[eEnum];
+        string str = RemoveFlagDictionary[eEnum];
         if(str != null) return str;
         StringBuilder sb = new();
         SortedFloatDictionary sortedList = new(bitCount);
-        for(int i = Dictionary.Count - 1; i >= 0; i--) {
-            T key = Dictionary.Keys[i];
+        for(int i = RemoveFlagDictionary.Count - 1; i >= 0; i--) {
+            T key = RemoveFlagDictionary.Keys[i];
             if(!eEnum.HasAllFlags(key)) continue;
             sortedList.Add(
 #if NETCOREAPP2_0 || NETCOREAPP2_1
@@ -74,7 +79,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 #else
                 Utils.Log2(key.AsDoubleUnsigned())
 #endif
-                , Dictionary.Values[i]);
+                , RemoveFlagDictionary.Values[i]);
             eEnum = eEnum.RemoveFlags(key);
         }
         if(!AllFlags.HasAllFlags(eEnum)) return eEnum.GetNumberStringFast();
@@ -120,17 +125,17 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 #else
                                                                            Utils.Log2(eEnum.AsDoubleUnsigned())
 #endif
-                                                                       ] != null : Dictionary?[eEnum] != null;
+                                                                       ] != null : RemoveFlagDictionary?[eEnum] != null;
     }
 
     public override string GetString(object eEnum) {
-        return Dictionary == null ? GetStringNormal((T) eEnum) : GetStringDict((T) eEnum);
+        return RemoveFlagDictionary == null ? GetStringNormal((T) eEnum) : GetStringDict((T) eEnum);
     }
     
     public override string? GetName(object eEnum) {
         T value = (T) eEnum;
         return value.AsLong() == 0                                   ? ZeroString :
-               !AllFlags.HasAllFlags(value) || value.BitCount() != 1 ? Dictionary?[value] :
+               !AllFlags.HasAllFlags(value) || value.BitCount() != 1 ? RemoveFlagDictionary?[value] :
                value.AsLong() == 1                                   ? FlagEnums[0] : FlagEnums[(int) 
 #if NETCOREAPP2_0 || NETCOREAPP2_1
                                                                            Utils.Log2(value.AsFloatUnsigned())
