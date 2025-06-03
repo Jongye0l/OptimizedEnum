@@ -40,7 +40,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         List<FieldInfo> fieldList = typeof(T).GetRuntimeFields().ToList();
         Type? fieldType = null;
         foreach(FieldInfo fieldInfo in fieldList) {
-            if(fieldInfo.Name != "value__") continue;
+            if(fieldInfo.IsStatic) continue;
             fieldType = fieldInfo.FieldType;
             fieldList.Remove(fieldInfo);
             break;
