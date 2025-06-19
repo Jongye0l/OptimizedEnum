@@ -40,6 +40,29 @@ class SortedEnumData<T> : EnumData<T> where T : struct, Enum {
         return Utils.GetOrDefault(Names, (T) eEnum, Length);
     }
     
+    public override string GetString(object eEnum, string? format) {
+        if(format == null || format.Length == 0) goto GetString;
+        if(format.Length == 1) {
+            switch(format[0]) {
+                case 'G':
+                case 'g':
+                    goto GetString;
+                case 'D':
+                case 'd':
+                    return ((T) eEnum).GetNumberStringFast();
+                case 'X':
+                case 'x':
+                    return ((T) eEnum).GetHexStringFast();
+                case 'F':
+                case 'f':
+                    return FlagEnumData<T>.RemoveFlagDictionary == null ? FlagEnumData<T>.GetStringNormal((T) eEnum) : FlagEnumData<T>.GetStringDict((T) eEnum);
+            }
+        }
+        throw new FormatException();
+    GetString:
+        return Utils.GetOrDefault(Names, (T) eEnum, Length);
+    }
+
     public override string? GetName(object eEnum) {
         return Utils.GetOrNull(Names, (T) eEnum, Length);
     }

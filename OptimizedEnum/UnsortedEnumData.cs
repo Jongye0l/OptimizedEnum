@@ -26,6 +26,30 @@ class UnsortedEnumData<T> : EnumData<T> where T : struct, Enum {
         return NotDupDict[value] ?? value.GetNumberStringFast();
     }
     
+    public override string GetString(object eEnum, string? format) {
+        T value = (T) eEnum;
+        if(format == null || format.Length == 0) goto GetString;
+        if(format.Length == 1) {
+            switch(format[0]) {
+                case 'G':
+                case 'g':
+                    goto GetString;
+                case 'D':
+                case 'd':
+                    return value.GetNumberStringFast();
+                case 'X':
+                case 'x':
+                    return value.GetHexStringFast();
+                case 'F':
+                case 'f':
+                    return FlagEnumData<T>.RemoveFlagDictionary == null ? FlagEnumData<T>.GetStringNormal(value) : FlagEnumData<T>.GetStringDict(value);
+            }
+        }
+        throw new FormatException();
+    GetString:
+        return NotDupDict[value] ?? value.GetNumberStringFast();
+    }
+
     public override string? GetName(object eEnum) {
         return NotDupDict[(T) eEnum];
     }

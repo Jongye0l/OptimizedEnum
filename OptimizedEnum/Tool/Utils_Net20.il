@@ -581,6 +581,67 @@ IsULong:
         ret
     }
 
+    .method public hidebysig static string GetHexStringCustom<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
+        .param [0]
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
+        .maxstack 4
+        ldarg.0
+        sizeof !!T
+        ldc.i4.2
+        mul
+        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
+        switch (IsInt, IsUInt, IsLong, IsULong)
+IsInt:
+        call string OptimizedEnum.Tool.Utils::Int32ToHexString(int32, int32)
+        ret
+IsUInt:
+        call string OptimizedEnum.Tool.Utils::UInt32ToHexString(uint32, int32)
+        ret
+IsLong:
+        call string OptimizedEnum.Tool.Utils::Int64ToHexString(int64, int32)
+        ret
+IsULong:
+        call string OptimizedEnum.Tool.Utils::UInt64ToHexString(uint64, int32)
+        ret
+    }
+
+    .method public hidebysig static string GetHexString<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(!!T eEnum) cil managed {
+        .param [0]
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
+        .maxstack 4
+        ldarga.s eEnum
+        sizeof !!T
+        ldc.i4.1
+        sub
+        switch (Is1, Is2, Is1, Is4)
+        ldstr "X16"
+        br Next
+Is1:
+        ldstr "X2"
+        br Next
+Is2:
+        ldstr "X4"
+        br Next
+Is4:
+        ldstr "X8"
+        br Next
+Next:
+        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
+        switch (IsInt, IsUInt, IsLong, IsULong)
+IsInt:
+        call instance string [mscorlib]System.Int32::ToString(string)
+        ret
+IsUInt:
+        call instance string [mscorlib]System.UInt32::ToString(string)
+        ret
+IsLong:
+        call instance string [mscorlib]System.Int64::ToString(string)
+        ret
+IsULong:
+        call instance string [mscorlib]System.UInt64::ToString(string)
+        ret
+    }
+
     .method public hidebysig static !!T ParseAsNumber<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string 'value') cil managed {
         .param [1]
             .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 01 00 00 )

@@ -15,6 +15,7 @@ abstract class EnumData {
     public string[] NamesArray;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     public abstract string GetString(object eEnum);
+    public abstract string GetString(object eEnum, string? format);
     public abstract string? GetName(object eEnum);
     public abstract bool IsDefined(object eEnum);
     public abstract object ParseObj(string str);
@@ -93,7 +94,6 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             typeof(T).GetCustomAttributes(typeof(FlagsAttribute), false)
 #endif
                .Length > 0) {
-            FlagEnumData<T>.Setup(fields);
             Instance = new FlagEnumData<T>();
             EnumType = EnumType.Flag;
             return;

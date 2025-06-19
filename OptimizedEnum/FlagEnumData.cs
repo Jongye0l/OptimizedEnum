@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+#if NETSTANDARD1_0
+using System.Linq;
+#endif
 using System.Text;
 using OptimizedEnum.Tool;
 
@@ -13,7 +16,15 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
     public static string ZeroString;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
-    public static void Setup(FieldInfo[] fields) {
+    static FlagEnumData() {
+        FieldInfo[] fields =
+#if NETSTANDARD1_0
+            typeof(T).GetRuntimeFields().ToArray();
+#elif NETSTANDARD1_5
+            typeof(T).GetTypeInfo().GetFields(BindingFlags.Public | BindingFlags.Static);
+#else
+            typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
+#endif
         string[] flagEnums;
         T allFlags = AllFlags;
         if(allFlags.AsLong() == 0) flagEnums = [];
@@ -28,13 +39,22 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 #endif
                                     + 1];
         FlagEnums = flagEnums;
-        int dictCount = fields.Length - allFlags.BitCount() - (HasZero ? 1 : 0);
+        int dictCount = fields.Length - allFlags.BitCount() - (HasZero ? 
+#if NETSTANDARD1_0
+                                                                   2 : 1
+#else
+                                                                   1 : 0
+#endif
+                                                                  );
         List<T>? duplicates = null;
         if(dictCount != 0) {
             RemoveFlagDictionary = new SortedIndexedDictionary<T>(dictCount);
             duplicates = [];
         }
         foreach(FieldInfo field in fields) {
+#if NETSTANDARD1_0
+            if(!field.IsStatic) continue;
+#endif
 #pragma warning disable CS8605 // Unboxing a possibly null value.
             T value = (T) field.GetValue(null);
 #pragma warning restore CS8605 // Unboxing a possibly null value.
@@ -132,6 +152,28 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
         return RemoveFlagDictionary == null ? GetStringNormal((T) eEnum) : GetStringDict((T) eEnum);
     }
     
+    public override string GetString(object eEnum, string? format) {
+        if(format == null || format.Length == 0) goto GetString;
+        if(format.Length == 1) {
+            switch(format[0]) {
+                case 'G':
+                case 'g':
+                case 'F':
+                case 'f':
+                    goto GetString;
+                case 'D':
+                case 'd':
+                    return ((T) eEnum).GetNumberStringFast();
+                case 'X':
+                case 'x':
+                    return ((T) eEnum).GetHexStringFast();
+            }
+        }
+        throw new FormatException();
+GetString:
+        return RemoveFlagDictionary == null ? GetStringNormal((T) eEnum) : GetStringDict((T) eEnum);
+    }
+
     public override string? GetName(object eEnum) {
         T value = (T) eEnum;
         return value.AsLong() == 0                                   ? ZeroString :

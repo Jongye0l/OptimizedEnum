@@ -77,6 +77,34 @@ public static class Utils {
         return new string(buffer, i, 20 - i);
     }
 
+    public static string Int32ToHexString(this int value, int length) => UInt32ToHexString((uint) value, length);
+
+    public static string UInt32ToHexString(this uint value, int length) {
+        int i;
+        char[] buffer = new char[i = length];
+        while(value > 0) {
+            uint val = value % 16;
+            buffer[--i] = val > 9 ? (char) ('7' + val) : (char) ('0' + val); // 'A' - (char) 10 = '7'
+            value /= 16;
+        }
+        while(i > 0) buffer[--i] = '0';
+        return new string(buffer, 0, length);
+    }
+
+    public static string Int64ToHexString(this long value, int length) => UInt64ToHexString((ulong) value, length);
+
+    public static string UInt64ToHexString(this ulong value, int length) {
+        int i;
+        char[] buffer = new char[i = length];
+        while(value > 0) {
+            uint val = (uint) (value % 16);
+            buffer[--i] = val > 9 ? (char) ('7' + val) : (char) ('0' + val); // 'A' - (char) 10 = '7'
+            value /= 16;
+        }
+        while(i > 0) buffer[--i] = '0';
+        return new string(buffer, 0, length);
+    }
+
     public static int ParseInt32(this string value) {
         int result = 0;
         bool isNegative = false;
@@ -331,6 +359,15 @@ public static class Utils {
 #endif
     }
 
+    public static string GetHexStringFast<T>(this T eEnum) where T : struct, Enum {
+        return 
+#if NETCOREAPP || NET5_0_OR_GREATER
+            eEnum.GetHexString();
+#else
+            eEnum.GetHexStringCustom();
+#endif
+    }
+
     [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern bool HasAnyFlags<T>(this T flags) where T : struct, Enum;
 
@@ -426,6 +463,12 @@ public static class Utils {
 
     [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern string GetNumberString<T>(this T eEnum) where T : struct, Enum;
+
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
+    public static extern string GetHexStringCustom<T>(this T eEnum) where T : struct, Enum;
+
+    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
+    public static extern string GetHexString<T>(this T eEnum) where T : struct, Enum;
 
     [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern T ParseAsNumber<T>(this string value) where T : struct, Enum;

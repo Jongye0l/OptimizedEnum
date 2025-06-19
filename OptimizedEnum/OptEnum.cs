@@ -35,6 +35,29 @@ public static class OptEnum {
         };
     }
 
+    public static string GetString<T>(this T eEnum, string? format) where T : struct, Enum {
+        if(format == null || format.Length == 0) goto GetString;
+        if(format.Length == 1) {
+            switch(format[0]) {
+                case 'G':
+                case 'g':
+                    goto GetString;
+                case 'D':
+                case 'd':
+                    return eEnum.GetNumberStringFast();
+                case 'X':
+                case 'x':
+                    return eEnum.GetHexStringFast();
+                case 'F':
+                case 'f':
+                    return FlagEnumData<T>.RemoveFlagDictionary == null ? FlagEnumData<T>.GetStringNormal(eEnum) : FlagEnumData<T>.GetStringDict(eEnum);
+            }
+        }
+        throw new FormatException();
+GetString:
+        return GetString(eEnum);
+    }
+
     public static T Parse<T>(string str) where T : struct, Enum {
         if(EnumData<T>.EnumType == EnumType.Flag) {
             string[] split = str.Split(',');
@@ -211,9 +234,16 @@ public static class OptEnum {
     
     public static string GetString(object eEnum) => GetString(eEnum.GetType(), eEnum);
     
+    public static string GetString(object eEnum, string? format) => GetString(eEnum.GetType(), eEnum, format);
+    
     public static string GetString(Type type, object eEnum) {
         CheckType(type);
         return EnumData.EnumDataDictionary.GetOrCreate(type).GetString(eEnum);
+    }
+    
+    public static string GetString(Type type, object eEnum, string? format) {
+        CheckType(type);
+        return EnumData.EnumDataDictionary.GetOrCreate(type).GetString(eEnum, format);
     }
     
     public static object Parse(string str) => Parse(str.GetType(), str);
