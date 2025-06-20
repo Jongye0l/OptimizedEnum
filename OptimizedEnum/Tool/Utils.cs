@@ -29,6 +29,7 @@ public static class Utils {
 
     public static string Int32ToString(this int value) {
         if(value == 0) return "0";
+        if(value == int.MinValue) return "-2147483648";
         bool isNegative = value < 0;
         if(isNegative) value = -value;
         int i;
@@ -54,6 +55,7 @@ public static class Utils {
 
     public static string Int64ToString(this long value) {
         if(value == 0) return "0";
+        if(value == long.MinValue) return "-9223372036854775808";
         bool isNegative = value < 0;
         if(isNegative) value = -value;
         int i;
