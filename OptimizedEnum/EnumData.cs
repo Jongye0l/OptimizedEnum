@@ -97,16 +97,15 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             EnumType = EnumType.Flag;
             return;
         }
-        bool[] checkField = new bool[fields.Length];
+        bool[] checkField = new bool[count];
         bool outOfRange = false;
         bool isSorted = true;
-        int length = fields.Length;
         uint realCount = 0;
         uint u;
         if(Utils.GetSize<T>() == 8) {
             List<ulong> overflowField8 = [];
-            ulong lengthLong = (ulong) length;
-            for(u = 0; u < length; u++) {
+            ulong lengthLong = (ulong) count;
+            for(u = 0; u < count; u++) {
 #pragma warning disable CS8605 // Unboxing a possibly null value.
                 ulong longValue = ((T) fields[u].GetValue(null)).As<T, ulong>();
 #pragma warning restore CS8605 // Unboxing a possibly null value.
@@ -124,11 +123,11 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             }
         } else {
             List<uint> overflowField4 = [];
-            for(u = 0; u < length; u++) {
+            for(u = 0; u < count; u++) {
 #pragma warning disable CS8605 // Unboxing a possibly null value.
                 uint intValue = ((T) fields[u].GetValue(null)).As<T, uint>();
 #pragma warning restore CS8605 // Unboxing a possibly null value.
-                if(length <= intValue) {
+                if(count <= intValue) {
                     outOfRange = true;
                     if(!overflowField4.Contains(intValue)) {
                         overflowField4.Add(intValue);
