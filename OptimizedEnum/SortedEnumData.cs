@@ -7,16 +7,16 @@ namespace OptimizedEnum;
 class SortedEnumData<T> : EnumData<T> where T : struct, Enum {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     public static string[] Names;
-    public static int Length;
+    public static uint Length;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
-    public static void Setup(FieldInfo[] fields, bool isSorted, int count) {
+    public static void Setup(FieldInfo[] fields, bool isSorted, uint count) {
         Length = count;
         if(count == Dictionary.Count) Names = Dictionary.Values;
         else {
             string?[] names = Names = new string[count];
             if(isSorted)
-                for(int i = 0; i < count; i++)
+                for(uint i = 0; i < count; i++)
                     names[i] = fields[i].Name;
             else {
                 bool[] isSet = new bool[count];

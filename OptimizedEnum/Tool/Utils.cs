@@ -452,10 +452,10 @@ public static class Utils {
     public static extern int GetSize<T>() where T : struct, Enum;
 
     [MethodImpl((MethodImplOptions) 16)] // ForwardRef
-    public static extern string GetOrDefault<T>(string[] array, T eEnum, int length) where T : struct, Enum;
+    public static extern string GetOrDefault<T>(string[] array, T eEnum, uint length) where T : struct, Enum;
 
     [MethodImpl((MethodImplOptions) 16)] // ForwardRef
-    public static extern string? GetOrNull<T>(string[] array, T eEnum, int length) where T : struct, Enum;
+    public static extern string? GetOrNull<T>(string[] array, T eEnum, uint length) where T : struct, Enum;
 
     [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern T[] GetSystemEnumValues<T>() where T : struct, Enum;

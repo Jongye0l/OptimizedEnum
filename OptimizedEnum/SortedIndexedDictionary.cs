@@ -9,7 +9,7 @@ class SortedIndexedDictionary<T>(T[] keys, string[] values, int count) where T :
     public readonly string[] Values = values;
     public int Count = count;
 
-    public SortedIndexedDictionary(int count) : this(new T[count], new string[count], 0) {
+    public SortedIndexedDictionary(uint count) : this(new T[count], new string[count], 0) {
     }
 
     public string? this[T key] {

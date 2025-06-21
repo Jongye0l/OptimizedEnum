@@ -48,7 +48,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
                                                                   );
         List<T>? duplicates = null;
         if(dictCount != 0) {
-            RemoveFlagDictionary = new SortedIndexedDictionary<T>(dictCount);
+            RemoveFlagDictionary = new SortedIndexedDictionary<T>((uint) dictCount);
             duplicates = [];
         }
         foreach(FieldInfo field in fields) {

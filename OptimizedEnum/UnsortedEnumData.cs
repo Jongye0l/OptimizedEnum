@@ -10,7 +10,7 @@ class UnsortedEnumData<T> : EnumData<T> where T : struct, Enum {
     public static SortedIndexedDictionary<T> NotDupDict;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
-    public static void Setup(FieldInfo[] fields, int count) {
+    public static void Setup(FieldInfo[] fields, uint count) {
         if(count == fields.Length) NotDupDict = Dictionary;
         else {
             NotDupDict = new SortedIndexedDictionary<T>(count);

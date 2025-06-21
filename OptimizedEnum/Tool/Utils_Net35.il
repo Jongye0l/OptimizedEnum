@@ -435,7 +435,7 @@ EndRepeat:
         ret
     }
 
-    .method public hidebysig static string GetOrDefault<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+    .method public hidebysig static string GetOrDefault<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, uint32 length) cil managed {
         .custom instance void System.Runtime.CompilerServices.NullableContextAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
         .param type T
             .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 00 00 00 )
@@ -450,14 +450,14 @@ EndRepeat:
         ldc.i4.8
         beq Bit8
         
-        call string OptimizedEnum.Tool.Utils::GetOrDefault4<!!T>(string[], !!T, int32)
+        call string OptimizedEnum.Tool.Utils::GetOrDefault4<!!T>(string[], !!T, uint32)
         ret
 Bit8:
-        call string OptimizedEnum.Tool.Utils::GetOrDefault8<!!T>(string[], !!T, int32)
+        call string OptimizedEnum.Tool.Utils::GetOrDefault8<!!T>(string[], !!T, uint32)
         ret
     }
 
-    .method private hidebysig static string GetOrDefault4<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+    .method private hidebysig static string GetOrDefault4<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, uint32 length) cil managed {
         .maxstack 2
         ldarg.1
         ldarg.2
@@ -475,7 +475,7 @@ SkipGetValue:
         ret
     }
 
-    .method private hidebysig static string GetOrDefault8<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+    .method private hidebysig static string GetOrDefault8<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, uint32 length) cil managed {
         .maxstack 2
         ldarg.1
         ldarg.2
@@ -495,7 +495,7 @@ SkipGetValue:
         ret
     }
 
-    .method public hidebysig static string GetOrNull<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+    .method public hidebysig static string GetOrNull<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, uint32 length) cil managed {
         .param [0]
             .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 02 00 00 )
         .param [1]
@@ -509,14 +509,14 @@ SkipGetValue:
         ldc.i4.8
         beq Bit8
         
-        call string OptimizedEnum.Tool.Utils::GetOrNull4<!!T>(string[], !!T, int32)
+        call string OptimizedEnum.Tool.Utils::GetOrNull4<!!T>(string[], !!T, uint32)
         ret
 Bit8:
-        call string OptimizedEnum.Tool.Utils::GetOrNull8<!!T>(string[], !!T, int32)
+        call string OptimizedEnum.Tool.Utils::GetOrNull8<!!T>(string[], !!T, uint32)
         ret
     }
 
-    .method private hidebysig static string GetOrNull4<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+    .method private hidebysig static string GetOrNull4<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, uint32 length) cil managed {
         .maxstack 2
         ldarg.1
         ldarg.2
@@ -533,7 +533,7 @@ SkipGetValue:
         ret
     }
 
-    .method private hidebysig static string GetOrNull8<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, int32 length) cil managed {
+    .method private hidebysig static string GetOrNull8<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string[] 'array', !!T eEnum, uint32 length) cil managed {
         .maxstack 2
         ldarg.1
         ldarg.2

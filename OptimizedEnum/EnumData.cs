@@ -101,7 +101,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
         bool outOfRange = false;
         bool isSorted = true;
         int length = fields.Length;
-        int realCount = 0;
+        uint realCount = 0;
         uint u;
         if(Utils.GetSize<T>() == 8) {
             List<ulong> overflowField8 = [];
