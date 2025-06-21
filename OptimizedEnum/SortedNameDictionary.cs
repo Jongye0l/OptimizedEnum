@@ -4,8 +4,8 @@ using OptimizedEnum.Tool;
 
 namespace OptimizedEnum;
 
-struct SortedNameDictionary<T>(int count) where T : struct, Enum {
-    public readonly KeyValuePair<string, T>[] Array = new KeyValuePair<string, T>[count];
+class SortedNameDictionary<T>(int count) where T : struct, Enum {
+    public KeyValuePair<string, T>[] Array = new KeyValuePair<string, T>[count];
     public int Count;
 
     public T GetValue(string key) {
