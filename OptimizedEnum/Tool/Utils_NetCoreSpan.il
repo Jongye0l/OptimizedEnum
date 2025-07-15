@@ -661,18 +661,47 @@ Is4:
 Next:
         ldnull
         ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
-        switch (IsInt, IsUInt, IsLong, IsULong)
-IsInt:
-        call instance string [System.Runtime]System.Int32::ToString(string, class [System.Runtime]System.IFormatProvider)
+        switch (IsInt, IsInt)
+        call instance string [System.Runtime]System.UInt64::ToString(string, class [System.Runtime]System.IFormatProvider)
         ret
-IsUInt:
+IsInt:
         call instance string [System.Runtime]System.UInt32::ToString(string, class [System.Runtime]System.IFormatProvider)
         ret
+    }
+
+    .method public hidebysig static !!T ParseAsNumber<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string 'value') cil managed {
+        .param [1]
+            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
+        .maxstack 2
+        ldarg.0
+        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
+        switch (IsInt, IsUInt, IsLong, IsULong)
+
+        call instance int32 [mscorlib]System.String::get_Length()
+        ldc.i4.1
+        beq SkipThrow
+
+        ldstr        "Invalid enum value: "
+        ldarg.0
+        call         string [mscorlib]System.String::Concat(string, string)
+        newobj       instance void [mscorlib]System.ArgumentException::.ctor(string)
+        throw
+SkipThrow:
+        ldarg.0
+        ldc.i4.0
+        call instance char [mscorlib]System.String::get_Chars(int32)
+        ret
+IsInt:
+        call int32 OptimizedEnum.Tool.Utils::ParseInt32(string)
+        ret
+IsUInt:
+        call uint32 OptimizedEnum.Tool.Utils::ParseUInt32(string)
+        ret
 IsLong:
-        call instance string [System.Runtime]System.Int64::ToString(string, class [System.Runtime]System.IFormatProvider)
+        call int64 OptimizedEnum.Tool.Utils::ParseInt64(string)
         ret
 IsULong:
-        call instance string [System.Runtime]System.UInt64::ToString(string, class [System.Runtime]System.IFormatProvider)
+        call uint64 OptimizedEnum.Tool.Utils::ParseUInt64(string)
         ret
     }
 
