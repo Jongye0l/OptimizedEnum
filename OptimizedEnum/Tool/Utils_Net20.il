@@ -624,7 +624,6 @@ Is2:
         br Next
 Is4:
         ldstr "X8"
-        br Next
 Next:
         ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
         switch (IsInt, IsUInt, IsLong, IsULong)
