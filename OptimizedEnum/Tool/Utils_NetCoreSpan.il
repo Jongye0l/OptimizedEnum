@@ -637,7 +637,7 @@ IsUInt:
         ret
     }
 
-    .method public hidebysig static !!T ParseAsNumber<valuetype .ctor (class [mscorlib]System.Enum, class [mscorlib]System.ValueType) T>(string 'value') cil managed {
+    .method public hidebysig static !!T ParseAsNumber<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>(string 'value') cil managed {
         .param [1]
             .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
         .maxstack 2
@@ -645,19 +645,19 @@ IsUInt:
         ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
         switch (IsInt, IsUInt, IsLong, IsULong)
 
-        call instance int32 [mscorlib]System.String::get_Length()
+        call instance int32 [System.Runtime]System.String::get_Length()
         ldc.i4.1
         beq SkipThrow
 
-        ldstr        "Invalid enum value: "
+        ldstr "Invalid enum value: "
         ldarg.0
-        call         string [mscorlib]System.String::Concat(string, string)
-        newobj       instance void [mscorlib]System.ArgumentException::.ctor(string)
+        call string [System.Runtime]System.String::Concat(string, string)
+        newobj instance void [System.Runtime]System.ArgumentException::.ctor(string)
         throw
 SkipThrow:
         ldarg.0
         ldc.i4.0
-        call instance char [mscorlib]System.String::get_Chars(int32)
+        call instance char [System.Runtime]System.String::get_Chars(int32)
         ret
 IsInt:
         call int32 OptimizedEnum.Tool.Utils::ParseInt32(string)

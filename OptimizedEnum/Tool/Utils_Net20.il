@@ -616,10 +616,10 @@ IsUInt:
         ldc.i4.1
         beq SkipThrow
 
-        ldstr        "Invalid enum value: "
+        ldstr "Invalid enum value: "
         ldarg.0
-        call         string [mscorlib]System.String::Concat(string, string)
-        newobj       instance void [mscorlib]System.ArgumentException::.ctor(string)
+        call string [mscorlib]System.String::Concat(string, string)
+        newobj instance void [mscorlib]System.ArgumentException::.ctor(string)
         throw
 SkipThrow:
         ldarg.0
