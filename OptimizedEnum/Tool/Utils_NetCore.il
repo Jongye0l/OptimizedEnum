@@ -614,7 +614,7 @@ IsULong:
         ret
     }
 
-    .method public hidebysig static string GetHexStringCustom<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>(!!T eEnum) cil managed {
+    .method public hidebysig static string GetHexString<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>(!!T eEnum) cil managed {
         .param [0]
             .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
         .maxstack 4
@@ -623,48 +623,17 @@ IsULong:
         ldc.i4.2
         mul
         ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
-        switch (IsInt, IsUInt, IsLong, IsULong)
+        switch (IsInt, IsUInt)
+        call string OptimizedEnum.Tool.Utils::UInt64ToHexString(uint64, int32)
+        ret
 IsInt:
+        dup
+        ldc.i4.8
+        beq IsUInt
         call string OptimizedEnum.Tool.Utils::Int32ToHexString(int32, int32)
         ret
 IsUInt:
         call string OptimizedEnum.Tool.Utils::UInt32ToHexString(uint32, int32)
-        ret
-IsLong:
-        call string OptimizedEnum.Tool.Utils::Int64ToHexString(int64, int32)
-        ret
-IsULong:
-        call string OptimizedEnum.Tool.Utils::UInt64ToHexString(uint64, int32)
-        ret
-    }
-
-    .method public hidebysig static string GetHexString<valuetype .ctor (class [System.Runtime]System.Enum, class [System.Runtime]System.ValueType) T>(!!T eEnum) cil managed {
-        .param [0]
-            .custom instance void System.Runtime.CompilerServices.NullableAttribute::.ctor(uint8) = ( 01 00 01 00 00 )
-        .maxstack 4
-        ldarga.s eEnum
-        sizeof !!T
-        ldc.i4.1
-        sub
-        switch (Is1, Is2, Is1, Is4)
-        ldstr "X16"
-        br Next
-Is1:
-        ldstr "X2"
-        br Next
-Is2:
-        ldstr "X4"
-        br Next
-Is4:
-        ldstr "X8"
-Next:
-        ldnull
-        ldsfld valuetype OptimizedEnum.DataType class OptimizedEnum.EnumData`1<!!T>::DataType
-        switch (IsInt, IsInt)
-        call instance string [System.Runtime]System.UInt64::ToString(string, class [System.Runtime]System.IFormatProvider)
-        ret
-IsInt:
-        call instance string [System.Runtime]System.UInt32::ToString(string, class [System.Runtime]System.IFormatProvider)
         ret
     }
 

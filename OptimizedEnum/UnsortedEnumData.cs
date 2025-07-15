@@ -39,7 +39,7 @@ class UnsortedEnumData<T> : EnumData<T> where T : struct, Enum {
                     return value.GetNumberStringFast();
                 case 'X':
                 case 'x':
-                    return value.GetHexStringFast();
+                    return value.GetHexString();
                 case 'F':
                 case 'f':
                     return FlagEnumData<T>.RemoveFlagDictionary == null ? FlagEnumData<T>.GetStringNormal(value) : FlagEnumData<T>.GetStringDict(value);

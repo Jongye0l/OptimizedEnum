@@ -49,7 +49,7 @@ public static class OptEnum {
                     return eEnum.GetNumberStringFast();
                 case 'X':
                 case 'x':
-                    return eEnum.GetHexStringFast();
+                    return eEnum.GetHexString();
                 case 'F':
                 case 'f':
                     return FlagEnumData<T>.RemoveFlagDictionary == null ? FlagEnumData<T>.GetStringNormal(eEnum) : FlagEnumData<T>.GetStringDict(eEnum);

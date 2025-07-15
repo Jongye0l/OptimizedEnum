@@ -183,7 +183,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
                     return ((T) eEnum).GetNumberStringFast();
                 case 'X':
                 case 'x':
-                    return ((T) eEnum).GetHexStringFast();
+                    return ((T) eEnum).GetHexString();
             }
         }
         throw new FormatException();

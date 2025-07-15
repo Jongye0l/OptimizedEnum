@@ -79,7 +79,21 @@ public static class Utils {
         return new string(buffer, i, 20 - i);
     }
 
-    public static string Int32ToHexString(this int value, int length) => UInt32ToHexString((uint) value, length);
+    public static string Int32ToHexString(this int value, int length) {
+        bool isNegative = value < 0;
+        int i;
+        uint uValue = isNegative ? (uint) -value : (uint) value;
+        char[] buffer = new char[i = length];
+        while(value > 0) {
+            uint val = uValue % 16;
+            if(isNegative & i == 1) val += 8; 
+            buffer[--i] = val > 9 ? (char) ('7' + val) : (char) ('0' + val); // 'A' - (char) 10 = '7'
+            value /= 16;
+        }
+        while(i > 1) buffer[--i] = '0';
+        if(i == 1) buffer[--i] = isNegative ? '8' : '0';
+        return new string(buffer, 0, length);
+    }
 
     public static string UInt32ToHexString(this uint value, int length) {
         int i;
@@ -361,15 +375,6 @@ public static class Utils {
 #endif
     }
 
-    public static string GetHexStringFast<T>(this T eEnum) where T : struct, Enum {
-        return 
-#if NETCOREAPP || NET5_0_OR_GREATER
-            eEnum.GetHexString();
-#else
-            eEnum.GetHexStringCustom();
-#endif
-    }
-
     [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern bool HasAnyFlags<T>(this T flags) where T : struct, Enum;
 
@@ -465,9 +470,6 @@ public static class Utils {
 
     [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern string GetNumberString<T>(this T eEnum) where T : struct, Enum;
-
-    [MethodImpl((MethodImplOptions) 16)] // ForwardRef
-    public static extern string GetHexStringCustom<T>(this T eEnum) where T : struct, Enum;
 
     [MethodImpl((MethodImplOptions) 16)] // ForwardRef
     public static extern string GetHexString<T>(this T eEnum) where T : struct, Enum;
