@@ -24,17 +24,19 @@ abstract class EnumData {
     public abstract bool TryParse(string str, bool ignoreCase, out object? eEnum);
     public abstract bool HasAllFlag(object eEnum1, object eEnum2);
     public abstract bool HasAnyFlag(object eEnum1, object eEnum2);
+    public abstract void SetEnumName(object eEnum, string name);
 }
 
 abstract class EnumData<T> : EnumData where T : struct, Enum {
     public static EnumData<T> Instance;
     public static readonly DataType DataType;
-    public static readonly EnumType EnumType;
+    public static EnumType EnumType;
     public static readonly SortedNameDictionary<T> NameDictionary;
     public static readonly T AllFlags;
     public static readonly SortedIndexedDictionary<T> Dictionary;
-    public static readonly bool HasZero;
+    public static bool HasZero;
     public static readonly bool LowNotUnsigned;
+    public static readonly FieldInfo[] Fields;
 
     static EnumData() {
 #if NETSTANDARD1_0
@@ -51,7 +53,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             fieldType == typeof(byte) || fieldType == typeof(ushort) || fieldType == typeof(uint) ? DataType.Unsigned :
             fieldType == typeof(ulong) ? DataType.UnsignedLong :
             fieldType == typeof(char) ? DataType.Char : throw new NotSupportedException($"Enum type {typeof(T)} is not supported.");
-        FieldInfo[] fields = fieldList.ToArray();
+        FieldInfo[] fields = Fields = fieldList.ToArray();
 #else
         DataType = Type.GetTypeCode(typeof(T)) switch {
             TypeCode.Char => DataType.Char,
@@ -61,7 +63,7 @@ abstract class EnumData<T> : EnumData where T : struct, Enum {
             TypeCode.UInt64 => DataType.UnsignedLong,
             _ => throw new NotSupportedException($"Enum type {typeof(T)} is not supported.")
         };
-        FieldInfo[] fields =
+        FieldInfo[] fields = Fields =
 #if NETSTANDARD1_5
             typeof(T).GetTypeInfo().GetFields(BindingFlags.Public | BindingFlags.Static);
 #else

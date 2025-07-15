@@ -58,4 +58,19 @@ struct SortedEnumDictionary {
         Array[left] = new KeyValuePair<int, EnumData>(hash, value);
         Count++;
     }
+    
+    public void Set(Type key, EnumData value) {
+        int left = 0;
+        int right = Count - 1;
+        int hash = key.GetHashCode();
+        while(left <= right) {
+            int mid = (left + right) / 2;
+            if(Array[mid].Key == hash) {
+                Array[mid] = new KeyValuePair<int, EnumData>(hash, value);
+                return;
+            }
+            if(Array[mid].Key < hash) left = mid + 1;
+            else right = mid - 1;
+        }
+    }
 }

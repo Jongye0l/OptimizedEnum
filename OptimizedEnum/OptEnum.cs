@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 #if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
 using System.Reflection;
 #endif
@@ -215,6 +217,25 @@ GetString:
         };
     }
 
+    public static void SetEnumName<T>(T eEnum, string name) where T : struct, Enum {
+        EnumData<T>.NameDictionary.AddOrSet(name, eEnum);
+        EnumData<T>.Dictionary.AddOrSet(eEnum, name, false);
+        if(eEnum.AsLong() == 0) EnumData<T>.HasZero = true;
+        switch(EnumData<T>.EnumType) {
+            case EnumType.Sorted:
+                SortedEnumData<T>.SetEnumName(eEnum, name);
+                break;
+            case EnumType.Unsorted:
+                if(UnsortedEnumData<T>.NotDupDict != EnumData<T>.Dictionary) UnsortedEnumData<T>.NotDupDict.AddOrSet(eEnum, name, false);
+                break;
+            case EnumType.Flag:
+                FlagEnumData<T>.SetEnumName(eEnum, name);
+                break;
+            default:
+                throw new NotSupportedException();
+        }
+    }
+
     private static void CheckType(Type type) {
         if(
 #if NETCOREAPP1_0 || NETSTANDARD1_0 || NETSTANDARD1_5
@@ -299,5 +320,12 @@ GetString:
     public static bool HasAnyFlag(Type type, object eEnum1, object eEnum2) {
         CheckType(type);
         return EnumData.EnumDataDictionary.GetOrCreate(type).HasAnyFlag(eEnum1, eEnum2);
+    }
+    
+    public static void SetEnumName(object eEnum, string name) => SetEnumName(eEnum.GetType(), eEnum, name);
+    
+    public static void SetEnumName(Type type, object eEnum, string name) {
+        CheckType(type);
+        EnumData.EnumDataDictionary.GetOrCreate(type).SetEnumName(eEnum, name);
     }
 }

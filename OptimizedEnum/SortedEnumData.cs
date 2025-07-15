@@ -36,6 +36,37 @@ class SortedEnumData<T> : EnumData<T> where T : struct, Enum {
         }
     }
 
+    public static void SetEnumName(T eEnum, string name) {
+        ulong value = eEnum.AsUnsignedLong();
+        uint length = Length;
+        int newLength = (int) length + 1;
+        string[] currentNames = Names;
+        if(value < length) currentNames[value] = name;
+        else if(value == length) {
+            if(newLength == Dictionary.Count) Names = Dictionary.Values;
+            else {
+                string[] names = new string[newLength];
+                Array.Copy(currentNames, names, (int) length);
+                names[length] = name;
+                Names = names;
+                Length++;
+            }
+        } else {
+            if(newLength == Dictionary.Count) UnsortedEnumData<T>.NotDupDict = Dictionary;
+            else {
+                T[] newValues = new T[newLength];
+                string[] newNames = new string[newLength];
+                Array.Copy(currentNames, newNames, (int) length);
+                UnsortedEnumData<T>.NotDupDict = new SortedIndexedDictionary<T>(newValues, newNames, (int) length);
+                if(Utils.GetSize<T>() == 8) for(ulong j = 0; j < length; j++) newValues[j] = j.As<T>();
+                else for(uint j = 0; j < length; j++) newValues[j] = j.As<T>();
+                UnsortedEnumData<T>.NotDupDict.Add(eEnum, name);
+            }
+            EnumDataDictionary.Set(typeof(T), Instance = new UnsortedEnumData<T>());
+            EnumType = EnumType.Unsorted;
+        }
+    }
+
     public override string GetString(object eEnum) {
         return Utils.GetOrDefault(Names, (T) eEnum, Length);
     }
@@ -70,4 +101,5 @@ class SortedEnumData<T> : EnumData<T> where T : struct, Enum {
     public override bool IsDefined(object eEnum) {
         return (uint) ((T) eEnum).AsInteger() < Length;
     }
+    public override void SetEnumName(object eEnum, string name) => SetEnumName((T) eEnum, name);
 }

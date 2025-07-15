@@ -17,14 +17,7 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     static FlagEnumData() {
-        FieldInfo[] fields =
-#if NETSTANDARD1_0
-            typeof(T).GetRuntimeFields().ToArray();
-#elif NETSTANDARD1_5
-            typeof(T).GetTypeInfo().GetFields(BindingFlags.Public | BindingFlags.Static);
-#else
-            typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static);
-#endif
+        FieldInfo[] fields = Fields;
         string[] flagEnums;
         T allFlags = AllFlags;
         if(allFlags.AsLong() == 0) flagEnums = [];
@@ -39,22 +32,13 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
 #endif
                                     + 1];
         FlagEnums = flagEnums;
-        int dictCount = fields.Length - allFlags.BitCount() - (HasZero ? 
-#if NETSTANDARD1_0
-                                                                   2 : 1
-#else
-                                                                   1 : 0
-#endif
-                                                                  );
+        int dictCount = fields.Length - allFlags.BitCount() - (HasZero ? 1 : 0);
         List<T>? duplicates = null;
         if(dictCount != 0) {
             RemoveFlagDictionary = new SortedIndexedDictionary<T>((uint) dictCount);
             duplicates = [];
         }
         foreach(FieldInfo field in fields) {
-#if NETSTANDARD1_0
-            if(!field.IsStatic) continue;
-#endif
 #pragma warning disable CS8605 // Unboxing a possibly null value.
             T value = (T) field.GetValue(null);
 #pragma warning restore CS8605 // Unboxing a possibly null value.
@@ -148,6 +132,39 @@ class FlagEnumData<T> : EnumData<T> where T : struct, Enum {
                                                                        ] != null : RemoveFlagDictionary?[eEnum] != null;
     }
 
+    public static void SetEnumName(T eEnum, string name) {
+        long lValue = eEnum.AsLong();
+        if(lValue == 0) {
+            ZeroString = name;
+            return;
+        }
+        if(lValue == 1) {
+            if(FlagEnums.Length < 1) FlagEnums = new string[1];
+            FlagEnums[0] = name;
+            return;
+        }
+        int i = eEnum.BitCount();
+        if(i == 1) {
+            int v = (int)
+#if NETCOREAPP2_0 || NETCOREAPP2_1
+                Utils.Log2(eEnum.AsFloatUnsigned());
+#elif NETCOREAPP3_0 || NET5_0
+                MathF.Log2(eEnum.AsFloatUnsigned());
+#else
+                Utils.Log2(eEnum.AsDoubleUnsigned());
+#endif
+            if(FlagEnums.Length <= v) {
+                string[] flagEnums = new string[v + 1];
+                Array.Copy(FlagEnums, flagEnums, FlagEnums.Length);
+                FlagEnums = flagEnums;
+            }
+            FlagEnums[v] = name;
+            return;
+        }
+        if(RemoveFlagDictionary == null) RemoveFlagDictionary = new SortedIndexedDictionary<T>([eEnum], [name], 1);
+        else RemoveFlagDictionary.AddOrSet(eEnum, name, false);
+    }
+
     public override string GetString(object eEnum) {
         return RemoveFlagDictionary == null ? GetStringNormal((T) eEnum) : GetStringDict((T) eEnum);
     }
@@ -190,4 +207,5 @@ GetString:
     }
 
     public override bool IsDefined(object eEnum) => IsDefined((T) eEnum);
+    public override void SetEnumName(object eEnum, string name) => SetEnumName((T) eEnum, name);
 }

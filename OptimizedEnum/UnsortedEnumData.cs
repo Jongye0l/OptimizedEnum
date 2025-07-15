@@ -57,4 +57,7 @@ class UnsortedEnumData<T> : EnumData<T> where T : struct, Enum {
     public override bool IsDefined(object eEnum) {
         return NotDupDict[(T) eEnum] != null;
     }
+    public override void SetEnumName(object eEnum, string name) {
+        if(NotDupDict != Dictionary) NotDupDict.AddOrSet((T) eEnum, name, false);
+    }
 }

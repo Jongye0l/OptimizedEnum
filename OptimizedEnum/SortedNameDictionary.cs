@@ -11,18 +11,20 @@ class SortedNameDictionary<T>(int count) where T : struct, Enum {
     public T GetValue(string key) {
         int left = 0;
         int right = Count - 1;
-        while(left <= right) {
-            int mid = (left + right) / 2;
-            int result = Compare(Array[mid].Key, key);
-            switch(result) {
-                case 0:
-                    return Array[mid].Value;
-                case < 0:
-                    left = mid + 1;
-                    break;
-                default:
-                    right = mid - 1;
-                    break;
+        lock (this) {
+            while(left <= right) {
+                int mid = (left + right) / 2;
+                int result = Compare(Array[mid].Key, key);
+                switch(result) {
+                    case 0:
+                        return Array[mid].Value;
+                    case < 0:
+                        left = mid + 1;
+                        break;
+                    default:
+                        right = mid - 1;
+                        break;
+                }
             }
         }
         return key.ParseAsNumber<T>();
@@ -32,41 +34,43 @@ class SortedNameDictionary<T>(int count) where T : struct, Enum {
         int left2, right2;
         int left = left2 = 0;
         int right = right2 = Count - 1;
-        while(true) {
-            bool run = false;
-            int mid;
-            int result;
-            if(left <= right) {
-                mid = (left + right) / 2;
-                result = Compare(Array[mid].Key, key, false);
-                switch(result) {
-                    case 0:
-                        return Array[mid].Value;
-                    case < 0:
-                        left = mid + 1;
-                        break;
-                    default:
-                        right = mid - 1;
-                        break;
+        lock (this) {
+            while(true) {
+                bool run = false;
+                int mid;
+                int result;
+                if(left <= right) {
+                    mid = (left + right) / 2;
+                    result = Compare(Array[mid].Key, key, false);
+                    switch(result) {
+                        case 0:
+                            return Array[mid].Value;
+                        case < 0:
+                            left = mid + 1;
+                            break;
+                        default:
+                            right = mid - 1;
+                            break;
+                    }
+                    run = true;
                 }
-                run = true;
-            }
-            if(left2 <= right2) {
-                mid = (left2 + right2) / 2;
-                result = Compare(Array[mid].Key, key, true);
-                switch(result) {
-                    case 0:
-                        return Array[mid].Value;
-                    case < 0:
-                        left2 = mid + 1;
-                        break;
-                    default:
-                        right2 = mid - 1;
-                        break;
+                if(left2 <= right2) {
+                    mid = (left2 + right2) / 2;
+                    result = Compare(Array[mid].Key, key, true);
+                    switch(result) {
+                        case 0:
+                            return Array[mid].Value;
+                        case < 0:
+                            left2 = mid + 1;
+                            break;
+                        default:
+                            right2 = mid - 1;
+                            break;
+                    }
+                    run = true;
                 }
-                run = true;
+                if(!run) break;
             }
-            if(!run) break;
         }
         return key.ParseAsNumber<T>();
     }
@@ -74,19 +78,21 @@ class SortedNameDictionary<T>(int count) where T : struct, Enum {
     public bool TryGetValue(string key, out T value) {
         int left = 0;
         int right = Count - 1;
-        while(left <= right) {
-            int mid = (left + right) / 2;
-            int result = Compare(Array[mid].Key, key);
-            switch(result) {
-                case 0:
-                    value = Array[mid].Value;
-                    return true;
-                case < 0:
-                    left = mid + 1;
-                    break;
-                default:
-                    right = mid - 1;
-                    break;
+        lock (this) {
+            while(left <= right) {
+                int mid = (left + right) / 2;
+                int result = Compare(Array[mid].Key, key);
+                switch(result) {
+                    case 0:
+                        value = Array[mid].Value;
+                        return true;
+                    case < 0:
+                        left = mid + 1;
+                        break;
+                    default:
+                        right = mid - 1;
+                        break;
+                }
             }
         }
         return key.TryParseAsNumber(out value);
@@ -96,43 +102,42 @@ class SortedNameDictionary<T>(int count) where T : struct, Enum {
         int left2, right2;
         int left = left2 = 0;
         int right = right2 = Count - 1;
-        while(true) {
-            bool run = false;
-            int mid;
-            int result;
-            if(left <= right) {
-                mid = (left + right) / 2;
-                result = Compare(Array[mid].Key, key, false);
-                switch(result) {
-                    case 0:
-                        value = Array[mid].Value;
-                        return true;
-                    case < 0:
-                        left = mid + 1;
-                        break;
-                    default:
-                        right = mid - 1;
-                        break;
+        lock (this) {
+            while(true) {
+                bool run = false;
+                int mid;
+                if(left <= right) {
+                    mid = (left + right) / 2;
+                    switch(Compare(Array[mid].Key, key, false)) {
+                        case 0:
+                            value = Array[mid].Value;
+                            return true;
+                        case < 0:
+                            left = mid + 1;
+                            break;
+                        default:
+                            right = mid - 1;
+                            break;
+                    }
+                    run = true;
                 }
-                run = true;
-            }
-            if(left2 <= right2) {
-                mid = (left2 + right2) / 2;
-                result = Compare(Array[mid].Key, key, true);
-                switch(result) {
-                    case 0:
-                        value = Array[mid].Value;
-                        return true;
-                    case < 0:
-                        left2 = mid + 1;
-                        break;
-                    default:
-                        right2 = mid - 1;
-                        break;
+                if(left2 <= right2) {
+                    mid = (left2 + right2) / 2;
+                    switch(Compare(Array[mid].Key, key, true)) {
+                        case 0:
+                            value = Array[mid].Value;
+                            return true;
+                        case < 0:
+                            left2 = mid + 1;
+                            break;
+                        default:
+                            right2 = mid - 1;
+                            break;
+                    }
+                    run = true;
                 }
-                run = true;
+                if(!run) break;
             }
-            if(!run) break;
         }
         return key.TryParseAsNumber(out value);
     }
@@ -164,18 +169,20 @@ class SortedNameDictionary<T>(int count) where T : struct, Enum {
     public T GetValue(ReadOnlySpan<char> key) {
         int left = 0;
         int right = Count - 1;
-        while(left <= right) {
-            int mid = (left + right) / 2;
-            int result = Compare(Array[mid].Key, key);
-            switch(result) {
-                case 0:
-                    return Array[mid].Value;
-                case < 0:
-                    left = mid + 1;
-                    break;
-                default:
-                    right = mid - 1;
-                    break;
+        lock (this) {
+            while(left <= right) {
+                int mid = (left + right) / 2;
+                int result = Compare(Array[mid].Key, key);
+                switch(result) {
+                    case 0:
+                        return Array[mid].Value;
+                    case < 0:
+                        left = mid + 1;
+                        break;
+                    default:
+                        right = mid - 1;
+                        break;
+                }
             }
         }
         return key.ParseAsNumber<T>();
@@ -185,41 +192,43 @@ class SortedNameDictionary<T>(int count) where T : struct, Enum {
         int left2, right2;
         int left = left2 = 0;
         int right = right2 = Count - 1;
-        while(true) {
-            bool run = false;
-            int mid;
-            int result;
-            if(left <= right) {
-                mid = (left + right) / 2;
-                result = Compare(Array[mid].Key, key, false);
-                switch(result) {
-                    case 0:
-                        return Array[mid].Value;
-                    case < 0:
-                        left = mid + 1;
-                        break;
-                    default:
-                        right = mid - 1;
-                        break;
+        lock (this) {
+            while(true) {
+                bool run = false;
+                int mid;
+                int result;
+                if(left <= right) {
+                    mid = (left + right) / 2;
+                    result = Compare(Array[mid].Key, key, false);
+                    switch(result) {
+                        case 0:
+                            return Array[mid].Value;
+                        case < 0:
+                            left = mid + 1;
+                            break;
+                        default:
+                            right = mid - 1;
+                            break;
+                    }
+                    run = true;
                 }
-                run = true;
-            }
-            if(left2 <= right2) {
-                mid = (left2 + right2) / 2;
-                result = Compare(Array[mid].Key, key, true);
-                switch(result) {
-                    case 0:
-                        return Array[mid].Value;
-                    case < 0:
-                        left2 = mid + 1;
-                        break;
-                    default:
-                        right2 = mid - 1;
-                        break;
+                if(left2 <= right2) {
+                    mid = (left2 + right2) / 2;
+                    result = Compare(Array[mid].Key, key, true);
+                    switch(result) {
+                        case 0:
+                            return Array[mid].Value;
+                        case < 0:
+                            left2 = mid + 1;
+                            break;
+                        default:
+                            right2 = mid - 1;
+                            break;
+                    }
+                    run = true;
                 }
-                run = true;
+                if(!run) break;
             }
-            if(!run) break;
         }
         return key.ParseAsNumber<T>();
     }
@@ -227,19 +236,21 @@ class SortedNameDictionary<T>(int count) where T : struct, Enum {
     public bool TryGetValue(ReadOnlySpan<char> key, out T value) {
         int left = 0;
         int right = Count - 1;
-        while(left <= right) {
-            int mid = (left + right) / 2;
-            int result = Compare(Array[mid].Key, key);
-            switch(result) {
-                case 0:
-                    value = Array[mid].Value;
-                    return true;
-                case < 0:
-                    left = mid + 1;
-                    break;
-                default:
-                    right = mid - 1;
-                    break;
+        lock (this) {
+            while(left <= right) {
+                int mid = (left + right) / 2;
+                int result = Compare(Array[mid].Key, key);
+                switch(result) {
+                    case 0:
+                        value = Array[mid].Value;
+                        return true;
+                    case < 0:
+                        left = mid + 1;
+                        break;
+                    default:
+                        right = mid - 1;
+                        break;
+                }
             }
         }
         return key.TryParseAsNumber(out value);
@@ -249,43 +260,45 @@ class SortedNameDictionary<T>(int count) where T : struct, Enum {
         int left2, right2;
         int left = left2 = 0;
         int right = right2 = Count - 1;
-        while(true) {
-            bool run = false;
-            int mid;
-            int result;
-            if(left <= right) {
-                mid = (left + right) / 2;
-                result = Compare(Array[mid].Key, key, false);
-                switch(result) {
-                    case 0:
-                        value = Array[mid].Value;
-                        return true;
-                    case < 0:
-                        left = mid + 1;
-                        break;
-                    default:
-                        right = mid - 1;
-                        break;
+        lock (this) {
+            while(true) {
+                bool run = false;
+                int mid;
+                int result;
+                if(left <= right) {
+                    mid = (left + right) / 2;
+                    result = Compare(Array[mid].Key, key, false);
+                    switch(result) {
+                        case 0:
+                            value = Array[mid].Value;
+                            return true;
+                        case < 0:
+                            left = mid + 1;
+                            break;
+                        default:
+                            right = mid - 1;
+                            break;
+                    }
+                    run = true;
                 }
-                run = true;
-            }
-            if(left2 <= right2) {
-                mid = (left2 + right2) / 2;
-                result = Compare(Array[mid].Key, key, true);
-                switch(result) {
-                    case 0:
-                        value = Array[mid].Value;
-                        return true;
-                    case < 0:
-                        left2 = mid + 1;
-                        break;
-                    default:
-                        right2 = mid - 1;
-                        break;
+                if(left2 <= right2) {
+                    mid = (left2 + right2) / 2;
+                    result = Compare(Array[mid].Key, key, true);
+                    switch(result) {
+                        case 0:
+                            value = Array[mid].Value;
+                            return true;
+                        case < 0:
+                            left2 = mid + 1;
+                            break;
+                        default:
+                            right2 = mid - 1;
+                            break;
+                    }
+                    run = true;
                 }
-                run = true;
+                if(!run) break;
             }
-            if(!run) break;
         }
         return key.TryParseAsNumber(out value);
     }
@@ -333,5 +346,31 @@ class SortedNameDictionary<T>(int count) where T : struct, Enum {
         for(int i = Count; i > left; i--) Array[i] = Array[i - 1];
         Array[left] = new KeyValuePair<string, T>(key, value);
         Count++;
+    }
+
+    public void AddOrSet(string key, T value) {
+        lock (this) {
+            int left = 0;
+            int right = Count - 1;
+            while(left <= right) {
+                int mid = (left + right) / 2;
+                switch(Compare(Array[mid].Key, key)) {
+                    case 0:
+                        Array[mid] = new KeyValuePair<string, T>(key, value);
+                        break;
+                    case < 0:
+                        left = mid + 1;
+                        break;
+                    default:
+                        right = mid - 1;
+                        break;
+                }
+            }
+            KeyValuePair<string, T>[] newArray = new KeyValuePair<string, T>[++Count];
+            System.Array.Copy(Array, newArray, left);
+            newArray[left] = new KeyValuePair<string, T>(key, value);
+            if(left < Count - 1) System.Array.Copy(Array, left, newArray, left + 1, Count - left - 1);
+            Array = newArray;
+        }
     }
 }
