@@ -207,5 +207,11 @@ GetString:
     }
 
     public override bool IsDefined(object eEnum) => IsDefined((T) eEnum);
-    public override void SetEnumName(object eEnum, string name) => SetEnumName((T) eEnum, name);
+    public override void SetEnumName(object eEnum, string name) {
+        T value = (T) eEnum;
+        NameDictionary.AddOrSet(name, value);
+        Dictionary.AddOrSet(value, name, false);
+        if(value.AsLong() == 0) HasZero = true;
+        SetEnumName(value, name);
+    } 
 }

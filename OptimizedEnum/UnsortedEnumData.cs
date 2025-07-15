@@ -58,6 +58,10 @@ class UnsortedEnumData<T> : EnumData<T> where T : struct, Enum {
         return NotDupDict[(T) eEnum] != null;
     }
     public override void SetEnumName(object eEnum, string name) {
-        if(NotDupDict != Dictionary) NotDupDict.AddOrSet((T) eEnum, name, false);
+        T value = (T) eEnum;
+        NameDictionary.AddOrSet(name, value);
+        Dictionary.AddOrSet(value, name, false);
+        if(value.AsLong() == 0) HasZero = true;
+        if(NotDupDict != Dictionary) NotDupDict.AddOrSet(value, name, false);
     }
 }

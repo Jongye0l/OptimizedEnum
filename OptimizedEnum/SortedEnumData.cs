@@ -101,5 +101,11 @@ class SortedEnumData<T> : EnumData<T> where T : struct, Enum {
     public override bool IsDefined(object eEnum) {
         return (uint) ((T) eEnum).AsInteger() < Length;
     }
-    public override void SetEnumName(object eEnum, string name) => SetEnumName((T) eEnum, name);
+    public override void SetEnumName(object eEnum, string name) {
+        T value = (T) eEnum;
+        NameDictionary.AddOrSet(name, value);
+        Dictionary.AddOrSet(value, name, false);
+        if(value.AsLong() == 0) HasZero = true;
+        SetEnumName(value, name);
+    }
 }
